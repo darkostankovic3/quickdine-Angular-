@@ -1,0 +1,363 @@
+<div class="row justify-content-md-center">
+  <div class="col-md-12 pt-2 bg-white">
+    <form
+      class="form p-0"
+      (ngSubmit)="menu && menu.id !== null ? onUpdate() : onSubmit()"
+      [formGroup]="form"
+    >
+      <div class="form-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <ng-select
+                [items]="_products"
+                placeholder="Select Product"
+                formControlName="product_id"
+                bindValue="id"
+                bindLabel="display_label"
+                placement="bottom"
+                ngbTooltip=""
+                triggers="manual"
+                appInvalidTooltip
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input
+                placeholder="Enter Youtube Link"
+                type="text"
+                class="form-control"
+                formControlName="youtube_link"
+                placement="bottom"
+                ngbTooltip=""
+                triggers="manual"
+                appInvalidTooltip
+              />
+            </div>
+          </div>
+          <div class="col-md-12 mb-2" *ngIf="subCategoryService.subCategories">
+            <ng-select
+              [items]="subCategoryService.subCategories"
+              formControlName="sub_category"
+              bindValue="sub_category"
+              bindLabel="sub_category"
+              [addTag]="true"
+              placement="bottom"
+              ngbTooltip=""
+              triggers="manual"
+              appInvalidTooltip
+              placeholder="Select Sub Category"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- <div class="row" formGroupName="brand_menu">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input placeholder="Enter Price" type="text" class="form-control" formControlName="price"
+                placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div formArrayName="menu_descriptions">
+          <div class="row" *ngFor="let language of form.get('menu_descriptions')['controls']; let i = index"
+            [formGroupName]="i">
+            <div class="col-md-4">
+              <div class="form-group">
+                <ng-select [items]="languages" bindLabel="language" bindValue="symbol" placeholder="Select Language"
+                  formControlName="language" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="form-group">
+                <input type="text" placeholder="Enter Description" class="form-control" formControlName="description"
+                  placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-danger btn-fab" type="button"
+                (click)="$event.stopPropagation();deleteLanguage(i)"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary btn-fab"
+              (click)="addArrayForMenuDescription()">{{ 'Add Description' | translate }}</button>
+          </div>
+        </div> -->
+        <!-- <div class="row" formGroupName="brand_menu">
+          <div class="col-md-12">
+            <div class="form-group">
+              <ng-select [multiple]="true" placeholder="Select Tax" [items]="taxes" bindValue="id" bindLabel="name"
+                formControlName="taxes" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+              </ng-select>
+            </div>
+          </div>
+        </div> -->
+        <div class="row" formGroupName="brand_menu">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="d-block"
+                >{{ "Visibility" | translate
+                }}<i
+                  *ngIf="form.value.brand_menu.visibility !== null"
+                  (click)="
+                    form.get('brand_menu').patchValue({ visibility: null })
+                  "
+                  placement="top"
+                  ngbTooltip="Click to Remove"
+                  style="color: red"
+                  class="fa fa-remove"
+                ></i
+              ></label>
+              <div class="ui-g" style="margin-bottom: 10px">
+                <div class="ui-g-12">
+                  <p-radioButton
+                    name="visibility"
+                    formControlName="visibility"
+                    value="HiddenFromMenu"
+                    label="{{ 'Hidden From Menu' | translate }}"
+                    inputId="visibility1"
+                  ></p-radioButton>
+                </div>
+                <div class="ui-g-12 position-relative">
+                  <p-radioButton
+                    name="visibility"
+                    formControlName="visibility"
+                    value="HideUntil"
+                    label="{{ 'Hide Until' | translate }}"
+                    inputId="visibility2"
+                  >
+                  </p-radioButton>
+                  <!-- <span class="ml-2" *ngIf="form.value.brand_menu.hide_until.date !== null"
+                        [innerHTML]="form.value.brand_menu.hide_until.date.year + '-' + form.value.brand_menu.hide_until.date.month + '-' + form.value.brand_menu.hide_until.date.day"></span> -->
+                  <div
+                    class="ui-g-12 xt-calender row"
+                    *ngIf="form.value.brand_menu.visibility === 'HideUntil'"
+                    formGroupName="hide_until"
+                  >
+                    <div class="col-md-6">
+                      <ngb-datepicker
+                        #dp
+                        (navigate)="date = $event.next"
+                        formControlName="date"
+                      ></ngb-datepicker>
+                    </div>
+                    <div class="col-md-4">
+                      <ngb-timepicker formControlName="time"></ngb-timepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-g-12 position-relative">
+                  <div class="d-inline-flex">
+                    <p-radioButton
+                      name="visibility"
+                      formControlName="visibility"
+                      value="ShowOnlyFrom"
+                      label="{{ 'Show Only From' | translate }}"
+                      inputId="visibility3"
+                    ></p-radioButton>
+                  </div>
+                  <div formGroupName="show_only_from" class="row">
+                    <div
+                      class="ui-g-12 xt-ranger col-12"
+                      *ngIf="
+                        form.value.brand_menu.visibility === 'ShowOnlyFrom' &&
+                        someKeyboardConfig !== null
+                      "
+                    >
+                      <nouislider
+                        class="xt-slider"
+                        formControlName="range"
+                        [config]="someKeyboardConfig"
+                        [(ngModel)]="rangeValues"
+                        style="margin-top: 3em"
+                      >
+                      </nouislider>
+                    </div>
+                    <div
+                      class="xt-days my-2 col-12 row"
+                      *ngIf="
+                        form.value.brand_menu.visibility === 'ShowOnlyFrom' &&
+                        selectedDays !== null
+                      "
+                    >
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Monday"
+                          label="{{ 'Monday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Tuesday"
+                          label="{{ 'Tuesday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Wednesday"
+                          label="{{ 'Wednesday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        ></p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Thursday"
+                          label="{{ 'Thursday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Friday"
+                          label="{{ 'Friday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Saturday"
+                          label="{{ 'Saturday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                      <div class="col-sm-4 p-2">
+                        <p-checkbox
+                          name="days"
+                          value="Sunday"
+                          label="{{ 'Sunday' | translate }}"
+                          [(ngModel)]="selectedDays"
+                          formControlName="days"
+                        >
+                        </p-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mt-2">
+              <label class="d-block"
+                >{{ "Mark Item As" | translate
+                }}<i
+                  *ngIf="form.value.type !== null"
+                  (click)="form.patchValue({ type: null })"
+                  placement="top"
+                  ngbTooltip="Click to Remove"
+                  style="color: red"
+                  class="fa fa-remove"
+                ></i
+              ></label>
+              <!-- <div class="ui-g" style="margin-bottom:10px">
+                <div class="ui-g-5 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="Hot" label="{{ 'Hot' | translate }}"
+                    inputId="type1">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/hot-icon.png" width="15px" alt=""></span>
+                </div>
+                <div class="ui-g-7 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="Vegetarian"
+                    label="{{ 'Vegetarian' | translate }}" inputId="type2">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/vegan-icon-17.png" width="15px" alt=""></span>
+                </div>
+                <div class="ui-g-5 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="Vegan" label="{{ 'Vegan' | translate }}"
+                    inputId="type3">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/vegan-icon.png" width="15px" alt=""></span>
+                </div>
+                <div class="ui-g-7 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="GlutenFee"
+                    label="{{ 'Gluten Fee' | translate }}" inputId="type4">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/gluten-free.png" width="15px" alt=""></span>
+                </div>
+                <div class="ui-g-5 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="Halal" label="{{ 'Halal' | translate }}"
+                    inputId="type5">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/halal-icon.png" width="15px" alt=""></span>
+                </div>
+
+                <div class="ui-g-5 d-inline-flex">
+                  <p-radioButton name="type" formControlName="type" value="BestSeller"
+                    label="{{ 'Best Seller' | translate }}" inputId="type5">
+                  </p-radioButton>
+                  <span><img src="./../../../../assets/img/pages/best-seller.png" width="15px" alt=""></span>
+                </div>
+              </div> -->
+
+              <div class="row">
+                <div class="col-sm-6" *ngFor="let option of itemTypes">
+                  <p-checkbox
+                    [value]="option.name"
+                    value="{{ option.name }}"
+                    label="{{ option.name }}"
+                    class="checkbox-padding"
+                    [formControl]="form.get('type')"
+                    name="item_types"
+                    [inputId]="option.name"
+                    [(ngModel)]="selectedItemType"
+                  >
+                  </p-checkbox>
+                  <span
+                    ><img src="{{ option.image }}" width="15px" alt=""
+                  /></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions right mt-2">
+        <button
+          type="submit"
+          (click)="cancel.emit()"
+          class="btn btn-raised btn-danger mr-1"
+          [disabled]="loading"
+        >
+          {{ "Cancel" | translate }}
+        </button>
+        <button
+          type="submit"
+          class="btn btn-raised btn-primary"
+          [disabled]="validateForm()"
+        >
+          <i
+            [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"
+          ></i>
+          {{ "Submit" | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

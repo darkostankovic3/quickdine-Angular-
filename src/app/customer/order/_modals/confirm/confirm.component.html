@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Confirm Order</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="card">
+    <div class="card-body px-0" *ngFor="let menu of cartService.cartMenus; let i = index">
+      <div class="d-flex justify-content-between">
+        <div class="col-sm-9 w-mob1">
+          <div>
+            <h4 class="font-weight-bold">{{ menu.name }} ({{ menu.portions[0].product_portion.name }})</h4>
+          </div>
+
+          <!-- <div class="col-sm-12 w-mob1">
+            <div class="row justify-content-between">
+              <div class="col-6 w-mob1"><span>Subitem name</span></div>
+              <div class="col-4 w-mob1"><span>X 1</span></div>
+            </div>
+          </div> -->
+          <div class="col-sm-12 w-mob1" *ngFor="let addOn of menu.add_ons">
+            <div class="row justify-content-between" *ngFor="let addOnType of addOn.add_on_types">
+              <div class="col-6 w-mob1"><span>{{ addOnType.name }}</span></div>
+              <div class="col-4 w-mob1"><span>10 </span> <span>X {{ addOnType.quantity }}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 pl-0 w-mob1">
+          <i (click)="cartService.delete(i)" class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+          <div class="pt-1">
+            <h5
+              [innerHTML]="cartService.getMenuPrice(menu) | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+            </h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 w-mob1">
+        <div class="total">
+          <div class="row justify-content-between align-items-center">
+            <!-- <div class="col-6 w-mob1">
+              <h5 [innerHTML]="cartService.getMenuPrice(menu) | currency:settingService.getCurrency():settingService.getCurrencySymbol()"></h5>
+            </div> -->
+            <div class="col-6 text-right w-mob1">
+              <!-- <div class="btn-group btn-group-sm text-center mx-auto pb-2" role="group" aria-label="Basic example">
+                <button type="button" class="btn bg-secondary" (click)="cartService.removeFromCart(menu)"><i
+                    class="fa fa-minus font-weight-light" aria-hidden="true"></i></button>
+                <input type="text" class="form-control w-50 w-mob1 text-center input-group-sm border-0"
+                  [attr.placeholder]="menu.quantity" aria-label="" aria-describedby="btnGroupAddon">
+                <button type="button" class="btn bg-warning" (click)="cartService.addToCart(menu)"><i
+                    class="fa fa-plus font-weight-light" aria-hidden="true"></i></button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+  <!-- <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <textarea class="form-control border-0" placeholder="Enter Remark" rows="4"></textarea>
+      </div>
+    </div>
+  </div> -->
+  <div>
+    <button type="button" class="btn bg-warning btn-lg btn-block" (click)="placeOrder()" [disabled]="loading">Place
+      Order</button>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="col-sm-12 w-mob1">
+    <div class="row justify-content-between">
+      <div class="col text-left">
+        <h5 class="text-uppercase">Total</h5>
+      </div>
+      <div class="col text-right">
+        <h5
+          [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

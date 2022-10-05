@@ -1,0 +1,152 @@
+<div class="container pt-3">
+
+  <div class="col-12 text-center mb-3">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h4 _ngcontent-rgq-c1="" class="text-bold-600" [style.color]="settingService.getHeaderColor()">
+          <span class="text-uppercase">{{ 'Total' | translate }} </span> <span
+            [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+        </h4>
+      </div>
+      <div class="col-1 px-0">
+        <a (click)="homeClicked()" class="ft-x font-large-1"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 px-0">
+    <div class="px-0" *ngFor="let menu of cartService.cartMenus; let i = index">
+      <div class="row justify-content-between">
+        <div class="col-7 pr-1">
+          <div>
+            <h4 class="text-bold-600 mb-0 text-truncate" style="font-size:15px;float:left;width:300px"
+              [style.color]="settingService.getLabelColor()">
+              {{ getName(menu.product.display_label) }} <span
+                class="display-block">({{ menu.product.product_portions[0].display_label }}
+                -
+                {{ menu.product.product_portions[0].price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+                Qty</span>
+            </h4>
+            <h4 class="text-bold-600 mb-0 text-truncate pl-1" style="font-size:15px"
+              [style.color]="settingService.getLabelColor()">
+              <div class="btn-group btn-group-sm text-center mx-auto" style="width: 80px !important" role="group"
+                aria-label="...">
+                <button [hidden]="menu.can_delete === false" type="button" [disabled]="menu.selected_quantity === 1"
+                  class="btn text-icon" (click)="cartService.menuQuantityDecreased(menu)"><i
+                    class="fa fa-minus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+                    aria-hidden="true"></i></button>
+                <input [hidden]="menu.can_delete === false" type="text"
+                  class="form-control text-center p-0 bg-light input-group-sm border-0"
+                  [attr.placeholder]="menu.selected_quantity" aria-label="" aria-describedby="btnGroupAddon" readonly>
+                <button [hidden]="menu.can_delete === false" type="button" class="btn text-icon"
+                  (click)="cartService.menuQuantityIncreased(menu)"><i class="fa fa-plus font-weight-light"
+                    [style.color]="settingService.getAddButtonColor()" aria-hidden="true"></i></button>
+
+                <span *ngIf="menu.can_delete === false">{{ menu.selected_quantity }}</span>
+              </div>
+            </h4>
+          </div>
+        </div>
+        <div class="col-5 px-0 ">
+          <div class="d-flex">
+            <div class="col px-1 text-right mr-2">
+              <h5 class="text-bold-600 font-medium-1 text-capitalize" [style.color]="settingService.getLabelColor()"
+                [innerHTML]="menu.display_price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+              </h5>
+            </div>
+            <div class="col-auto px-2 text-center" [hidden]="menu.can_delete === false">
+              <i (click)="cartService.delete(i)" class="fa fa-trash-o font-medium-5"
+                [style.color]="settingService.getLabelColor()" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="ml-2 mb-2">
+            <app-tag-display [tags]="menu.product.selected_tags"></app-tag-display>
+          </div>
+
+          <div class="ml-2 mb-2">
+            <app-product-combo-display [productCombos]="menu.product.product_combos"></app-product-combo-display>
+          </div>
+
+          <div class="mb-2" *ngIf="menu.upsell_items && menu.upsell_items.length > 0">
+            <hr class="my-0">
+            <div class="pt-3">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-md-12 col-11 px-0">
+                    <app-upsell-display [upsells]="menu.upsell_items" [quantity]="menu.selected_quantity">
+                    </app-upsell-display>
+                  </div>
+                  <div class="col-5 px-0">
+                    <div class="d-flex">
+                      <div class="col px-1 text-center">
+                        <h5 class="text-bold-600 font-medium-1 text-capitalize"
+                          [style.color]="settingService.getLabelColor()"
+                          [innerHTML]="menu.upsell_items[0].price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+                        </h5>
+                      </div>
+                      <!-- <div class="col-auto pl-1 pr-0 text-right">
+                        <i (click)="cartService.delete(i)" class="fa fa-trash-o font-medium-5"
+                          [style.color]="settingService.getLabelColor()" aria-hidden="true"></i>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 w-mob1">
+        <div class="total">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-6 text-right w-mob1">
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+  <table class="table mt-5">
+    <tbody>
+      <tr>
+        <td [style.color]="settingService.getLabelColor()">{{ 'Sub Total' | translate }} </td>
+        <td class="text-right" [style.color]="settingService.getLabelColor()"
+          [innerHTML]="cartService.getSubtotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+        </td>
+      </tr>
+      <tr *ngFor="let tax of cartService.taxes">
+        <td [style.color]="settingService.getLabelColor()">{{ tax.name }}</td>
+        <td class="text-right" [style.color]="settingService.getLabelColor()">
+          {{ tax.tax | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+        </td>
+      </tr>
+      <tr>
+        <td [style.color]="settingService.getLabelColor()" class="text-bold-500">{{ 'Total' | translate }} </td>
+        <td class="text-right text-bold-500" [style.color]="settingService.getLabelColor()"
+          [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+        </td>
+      </tr>
+      <tr *ngIf="types && types.length > 0">
+        <td colspan="2" [style.color]="settingService.getLabelColor()">{{ 'Please select payment method' | translate }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="" *ngIf="types">
+          <p-selectButton class="xt-payment" styleClass="payment-select" [options]="types" [(ngModel)]="selectedType">
+          </p-selectButton>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="submit text-center">
+    <button *ngIf="cartService.cartMenus.length > 0" type="button" class="btn btn-lg px-5 mr-1"
+      [style.background-color]="settingService.getButtonColor()" [style.color]="settingService.getLabel2Color()"
+      (click)="clearClicked()">{{'Clear' | translate}}</button>
+    <button type="button" (click)="placeOrder()" class="btn btn-lg px-5"
+      [style.background-color]="settingService.getButtonColor()" [style.color]="settingService.getLabel2Color()"
+      [disabled]="checkIfValid()">{{'Next' | translate}}</button>
+  </div>
+</div>

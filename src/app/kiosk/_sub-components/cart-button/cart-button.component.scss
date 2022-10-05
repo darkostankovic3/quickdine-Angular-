@@ -1,0 +1,16 @@
+@media screen and (max-width: 768px) {
+  .screen-below-md button {
+    line-height: 1.2rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .screen-below-sm .font-medium-3 {
+    line-height: 1rem;
+    font-size: 0.8rem !important;
+  }
+  .hide-below-sm {
+    display: none;
+  }
+}

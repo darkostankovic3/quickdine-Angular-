@@ -1,0 +1,10 @@
+.address-container{
+    box-shadow: none;
+    border: 1px solid #ddd;
+}
+
+@media (max-width:620px){
+    .hidden-on-sm{
+        display: none;
+    }
+}

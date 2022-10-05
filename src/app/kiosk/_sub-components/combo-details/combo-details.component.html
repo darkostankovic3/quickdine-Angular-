@@ -1,0 +1,100 @@
+<div class="row combo-new-design">
+  <div class="col-12" *ngFor="let productCombo of product.product_combos">
+    <div class="px-1 py-2 text-center bg-dark">
+      <h5 class="font-weight-bold mb-0" style="font-size: 24px;" [style.color]="settingService.getLabel2Color()">
+        {{ product.display_label }} | {{ productCombo.display_label }} |
+        <span [class.red]="productCombo.valid === false" style="font-size: 18px;" *ngIf="productCombo.minimum > 0"> Min:
+          {{ productCombo.minimum }}</span><span *ngIf="productCombo.minimum > 0"> | </span><span
+          style="font-size: 18px;">Max: {{ productCombo.maximum }} </span>
+      </h5>
+    </div>
+    <div class="p-2" *ngFor="let productComboItem of productCombo.product_combo_items; let i = index">
+      <div class="row px-2 align-items-center">
+        <div class="col-sm-8 col-12 px-0" style="font-size: 13px;" [style.color]="settingService.getLabelColor()">
+          <div class="row last-drop">
+            <div class="col-12 text-sm-left text-center xt-under-1" style="font-size: 26px;line-height:1.1">
+              <p-checkbox name="productcombo" *ngIf="productComboItem.selected_quantity > 0"
+                value="productComboItem.product.id" [(ngModel)]="productComboItem.auto_select" binary="true"
+                (onChange)="validate()"></p-checkbox>
+              <span class="ml-2">{{ productComboItem.product.display_label}}</span><br>
+              <span>{{(productComboItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()) + ' (Max: '+productComboItem.quantity+')'}}</span>
+              <!-- {{ productComboItem.product.display_label + ' ' + (productComboItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()) + ' (Max: '+productComboItem.quantity+')' }} -->
+            </div>
+
+            <div class="col-7 offset-5 text-center px-0 xt-under-2">
+              <div class="w-100 text-center d-flex flex-wrap justify-content-center">
+                <div
+                  [ngClass]="{'main-combo-drop' : productComboItem.auto_select === true && productComboItem.product.is_combo }"
+                  *ngIf="productComboItem.auto_select === true && productComboItem.selected_quantity > 0 && productComboItem.product.reload_tags === true">
+                  <app-tag [product]="productComboItem.product" [(quantity)]="productComboItem.selected_quantity"
+                    [isComboTag]=true [locationId]="locationId"
+                    (validate)="validateProduct($event, productComboItem.product)"
+                    (tagsAdded)="tagsAdded($event, productComboItem.product)">
+                  </app-tag>
+                </div>
+
+                <div class="ml-2" *ngIf="productComboItem.auto_select === true && productComboItem.product.is_combo">
+                  <button type="button btn-secondary" (click)="openModel(content)"
+                    class="btn btn-secondary btn-lg rounded-pill text-uppercase text-bold-600 font-medium-5 mb-0 big-font big-pad"
+                    style="padding-bottom: 13px;padding-top: 13px;"><i class="ft-edit"></i>
+                    Combo</button>
+                </div>
+
+                <ng-template #content let-modal>
+                  <div class="modal-header d-block p-0 bg-dark text-white rounded-0">
+                    <div class="row align-items-center bg-dark px-4 py-2 big-pad-y-2">
+                      <div class="col-10">
+                        <div class="d-flex align-items-center">
+                          <a routerLink="#" routerLinkActive="router-link-active" class="text-white"><i
+                              class="ft-arrow-left font-large-3 big-font"></i></a>
+                          <h4 class="modal-title text-left font-weight-bold w-100 py-3 text-capitale
+                         ml-2" id="modal-basic-title" style="font-size: 40px;">
+                            Select Combo Items</h4>
+                        </div>
+                      </div>
+                      <div class="col-2 text-center">
+                        <button type="button" class="close text-white font-large-2" aria-label="Close"
+                          (click)="modal.dismiss('Cross click')" style="font-size: 36px;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-body pt-0">
+                    <app-combo-details [product]="productComboItem.product" class="w-100" [locationId]="locationId"
+                      (valid)="validateProduct($event, productComboItem.product)">
+                    </app-combo-details>
+                  </div>
+                  <div class="modal-footer text-center d-block">
+                    <div class="button w-25 mx-auto">
+                      <button type="button" (click)="modal.close('Save click')"
+                        class="xt-kiosk-btn btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad">Apply</button>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-12 px-0 text-sm-left text-right">
+          <div class="w-100 text-right">
+            <div class="btn-group btn-lg rounded-pill bg-secondary text-center mx-auto" role="group" aria-label="...">
+              <button type="button" class="btn text-white text-bold-600 big-font font-medium-5"
+                (click)="removeClicked(productComboItem)" [disabled]="productComboItem.selected_quantity === 0">
+                <i class="fa fa-minus-circle font-weight-light" aria-hidden="true"></i>
+              </button>
+              <input type="text"
+                class="form-control text-center text-bold-600 w-50 font-medium-5 p-0 bg-secondary input-group-sm border-0 text-white"
+                [(ngModel)]="productComboItem.selected_quantity" aria-label="" aria-describedby="btnGroupAddon"
+                readonly>
+              <button type="button" class="btn text-white text-bold-600 big-font font-medium-5"
+                (click)="addClicked(productComboItem)"
+                [disabled]="productComboItem.quantity === productComboItem.selected_quantity"><i
+                  class="fa fa-plus-circle font-weight-light" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

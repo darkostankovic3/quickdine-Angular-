@@ -1,0 +1,74 @@
+<div class="row m-0 align-items-center justify-content-between bg-dark px-2 py-3 big-pad-y-2 position-relative">
+
+    <div class="col-2 text-left" *ngIf="settingService.getLogo() !== null">
+        <img [src]="settingService.getLogo()" class="my-thumbnail" alt="" style="height: 70px !important;">
+    </div>
+
+    <!--/.cols-->
+    <div class="col-12 d-flex justify-content-center position-absolute">
+        <h2 class="heading-color ml-2 font-large-2 text-bold-700 big-font">{{ 'Queue Number' | translate }}</h2>
+    </div>
+
+    <!--/.cols-->
+    <div class="col-2 text-right" *ngIf="settingService.getLogo2() !== null">
+        <img [src]="settingService.getLogo2()" class="my-thumbnail" alt="" style="height: 70px !important;">
+    </div>
+</div>
+
+
+<div class="main-que" *ngIf="queueList">
+    <div class="row ">
+        <div class="col-md-6 col-lg-6 px-0 white-bg " *ngFor="let queue of queueList; let i = index"
+            [class.bg-white]="i%4 == 0 || i%4 ==3">
+            <div class="queue-text py-2 pl-4 pr-4">
+                <p>
+                    <span class="span-text text-truncate mr-2">{{queue.brand}}</span>
+
+                    <span *ngFor="let number of queue.queue_numbers; let i = index"
+                        class="num float-right">{{number |number:'3.0-0'}}</span>
+
+
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="bg-dark py-2  w-100 scroll-wraaper">
+    <!-- <marquee behavior="scroll" direction="">
+        <div>
+            <div class="px-0" id="myslide" *ngFor="let queue of bottomQueueList" style="width: 200px;">
+                <div class="slide bg-white text-center py-3 p-2 d-flex flex-column justify-content-between ">
+                    <h4 class="font-weight-bold font-medium-3 pb-2">{{ queue.brand }}</h4>
+                    <h1 class="font-weight-bold my-0 heading-color display-4">{{ queue.queue }}</h1>
+                </div>
+            </div>
+        </div>
+
+
+    </marquee> -->
+
+    <div class="inner">
+        <div class="px-0" id="myslide" *ngFor="let queue of bottomQueueList" style="width: 200px;">
+            <div class="slide bg-white text-center py-3 p-2 d-flex flex-column justify-content-between ">
+                <h4 class="font-weight-bold font-medium-3 pb-2 text-truncate">{{ queue.brand }}</h4>
+                <h1 class="font-weight-bold my-0 heading-color display-4">{{ queue.queue |number:'3.0-0' }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--/.row-->
+
+<div class="last-sec chng-heading-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="heading-color text-center py-3 font-weight-bold">
+                    {{ 'Check your queue number and check to the counter if your number is missed' | translate }}
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="modal-header" *ngIf="menu">
+  <h4 class="modal-title font-weight-bold" [style.color]="settingService.getHeaderColor()">
+    {{ menu.product.display_label }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body px-0">
+  <div class="col-sm-12 card shadow-none">
+    <div class="row" *ngIf="portions && portions.length > 1">
+      <div class="col-12">
+        <div class="px-1">
+          <div class="row px-3 align-items-center first-drop">
+            <div class="col-sm-6 mb-2 text-sm-left text-center px-0">
+              <div class="row">
+                <div class="col-md-auto col-sm-6">
+                  <h5 class="font-weight-bold" [style.color]="settingService.getLabelColor()">
+                    {{ 'Portions' | translate }}
+                  </h5>
+                </div>
+                <div class="col-md-auto col-sm-6">
+                  <div class="btn-group btn-group-sm text-center mx-auto" role="group" aria-label="...">
+                    <button [disabled]="menu.selected_quantity === 1" (click)="decreaseQuantity()" type="button"
+                      class="btn text-icon"><i class="fa fa-minus font-weight-light"
+                        [style.color]="settingService.getAddButtonColor()" aria-hidden="true"></i></button>
+                    <input type="text" class="form-control text-center p-0 bg-light input-group-sm border-0"
+                      aria-label="" aria-describedby="btnGroupAddon" readonly
+                      [attr.placeholder]="menu.selected_quantity">
+                    <button type="button" class="btn text-icon" (click)="increaseQuantity()"><i
+                        class="fa fa-plus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+                        aria-hidden="true"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 text-center ">
+              <app-product-tag *ngIf="menu" [menu]="menu" [locationId]="locationId"
+                (validate)="validateProductTag($event, menu.product)" (tagsAdded)="tagsAdded($event)"></app-product-tag>
+            </div>
+            <div class="text-center"></div>
+          </div>
+          <span [style.color]="settingService.getLabelColor()">{{ 'Please select any one option' | translate }}</span>
+        </div>
+        <div class="d-flex py-1" *ngFor="let portion of portions">
+          <div class="col-8 px-1">
+            <p-radioButton [style.color]="settingService.getLabelColor()" class="xt-radio text-capitalize"
+              name="portions" [value]="portion"
+              label="{{ portion.display_label }} - {{ portion.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}"
+              [(ngModel)]="selectedPortion" inputId="{{ portion.id }}">
+            </p-radioButton>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row px-3 second-drop" *ngIf="selectedPortion && portions && portions.length == 1">
+      <div class=" col-sm-6 mb-2 text-sm-left text-center">
+        {{ selectedPortion.display_label }} -
+        {{ selectedPortion.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+
+        <div class="btn-group btn-group-sm text-center mx-auto" role="group" aria-label="...">
+          <button [disabled]="menu.selected_quantity === 1" (click)="decreaseQuantity()" type="button"
+            class="btn text-icon"><i class="fa fa-minus font-weight-light"
+              [style.color]="settingService.getAddButtonColor()" aria-hidden="true"></i></button>
+          <input type="text" class="form-control text-center p-0 bg-light input-group-sm border-0" aria-label=""
+            aria-describedby="btnGroupAddon" readonly [attr.placeholder]="menu.selected_quantity">
+          <button type="button" class="btn text-icon" (click)="increaseQuantity()"><i
+              class="fa fa-plus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+              aria-hidden="true"></i></button>
+        </div>
+
+      </div>
+      <div class="col-sm-2 text-center addon-drop">
+        <app-product-tag *ngIf="menu" [menu]="menu" [locationId]="locationId"
+          (validate)="validateProductTag($event, menu.product)" (tagsAdded)="tagsAdded($event)"></app-product-tag>
+      </div>
+
+    </div>
+    <div *ngIf="menu && menu.product.is_combo === true">
+      <app-combo-details [product]="menu.product" [locationId]="locationId" (valid)="comboValid($event)">
+      </app-combo-details>
+    </div>
+
+    <div *ngIf="selectedMenu && selectedMenu.upsell_items">
+      <div class="col-12 mt-2" *ngFor="let product of selectedMenu.upsell_items">
+        <div class="row middle-drop">
+          <div class="col-sm-6 mb-2 text-sm-left text-center">
+            <h4 class="text-bold-500" style="font-size:17px">{{ product.display_label }} |
+              {{ product.price_with_details.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+            </h4>
+          </div>
+          <div class="col-sm-2 text-center">
+            <app-product-tag [product]="product" [locationId]="locationId"
+              (validate)="validateProductTag($event, product)" (tagsAdded)="tagsAddedForUpsell($event, product)">
+            </app-product-tag>
+          </div>
+        </div>
+        <div class="row mt-3" *ngIf="product.is_combo === true">
+          <app-combo-details [product]="product" [locationId]="locationId" class="w-100"></app-combo-details>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button class="btn btn-lg px-5" [style.background-color]="settingService.getButtonColor()"
+        [style.color]="settingService.getLabel2Color()" (click)="addClicked()" [disabled]="!validate()">
+
+        <div [@buttonTextStateTrigger]="buttonTextState"
+          (@buttonTextStateTrigger.done)="buttonTextTransitioned($event)">
+          {{ buttonText }}
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

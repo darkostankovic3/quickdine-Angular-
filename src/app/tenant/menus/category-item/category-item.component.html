@@ -1,0 +1,66 @@
+<div class="row" (click)="isOpen = !isOpen;" style="background-color: #fff"
+  [attr.id]="(menu.parent_id === null ? 'main-menu-' : 'sub-menu-') + menu.id">
+  <div class="col-md-2 my-auto pl-0" [class.main-menu-handle]="menu.parent_id === null"
+    [class.submenu-menu-handle]="menu.parent_id !== null">
+    <app-file-upload (click)="$event.stopPropagation()" (filesAdded)="updloadImage($event)" [hideImages]="true"
+      [thumbnail]="menu.pic">
+    </app-file-upload>
+    <div class="ml-1" *ngIf="menu.pic !== null">
+      <button type="button" class="btn btn-sm btn-raised btn-danger" (click)="deleteMenuPic(menu.id)">Delete</button>
+    </div>
+  </div>
+  <div class="col-md-6 text-left my-auto" [class.main-menu-handle]="menu.parent_id === null"
+    [class.submenu-menu-handle]="menu.parent_id !== null">
+    <span (click)="$event.stopPropagation();editMode = !editMode">{{ menu.name }}</span>
+  </div>
+  <div class="col-md-4 my-auto text-right" [class.main-menu-handle]="menu.parent_id === null"
+    [class.submenu-menu-handle]="menu.parent_id !== null">
+
+    <div ngbDropdown class="d-inline-block my-auto" #myDrop="ngbDropdown" display="static-right"
+      placement="bottom-right" *ngIf="menu.parent_id === null">
+      <button class="btn btn-primary btn-fab my-auto mr-1" id="dropdownForm1" ngbDropdownToggle
+        (click)="$event.stopPropagation();"><i class="fa fa-edit"></i></button>
+      <div ngbDropdownMenu aria-labelledby="dropdownForm1" class="xt-dropdown">
+        <div class="xt-dropdown--menu--after" style="top: 0px;"></div>
+        <form class="px-4 py-3" style="width: 200px" [formGroup]="form" (ngSubmit)="onSubmit(form)">
+          <div class="form-group">
+            <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+              triggers="manual" appInvalidTooltip>
+          </div>
+          <button type="button" class="btn btn-primary btn-fab mt-1"
+            (click)="$event.stopPropagation(); onSubmit(form); myDrop.close()" [disabled]="form.invalid || loading">
+            {{ 'Save' | translate }}</button>
+        </form>
+
+      </div>
+    </div>
+
+    <button class="btn btn-danger btn-fab my-auto" type="button" (click)="$event.stopPropagation();delete()"><i
+        class="fa fa-trash"></i></button>
+  </div>
+</div>
+
+<div *ngIf="isOpen && menu.parent_id === null" dragula="SUBMENUS" [(dragulaModel)]="_menu.menus">
+  <div class="row" *ngFor="let subMenu of menu.menus">
+    <div class="col-md-12 pl-4 mt-2 mr-2 pr-4">
+      <app-category-item [products]="_products" [brandMenuId]="brandMenuId" [menu]="subMenu" [parentMenu]="menu">
+      </app-category-item>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="isOpen && menu.parent_id !== null">
+  <div class="col-md-12">
+    <app-submenu *ngIf="isOpen" [products]="_products" (cancel)="cancelSubmenu($event)" [brandMenuId]="brandMenuId"
+      [parentId]="menu.parent_id" [menu]="menu"></app-submenu>
+  </div>
+</div>
+
+<div class="row mt-1" *ngIf="isOpen && menu.parent_id === null">
+  <div class="col-md-12 pl-4 mt-2 mr-2 pr-4" [class.text-center]="!addSubmenuClicked">
+    <app-submenu [products]="_products" *ngIf="addSubmenuClicked" [brandMenuId]="brandMenuId" [parentId]="menu.id"
+      (recordAdded)="subMenuAdded($event)" (cancel)="cancelSubmenu($event)"></app-submenu>
+    <button *ngIf="!addSubmenuClicked" type="button" class="btn btn-primary btn-fab mt-1"
+      (click)="addSubmenuClicked = !addSubmenuClicked"> {{ 'Add Items' | translate }}</button>
+  </div>
+</div>

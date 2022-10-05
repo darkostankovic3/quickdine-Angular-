@@ -1,0 +1,8 @@
+<div *ngIf="cartService.cartMenus && cartService.cartMenus.length > 0"
+    class="position-fixed cart-popup" 
+    (click)="openConfirmModal()">
+
+    <div style='margin-left: 100px;'>
+		<a href="#" class="cart"><span class='counter' [innerHTML]="cartService.cartMenus.length"></span></a>
+	</div>
+</div>

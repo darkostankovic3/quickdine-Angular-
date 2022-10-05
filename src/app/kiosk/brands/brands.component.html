@@ -1,0 +1,80 @@
+<section>
+    <div class="container-fluid">
+        <app-header [url]="'kiosk/uuid/'+uuid+'/location/'+locationId+'/type'" [labelName]="'Tenant List'"></app-header>
+        <div class="category-data big-pad-y-1">
+            <!-- Only visible for screen below 768 -->
+            <div class="show-below-md hide-above-md fixed-bar">
+                <div class="row ">
+                    <div class="col-7 col-sm-8 d-flex flex-column justify-content-end ">
+                        <form [formGroup]="form" (ngSubmit)="search()">
+                            <div class="form-group input-group has-search">
+                                <span class="fa fa-search form-control-feedback font-medium-5 mt-1"></span>
+                                <input type="text" formControlName="search"
+                                    class="form-control border-0 bg-secondary  big-font-2 text-bold-500 font-medium-5 text-white search-input"
+                                    placeholder="Search..." aria-label="" aria-describedby="basic-addon1">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit">Go</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="col-5 col-sm-4">
+                        <app-cart-button [uuid]="uuid" [locationId]="locationId"></app-cart-button>
+
+                    </div>
+                    <div class="col-12">
+                        <ng-select class="show-below-md" [items]="menuService.categories" bindLabel="display_label"
+                            bindValue="id" (change)="categoryClicked($event)"></ng-select>
+                        <!-- <input type="text"
+                            class="form-control border-0 bg-secondary  big-font-2 text-bold-500 font-medium-5 text-white "
+                            placeholder="" aria-label="" aria-describedby="basic-addon1"
+                            style="border-radius: 0.7rem !important;border-bottom-right-radius: 0.7rem !important;"> -->
+                    </div>
+                </div>
+            </div>
+
+            <!--End - Only visible for screen below 768 -->
+            <div class="row padding-below-sm padding-below-md">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-12 overflow-hidden" *ngFor="let brandMenu of brandMenus"
+                            (click)="brandClicked(brandMenu)">
+                            <div class="t_brands card shadow-none overflow-hidden"
+                                style="background: transparent !important;border-radius: 1rem !important;">
+                                <div class="position-relative">
+                                    <!-- <img [attr.src]="brandMenu.pic" alt="" class="card-img-top" height="230px"> -->
+                                    <img [attr.src]="brandMenu.pic" alt="" class="card-img-top" height="230px">
+                                    <div class="my-badge">
+                                        <span class="badge">
+                                            <!-- <img [attr.src]="brandMenu.logo_pic" height="60px" width="60px" alt="" class="rounded-circle"> -->
+                                            <img [attr.src]="brandMenu.logo_pic" height="60px" width="60px" alt=""
+                                                class="rounded-circle" alt="">
+                                        </span>
+                                    </div>
+                                    <div class="d-flex date-wrap" [class.brand-is-active]="brandMenu.is_open !== true">
+                                        <p class=" block name text-left font-weight-bold"
+                                            *ngIf="brandMenu.is_open !== true">
+                                            {{ brandMenu.name }}
+                                        </p>
+                                        <p class="date text-left font-weight-bold" *ngIf="brandMenu.is_open !== true">
+                                            {{ brandMenu.open_time_label }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 show-above-md hide-below-md">
+                    <div class="position-fixed overflow-scroll right-sidebar">
+                        <app-search-category *ngIf="uuid && locationId" [uuid]="uuid" [locationId]="locationId"
+                            (searchProducts)="getBrandMenus($event)">
+                        </app-search-category>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

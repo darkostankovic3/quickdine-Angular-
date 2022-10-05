@@ -1,0 +1,60 @@
+@media (max-width: 400px) {
+  .question-text {
+    font-size: 20px;
+    text-align: left;
+    line-height: 25px;
+  }
+}
+#product-search-bar {
+  position: sticky;
+  top: 60px;
+}
+.item {
+  margin-right: 20px;
+  border: 1px solid #59c9d7;
+  padding: 3px 10px;
+  border-radius: 16px;
+  box-shadow: 1px 2px 3px gray;
+  display: inline-block;
+  background-color: #59c9d7;
+  color: #fff;
+  font-weight: 400;
+}
+.item span {
+  color: #fff;
+}
+.item:hover {
+  color: #59c9d7;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+.item:hover span {
+  color: #59c9d7;
+}
+.slider-image {
+  width: 25px;
+  height: 25px;
+}
+.scroll {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  overflow: auto;
+  white-space: nowrap;
+  text-align: center;
+}
+.item:focus {
+  color: #59c9d7;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+.item.active {
+  color: #59c9d7;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+.item.active span {
+  color: #59c9d7;
+}
+.bg-DDF8F7 {
+  background-color: #ddf8f7;
+}

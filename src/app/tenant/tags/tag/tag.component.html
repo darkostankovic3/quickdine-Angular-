@@ -1,0 +1,183 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-12">
+      <div class="card positoin-relative">
+        <app-spinner *ngIf="pageLoader"></app-spinner>
+        <div class=" card-header">
+          <h4 class="card-title">{{ "Tag Details" | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="recordId ? onUpdate() : onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ "Name" | translate
+                      }}<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip />
+                </div>
+                <div class="form-group">
+                  <label>{{ "Brand" | translate
+                      }}<span class="text-danger">*</span></label>
+                  <ng-select [items]="brands" bindValue="id" bindLabel="display_label" formControlName="brand_id"
+                    (click)="getProducts()">
+                  </ng-select>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>{{ "Minimum Select" | translate }}</label>
+                      <input type="text" class="form-control" formControlName="min_select" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>{{ "Maximum Select" | translate }}</label>
+                      <input type="text" class="form-control" formControlName="max_select" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p-checkbox formControlName="is_free_tag" binary="true" label="{{ 'Free Tagging' | translate }}">
+                      </p-checkbox>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p-checkbox formControlName="is_save_free_tag" binary="true"
+                        label="{{ 'Save Free Tag' | translate }}">
+                      </p-checkbox>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p-checkbox formControlName="is_add_tag_price_to_order" binary="true"
+                        label="{{ 'Add TagPrice To Order' | translate }}">
+                      </p-checkbox>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p-checkbox formControlName="is_tax_free" binary="true" label="{{ 'Tax Free' | translate }}">
+                      </p-checkbox>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tag Item -->
+                <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForTagItem()">
+                  {{ "Tags" | translate }}
+                </button>
+                <div formArrayName="tag_items">
+                  <div class="row align-items-center" *ngFor="
+                        let record of form.get('tag_items')['controls'];
+                        let i = index
+                      " [formGroupName]="i">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>{{ "Name" | translate }}</label>
+                        <input type="text" placeholder="Enter Name" class="form-control" formControlName="name"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>{{ "Product" | translate }}</label>
+                        <ng-select [items]="products" placeholder="Product" bindValue="id" bindLabel="display_label"
+                          formControlName="product_id">
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>{{ "Quantity" | translate }}</label>
+                        <input type="text" placeholder="Qty" class="form-control" formControlName="quantity"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>{{ "Price" | translate }}</label>
+                        <input type="text" placeholder="Price" class="form-control" formControlName="price"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deleteTagItems(i)">
+                        <i class="ft-trash-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tag Map -->
+                <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForTagMap()">
+                  {{ "Map" | translate }}
+                </button>
+                <div formArrayName="tag_maps">
+                  <div class="row align-items-center"
+                    *ngFor="let record of form.get('tag_maps')['controls'];let i = index" [formGroupName]="i">
+
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label>{{ "Category" | translate }}</label>
+                        <ng-select [items]="categories" placeholder="Category" bindValue="id" bindLabel="display_label"
+                          formControlName="category_id" (change)="getProductsForCategory(record, i)">
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label>{{ "Product" | translate }}</label>
+                        <ng-select [items]="tagMaps[i].products" placeholder="All Products" bindValue="id"
+                          bindLabel="display_label" formControlName="product_id">
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deleteTagMap(i)">
+                        <i class="ft-trash-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions right">
+                <button type="button" class="btn btn-raised btn-danger" routerLink="/tenant/tags">
+                  <i class="ft-x"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary ml-2"
+                  [disabled]="loading || form.invalid || form.value.tag_maps.length === 0">
+                  <i [class]="
+                        loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'
+                      "></i>
+                  {{ "Submit" | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

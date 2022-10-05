@@ -1,0 +1,129 @@
+    @import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+    .start-queue,
+    .main-que {
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .main-que {
+        margin-top: 0px;
+    }
+    
+    .queue-text p {
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .main-que .queue-text p {
+        margin: 0px;
+        font-size: 1.50rem;
+        font-weight: bold;
+        padding: 5px 0px;
+        font-family: 'Fjalla One', sans-serif;
+    }
+    
+    .main-que span.span-text {
+        width: 50%;
+        display: inline-block;
+    }
+    
+    .white-bg div:nth-child(even) {
+        background-color: #e3e3e3;
+    }
+    
+    .chng-bg:nth-child(odd) {
+        background-color: #e3e3e3;
+    }
+    
+    .chng-heading-bg {
+        background: #3a3a3a;
+    }
+    
+    .heading-color {
+        color: #d8b366;
+    }
+    
+    .queue-text span.num {
+        // padding-right: 15px;
+        padding-left: 15px;
+    }
+    
+    .chng-slider-bg {
+        background: #616161;
+    }
+    
+    .chng-slider-bg h4 {
+        font-size: 1rem;
+    }
+    
+    .chng-heading-bg[_ngcontent-cgn-c1] {
+        background: #3a3a3a;
+    }
+    
+    // .scroll-wraaper {padding: 10px 0; back}
+    .scroll-wraaper .slide {
+        min-height: 90px;
+        border-right: #525252 2px solid;
+        background: rgb(255, 255, 255);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    }
+    
+    // .scroll-wraaper [class*="col-"]:last-child .slide {
+    //     border-right: 0px
+    // }
+    .scroll-wraaper .slide h1,
+    .scroll-wraaper .slide h4 {
+        font-family: 'Fjalla One', sans-serif;
+    }
+    
+    .top-header {
+        height: 179px;
+    }
+    
+    @media (max-width:1024px) {
+        .main-que span.span-text {
+            width: 45%;
+        }
+    }
+    
+    @media (max-width:576px) {
+        .main-que span.span-text {
+            width: 100%;
+            display: block;
+            margin-bottom: 15px;
+        }
+    }
+    
+    .scroll-wraaper {
+        position: relative;
+        overflow-x: hidden;
+        white-space: nowrap;
+        height: 220px;
+    }
+    
+    #myslide {
+        display: inline-block;
+        z-index: 100;
+    }
+    
+    .inner {
+        position: absolute;
+        white-space: nowrap;
+        will-change: transform;
+        animation: marquee 25s linear infinite;
+        height: 90px;
+    }
+    
+    @keyframes marquee {
+        from {
+            transform: translateX(100vw);
+        }
+        to {
+            transform: translateX(-100%);
+        }
+    }
+    .my-thumbnail{
+        padding: 0.25rem;
+        max-width: 100%;
+        height: auto;
+    }

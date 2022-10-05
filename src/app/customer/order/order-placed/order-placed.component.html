@@ -1,0 +1,25 @@
+<div class="my-0 text-center">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text-bold-600 text-uppercase" [style.color]="settingService.getHeaderColor()">
+                    {{ 'Ticket Number' | translate }}: {{ ticketId }}</h4>
+                <h4 *ngIf="ticket" class="text-bold-600 text-uppercase" [style.color]="settingService.getHeaderColor()">
+                    {{ 'Total' | translate }}:
+                    {{ ticket.amount | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()  }}
+                </h4>
+            </div>
+        </div>
+        <div class="card-img-top py-3">
+            <img class="img-fluid" width="400" height="400" *ngIf="qrCode" src="data:image/png;base64,{{ qrCode }}">
+        </div>
+        <p *ngIf="status === 'Pending'" [style.color]="settingService.getLabelColor()">{{ 'Please scan at the Cashier to
+            accept the Order' | translate }}.</p>
+        <p *ngIf="status === 'Accept'" [style.color]="settingService.getLabelColor()">{{ 'Order Accepted' | translate }}
+        </p>
+        <p *ngIf="status === 'Deliver'" [style.color]="settingService.getLabelColor()">
+            {{ 'Order Delivered' | translate }}</p>
+        <p *ngIf="status === 'Reject'" [style.color]="settingService.getLabelColor()">{{ 'Order Rejected' | translate }}
+        </p>
+    </div>
+</div>

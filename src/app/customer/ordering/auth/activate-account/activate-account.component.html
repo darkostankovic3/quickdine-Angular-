@@ -1,0 +1,36 @@
+<!--Forgot Password Starts-->
+<section id="forgot-password">
+  <div class="container-fluid forgot-password-bg">
+    <div class="row full-height-vh m-0  d-flex align-items-center justify-content-center">
+      <div class="col-md-7 col-sm-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body fg-image">
+              <div class="row m-0">
+                <div class="col-lg-6 d-none d-lg-block text-center py-3">
+                  <img src="../../../../assets/img/gallery/forgot.png" alt="" class="img-fluid" width="300"
+                    height="230" />
+                </div>
+                <div class="col-lg-6 col-md-12 bg-white px-2 pt-5">
+                  <h4 class="card-title mb-2 text-center">Activating Your Account</h4>
+                  <p class="card-text mb-3" *ngIf="loading === false">
+                    Please try again.
+                  </p>
+
+                  <div class="fg-actions d-flex justify-content-center pt-4">
+                    <div class="login-btn">
+                      <button class="btn btn-outline-primary">
+                        <a class="text-decoration-none" (click)="onLogin()">Back To Login</a>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Forgot Password Ends-->

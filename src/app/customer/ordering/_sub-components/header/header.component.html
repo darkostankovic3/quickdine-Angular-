@@ -1,0 +1,31 @@
+<nav class="sticky-top">
+  <div class="order-head p-2">
+    <div class="container-fluid col-xl-9 col-lg-9">
+      <div class="row">
+        <div class="col-7 d-flex">
+          <div class="" *ngIf="settingService.getLogo() !== null">
+            <img [src]="settingService.getLogo()" class="img-thumbnail bg-white border-0" alt="Logo"
+              style="max-height: 48px;">
+          </div>
+          <div id="product-search-bar" class="w-100 d-flex align-items-center px-3">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-75">
+              <div class="input-group mb-0">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  (input)="onSubmit()"
+                  class="form-control"
+                  formControlName="search..."
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-5">
+          <app-top-bar-action [cartIcon]="cartIcon" ></app-top-bar-action>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>

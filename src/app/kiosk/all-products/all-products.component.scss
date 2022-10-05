@@ -1,0 +1,100 @@
+.right-sidebar {
+  height: 85vh;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+@media screen and(max-width:768px) {
+  .show-below-md {
+    display: block;
+  }
+}
+
+@media screen and(min-width:768px) {
+  .hide-above-md {
+    display: none;
+  }
+}
+
+@media screen and(min-width:767px) {
+  .show-above-md {
+    display: block;
+  }
+}
+
+@media screen and(max-width:767px) {
+  .hide-below-md {
+    display: none;
+  }
+  .show-below-md
+    .ng-select
+    .ng-select-container
+    .ng-value-container
+    .ng-input
+    > input {
+    background-color: gray;
+  }
+  .category-data {
+    position: relative;
+  }
+  .fixed-bar {
+    position: fixed;
+    z-index: 2;
+    background: #ffffff;
+    padding-right: 15px;
+    left: 0;
+    padding-left: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: -2px;
+  }
+  .padding-below-md {
+    padding-top: 135px;
+  }
+}
+.show-below-md .input-group-append button {
+  border-top-right-radius: 0.7rem;
+  border-bottom-right-radius: 0.7rem;
+}
+.show-below-md .search-input {
+  border-top-left-radius: 0.7rem;
+  border-bottom-left-radius: 0.7rem;
+}
+@media screen and(max-width:576px) {
+  .category-data {
+    margin-top: 70px !important;
+  }
+}
+
+@media screen and(max-width:576px) {
+  .padding-below-sm {
+    padding-top: 115px;
+  }
+}
+
+.show-below-md .ng-select .ng-clear-wrapper {
+  color: #ffffff !important;
+}
+.show-below-md .ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: #fff transparent transparent;
+  border-top-color: rgb(153, 153, 153);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+}

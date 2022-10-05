@@ -1,0 +1,7 @@
+<div class="welcome-text-container pb-3" *ngIf="cartService.cartMenus.length > 0">
+  <p class="text-container">
+    <span class="welcome-text ">
+      Added: {{ cartService.cartMenus[cartService.cartMenus.length-1].display_label }} </span> <span
+      class="semi_bold question-text">Would you like anything
+      else?</span></p>
+</div>

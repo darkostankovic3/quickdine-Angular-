@@ -1,0 +1,67 @@
+<div class="row" *ngIf="product">
+  <div class="col-12" *ngFor="let productCombo of product.product_combos">
+    <div class="px-1 py-2 text-center bg-dark">
+      <h5 class="font-weight-bold mb-0" style="font-size: 15px;" [style.color]="settingService.getLabel2Color()">
+        {{ product.name }} | {{ productCombo.display_label }} |
+
+        <span [class.red]="productCombo.valid === false" style="font-size: 18px;" *ngIf="productCombo.minimum > 0"> Min:
+          {{ productCombo.minimum }}</span><span *ngIf="productCombo.minimum > 0"> | </span><span
+          style="font-size: 18px;">Max: {{ productCombo.maximum }} </span>
+
+      </h5>
+    </div>
+    <div class="p-2" *ngFor="let product of productCombo.product_combo_items; let i = index">
+      <div class="row px-2 align-items-center ">
+        <div class="col-sm-9 col-12 px-0" style="font-size: 13px;" [style.color]="settingService.getLabelColor()">
+          <div class="row last-drop">
+            <div class="col-sm-6 col-12 text-sm-left text-center xt-under-1">
+              <p-checkbox *ngIf="product.selected_quantity > 0" name="productcombo" value="product.product.id"
+                [(ngModel)]="product.auto_select" binary="true" (onChange)="validate()"></p-checkbox>
+
+              {{ product.product.display_label + ' ' + (product.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()) + ' (Max: '+product.quantity+')' }}
+            </div>
+            <div class="col-sm-6 col-12 text-center px-0 xt-under-2">
+              <div class="d-flex justify-content-center text-center">
+                <div [ngClass]="{'main-combo-drop' : product.auto_select === true && product.product.is_combo }"
+                  *ngIf="product.auto_select === true && product.selected_quantity > 0 && product.product.reload_tags === true">
+                  <app-product-tag [product]="product.product" [(quantity)]="product.selected_quantity"
+                    [locationId]="locationId" (validate)="validateProduct($event, product.product)"
+                    (tagsAdded)="tagsAdded($event, product.product)">
+                  </app-product-tag>
+                </div>
+                <div class="ml-2 xt-under-combo" *ngIf="product.auto_select === true && product.product.is_combo">
+                  <div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
+                    <button class="btn btn-raised btn-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle><i
+                        class="ft-arrow-down"></i></button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="px-3 border-0 combo-drop"
+                      style="width: 375px;margin-left: -21px;">
+                      <app-combo-details [product]="product.product" class="w-100" [locationId]="locationId"
+                        (valid)="validateProduct($event, product.product)">
+                      </app-combo-details>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-12 px-0 text-sm-left text-center">
+          <div class="btn-group btn-group-sm text-center mx-auto" role="group" aria-label="...">
+            <button type="button" class="btn text-icon" (click)="removeClicked(product)"
+              [disabled]="product.selected_quantity === 0">
+              <i class="fa fa-minus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+                aria-hidden="true"></i>
+            </button>
+            <input type="text" class="form-control text-center p-0 bg-light input-group-sm border-0"
+              [attr.placeholder]="product.selected_quantity" aria-label="" aria-describedby="btnGroupAddon" readonly>
+            <button type="button" class="btn text-icon" (click)="addClicked(product)"
+              [disabled]="product.quantity === product.selected_quantity"><i class="fa fa-plus font-weight-light"
+                [style.color]="settingService.getAddButtonColor()" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

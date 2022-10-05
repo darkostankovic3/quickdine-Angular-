@@ -1,0 +1,84 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <div class="card position-relative">
+        <app-spinner *ngIf="pageLoader"></app-spinner>
+        <div class="card-header">
+          <h4 class="card-title">{{ 'Sync Settings' | translate }} <span style="color: green !important;"
+              *ngIf="cronStatus === 'Started' || cronStatus === 'Initiated'">(Syncing in
+              Progress)</span>
+            <span style="color: green !important;" *ngIf="cronStatus === 'Completed'">(Syncing Completed)</span>
+            <span style="color: red !important;" *ngIf="cronStatus === 'Error'">(Syncing Error)</span>
+          </h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Tenancy Name' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Group Code' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="group_name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Tenant Id' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="tenant_id" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'URL' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="url" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Username' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="username" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Password' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="password" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+
+              <div class="form-actions right">
+                <button *ngIf="sync && sync.id" class="btn btn-raised btn-secondary mr-2" (click)="resyncClicked()"
+                  type="button" [disabled]="loading">{{ 'Resync' | translate }}</button>
+                <button type="submit" class="btn btn-raised btn-primary" [disabled]="loading || form.invalid">
+                  <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                  {{ 'Submit' | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

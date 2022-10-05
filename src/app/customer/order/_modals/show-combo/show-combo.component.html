@@ -1,0 +1,54 @@
+<div class="modal-header" *ngIf="product">
+  <h4 class="modal-title font-weight-bold" [style.color]="settingService.getHeaderColor()">{{ product.name }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body px-0">
+  <div class="col-sm-12 card shadow-none">
+    <div class="row" *ngIf="product.product_combos">
+      <div class="col-12" *ngFor="let productCombo of product.product_combos">
+        <div class="px-1 py-2 text-center bg-dark">
+          <h5 class="font-weight-bold mb-0" [style.color]="settingService.getLabel2Color()"
+            [innerHTML]="productCombo.combo_name"></h5>
+        </div>
+        <div class="ui-g-12 px-2" *ngFor="let product of productCombo.product_combo_items; let i = index">
+          <p-radioButton [style.color]="settingService.getLabelColor()" class="xt-radio text-capitalize"
+            name="{{ 'product_combo' + productCombo.id }}" [value]="product.id"
+            label="{{ product.product.name }} - {{ product.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}"
+            inputId="{{ product.id }}" [(ngModel)]="productCombo.selected">
+          </p-radioButton>
+          <div class="mt-3 mr-1 ml-1" [hidden]="productCombo.selected !== product.id">
+            <app-product-tag [product]="product.product" (validate)="validateComboGroup($event, productCombo)"
+              (tagsAdded)="tagsAdded($event, product)">
+            </app-product-tag>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="addOns && addOns.length > 0">
+      <div class="px-1 py-2 mb-2 text-center bg-dark">
+        <h5 class="font-weight-bold mb-0" [style.color]="settingService.getLabel2Color()">{{ 'AddOns' | translate }}
+        </h5>
+      </div>
+      <div class="px-1" *ngFor="let addOn of addOns">
+        <h4 class="font-weight-bold text-capitalize" [style.color]="settingService.getLabelColor()">
+          {{ addOn.name }} <span *ngIf="addOn.type === 'Mandatory'">{{ '(Mandatory)' | translate }}</span>
+        </h4>
+        <app-add-on [locationId]="locationId" [uuid]="uuid" [menu]="menu" [addOn]="addOn"
+          (recordAdded)="addOnsSelected($event, addOn)">
+        </app-add-on>
+      </div>
+    </div>
+    <div class="text-center mt-3">
+      <button class="btn btn-lg px-5" [style.background-color]="settingService.getButtonColor()"
+        [style.color]="settingService.getLabel2Color()" (click)="addClicked()" [disabled]="!validate()">
+        <div [@buttonTextStateTrigger]="buttonTextState"
+          (@buttonTextStateTrigger.done)="buttonTextTransitioned($event)">
+          {{ buttonText }}
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

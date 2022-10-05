@@ -1,0 +1,32 @@
+<section>
+  <div class="container-fluid">
+
+    <app-header [url]="'kiosk/uuid/'+uuid+'/location/'+locationId+'/brands/'+brandMenuId+'/catalogue'"
+      [labelName]="parentName"></app-header>
+    <div class="category-data big-pad-y-1">
+      <div class="row">
+        <div class="col-9">
+          <div class="row">
+            <div class="col-12">
+              <div *ngFor="let brandMenu of brandMenus">
+                <div class="row" *ngFor="let _brandMenu of brandMenu.brand_menu_items">
+                  <div class="col-4" *ngFor="let record of _brandMenu.menu.menus">
+                    <app-product-card [showCategory]="false" [record]="record" [brandMenu]="_brandMenu"
+                      [locationId]="locationId" [uuid]="uuid"></app-product-card>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+        <div class="col-3">
+          <app-search-category *ngIf="uuid && locationId" [uuid]="uuid" [locationId]="locationId"
+            (searchProducts)="getProducts($event)"></app-search-category>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

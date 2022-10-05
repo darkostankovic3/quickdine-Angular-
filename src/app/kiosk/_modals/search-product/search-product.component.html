@@ -1,0 +1,121 @@
+<section
+  *ngIf="_form"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="getProducts(lastBodyParam)"
+>
+  <form [formGroup]="_form" (ngSubmit)="onSubmit()">
+    <div class="container-fluid">
+      <div class="navigation">
+        <div
+          class="row align-items-center bg-dark px-2 py-3 big-pad-y-2 screen-below-sm"
+        >
+          <div class="col-6 col-sm-9">
+            <div class="d-flex align-items-center">
+              <a class="text-white" (click)="activeModal.close()"
+                ><i class="ft-arrow-left font-large-3 big-font"></i
+              ></a>
+              <h2
+                class="ml-2 font-large-2 text-bold-700 text-white text-truncate big-font"
+              >
+                Search
+              </h2>
+            </div>
+          </div>
+          <div class="col-6 col-sm-3 text-center d-flex justify-content-end">
+            
+          <div class="text-center" *ngIf="settingService.getLogo() !== null">
+            <img [src]="settingService.getLogo()" class="my-thumbnail" alt="" style="height: 70px;">
+          </div>
+          <!--/.cols-->
+          <div class="text-center" *ngIf="settingService.getLogo2() !== null">
+            <img [src]="settingService.getLogo2()" class="my-thumbnail" alt="" style="height: 70px;">
+          </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="search-box py-3 big-pad-y-1">
+        <div class="row">
+          <div class="col-12">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                formControlName="search"
+                (input)="onSubmit()"
+                class="form-control font-large-2 text-bold-700 border-0 big-font-2"
+                style="background: transparent"
+                [attr.placeholder]="
+                  'Search' + (brand ? ' - ' + brand.display_label : '')
+                "
+              />
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  (click)="resetAndSubmit()"
+                  class="btn btn-outline-secondary font-large-2 text-bold-700 border-0 big-font-2"
+                  type="button"
+                >
+                  <i class="ft-x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="category-data big-pad-y-1">
+        <div class="row" *ngIf="loading == false && menus && menus.length == 0">
+          <div class="col-12 text-center no-product">
+            <img
+              src="http://localhost:4200/assets/img/EmptyCart.png"
+              class="img-fluid"
+            /><br />
+            <p
+              class="text-bold-bold font-medium-3 text-dark text-center big-font-3"
+            >
+              No product available for this search
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div
+                class="col-sm-6 col-lg-3 col-md-4"
+                *ngFor="let record of menus"
+              >
+                <app-product-card
+                  *ngIf="brandMenuId === null"
+                  [record]="record"
+                  (productSelected)="closeModal()"
+                  [brandLogo]="record.brand_menu_items[0].brand_menu.logo_pic"
+                  [locationId]="locationId"
+                  [uuid]="uuid"
+                >
+                </app-product-card>
+
+                <app-product-card
+                  (productSelected)="closeModal()"
+                  *ngIf="brandMenuId !== null"
+                  [record]="record"
+                  [locationId]="locationId"
+                  [uuid]="uuid"
+                  [showCategory]="false"
+                ></app-product-card>
+              </div>
+
+              <label *ngIf="loading" class="w-100 text-center my-5">
+                <!-- Please wait while we are fetching products -->
+                <!-- <img src="../assets/img/loading-product.gif" alt=""> -->
+                <div class="spinner-border text-dark" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

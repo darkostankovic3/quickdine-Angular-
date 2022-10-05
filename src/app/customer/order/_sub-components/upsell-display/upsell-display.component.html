@@ -1,0 +1,31 @@
+<div class="col-12" *ngFor="let product of upsells">
+  <div class="row justify-content-between">
+    <div class="col-12 w-mob1 pl-0 text-capitalize text-truncate" [style.color]="settingService.getLabelColor()">
+      <div class="row">
+        <div class="col-12">
+          <p class="text-bold-500 mb-0 text-truncate">{{ product.name }}
+            ({{ product.price_with_details.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+            Qty {{ quantity }}
+            <span class="text-right pull-right font-medium-1"
+              style="margin-right: 1px !important;">{{ product.display_price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}</span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="ml-2 mb-1">
+            <app-tag-display [tags]="product.selected_tags"></app-tag-display>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="ml-2 mb-1">
+            <app-product-combo-display [productCombos]="product.product_combos"></app-product-combo-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

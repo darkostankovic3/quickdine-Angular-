@@ -1,0 +1,13 @@
+<div class="brand-wrapper">
+  <app-header></app-header>
+  <div class="container-fluid col-xl-8 col-lg-8 home-root mb-5 pb-2">
+    <button type="button" class="btn menu-type-card-root" *ngFor="let brandMenu of brandMenus"
+      (click)="brandClicked(brandMenu)" [disabled]="!brandMenu.is_open" [ngClass]="{'inactive': !brandMenu.is_open}">
+      <span class="medium menu-type-text">{{ brandMenu.display_label }}</span>
+      <img [attr.src]="brandMenu.pic" class="img-responsive menu-image"></button>
+  </div>
+  <app-ordering-footer></app-ordering-footer>
+</div>
+<!--/.brand-wrapper-->
+
+<!--  -->

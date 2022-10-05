@@ -1,0 +1,15 @@
+<div class="brand-wrapper">
+  <app-header></app-header>
+
+  <div class="container-fluid col-xl-8 col-lg-8 home-root mb-5 pb-2">
+    <app-menu-notification></app-menu-notification>
+
+    <button type="button" class="btn menu-type-card-root" *ngFor="let brandMenuItem of brandMenuItems"
+      (click)="menuClicked(brandMenuItem)">
+      <span class="medium menu-type-text">{{ brandMenuItem.menu.display_label }}</span>
+      <img [attr.src]="brandMenuItem.menu.pic" class="img-responsive menu-image"></button>
+
+  </div>
+  <app-ordering-footer></app-ordering-footer>
+</div>
+<!--/.brand-wrapper-->

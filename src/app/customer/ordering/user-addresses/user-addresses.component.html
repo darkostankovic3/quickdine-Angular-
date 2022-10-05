@@ -1,0 +1,134 @@
+<div class="">
+  <app-header></app-header>
+
+  <div class=" container-fluid review-order-root py-3">
+    <p class="font-weight-normal header-text py-3">
+      Please select delivery address.
+    </p>
+    <div class="row justify-content-center">
+      <div class="w-100" [class.col-md-6]="contains">
+        <ul class="list-group">
+
+          <li class="list-group-item" *ngFor="let address of addressList">
+            <div class="row">
+              <div class="col-md-10 d-flex">
+                <p-radioButton name="user-addreess" value="{{address.id}}" [(ngModel)]="cartService.userAddress">
+                </p-radioButton>
+                <label for="{{address.id}}"
+                  style="display: inline !important; margin-left: 10px;">{{ address.address_line_1 + ' ' + address.address_line_2 + ' ' + address.city + ' ' + address.state + ' ' + address.pincode + ' ' + address.phone_number}}</label>
+              </div>
+              <div class="col-md-2">
+                <div class="pull-right mr-1">
+                  <a (click)="populate(address)"><i class="ft-edit font-medium-2 mr-2" ngbTooltip="Edit"
+                      container="body"></i></a>
+                  <a (click)="delete(address)"><i class="fa fa-trash-o font-medium-5" ngbTooltip="Delete"
+                      container="body"></i></a>
+                </div>
+
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <div class="card w-100 p-3 address-container" *ngIf="showForm">
+          <p class=" border-bottom w-100 text-left pb-2 text-info pt-2">Delivery Address</p>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div>
+              <div>
+                <div class="row">
+                  <div class="col-sm-3 col-6 pr-0">
+                    <label for=""><span class="hidden-on-sm">Country </span>Code</label>
+                    <ng-select [items]="countryList" bindLabel="calling_code" bindValue="calling_code"
+                      formControlName="country_code" placement="bottom" ngbTooltip="" triggers="manual"
+                      appInvalidTooltip class="side-scroll">
+                      <ng-template ng-label-tmp let-item="item">
+                        {{item.country}} (+{{item.calling_code}})
+
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item">
+                        {{item.country}} (+{{item.calling_code}})
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-9 col-6 pl-1">
+                    <div class="form-group">
+                      <label for="">{{ 'Phone Number' | translate }}</label>
+                      <input type="text" class="form-control mb-2" formControlName="phone_number" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="">{{ 'Address Line 1' | translate }}</label>
+                  <input type="text" class="form-control mb-2" formControlName="address_line_1" placement="bottom"
+                    ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </div>
+                <!-- <div class="form-group">
+                  <label for="">{{ 'Address Line 2' | translate }}</label>
+                  <input type="text" class="form-control mb-2" formControlName="address_line_2" placement="bottom"
+                    ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </div> -->
+
+
+                <div class="row">
+
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="">{{ 'Country' | translate }}</label>
+                      <ng-select [items]="countryList" formControlName="country" placement="bottom" ngbTooltip=""
+                        bindLabel="country" bindValue="country" triggers="manual" appInvalidTooltip>
+                      </ng-select>
+                      <!-- <input type="text" class="form-control mb-2" formControlName="country" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip> -->
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="">{{ 'State' | translate }}</label>
+                      <input type="text" class="form-control mb-2" formControlName="state" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="">{{ 'City' | translate }}</label>
+                      <input type="text" class="form-control mb-2" formControlName="city" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="">{{ 'Postal Code' | translate }}</label>
+                      <input type="text" class="form-control mb-2" formControlName="pincode" placement="bottom"
+                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="btn btn-info btn-raised pull-right"
+                [disabled]="loading || form.invalid">Save</button>
+              <button type="button" class="btn btn-danger btn-raised pull-right mr-1" (click)="showForm = !showForm"
+                [disabled]="loading">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <button type="button" class="btn btn-info btn-raised mt-2" *ngIf="!showForm"
+            (click)="showForm = !showForm">Add
+            more
+            address</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

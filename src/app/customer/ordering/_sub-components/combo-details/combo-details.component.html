@@ -1,0 +1,123 @@
+<div class="row combo-new-design">
+  <div class="col-12" *ngFor="let productCombo of product.product_combos">
+    <div class=" py-2 text-left combo-heading rounded">
+      <p class="prodhead text-dark font-weight-bold mb-0 bgr-info p-2 rounded"
+        [style.color]="settingService.getLabel2Color()">
+        {{ product.display_label }} | {{ productCombo.display_label }} |
+        <span [class.darkred]="productCombo.valid === false" *ngIf="productCombo.minimum > 0"> Min:
+          {{ productCombo.minimum }}</span><span *ngIf="productCombo.minimum > 0"> | </span><span>Max:
+          {{ productCombo.maximum }} </span>
+      </p>
+    </div>
+    <div class="p-2" *ngFor="let productComboItem of productCombo.product_combo_items; let i = index">
+      <div class="productocomboitems">
+        <div class="row px-2 d-flex justify-content-center align-items-center">
+          <div class="col-sm-12 col-12 px-0" style="font-size: 13px;" [style.color]="settingService.getLabelColor()">
+            <div class="row last-drop">
+              <div class=" chkeckbox col-sm-12 col-12 text-sm-left text-center xt-under-1">
+                <span class="chkbox">
+                  <p-checkbox name="productcombo" *ngIf="productComboItem.selected_quantity > 0"
+                    value="productComboItem.product.id" [(ngModel)]="productComboItem.auto_select" binary="true"
+                    (onChange)="validate()"></p-checkbox>
+                </span>
+                <span class="txt">
+                  <p>
+                    {{ productComboItem.product.display_label + ' ' + (productComboItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()) + ' (Max: '+productComboItem.quantity+')' }}
+                  </p>
+                </span>
+              </div>
+
+              <div class="col-sm-12 col-12  px-0 xt-under-2">
+                <div class="w-100 text-center d-flex flex-wrap justify-content-center">
+                  <div
+                    [ngClass]="{'main-combo-drop' : productComboItem.auto_select === true && productComboItem.product.is_combo }"
+                    *ngIf="productComboItem.auto_select === true && productComboItem.selected_quantity > 0 && productComboItem.product.reload_tags === true">
+                    <app-tag [product]="productComboItem.product" [(quantity)]="productComboItem.selected_quantity"
+                      [isComboTag]=true [locationId]="locationId"
+                      (validate)="validateProduct($event, productComboItem.product)"
+                      (tagsAdded)="tagsAdded($event, productComboItem.product)">
+                    </app-tag>
+                  </div>
+
+                  <div class="pb-2" *ngIf="productComboItem.auto_select === true && productComboItem.product.is_combo">
+                    <button type="button btn-secondary" (click)="openModel(content)" class="add-button">
+                      <span class="add-button-icon mr-1"><i class="ft-edit"></i></span>
+                      <span class="add-button-text"> Combo</span>
+                    </button>
+
+                  </div>
+
+                  <ng-template #contentBk let-modal>
+                    <div class="modal-header d-block p-0 bg-dark text-white rounded-0">
+                      <div class="row align-items-center bg-dark px-4 py-2 big-pad-y-2">
+                        <div class="col-10">
+                          <div class="d-flex align-items-center">
+                            <a routerLink="#" routerLinkActive="router-link-active" class="text-white"><i
+                                class="ft-arrow-left font-large-3 big-font"></i></a>
+                            <h4 class="modal-title text-left font-weight-bold w-100 py-3 text-capitale
+                         ml-2" id="modal-basic-title" style="font-size: 40px;">
+                              Select Combo Items</h4>
+                          </div>
+                        </div>
+                        <div class="col-2 text-center">
+                          <button type="button" class="close text-white font-large-2" aria-label="Close"
+                            (click)="modal.dismiss('Cross click')" style="font-size: 36px;">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-body pt-0">
+                      <app-combo-details [product]="productComboItem.product" class="w-100" [locationId]="locationId"
+                        (valid)="validateProduct($event, productComboItem.product)">
+                      </app-combo-details>
+                    </div>
+                    <div class="modal-footer text-center d-block">
+                      <div class="button w-25 mx-auto">
+                        <button type="button" (click)="modal.close('Save click')"
+                          class="xt-kiosk-btn btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad">Apply</button>
+                      </div>
+                    </div>
+                  </ng-template>
+
+
+
+                  <ng-template #content let-modal>
+                    <div class="modal-header text-center d-flex justify-content-center align-item-center">
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times; </span>
+                      </button>
+                    </div>
+
+                    <div class="modal-body">
+                      <app-combo-details [product]="productComboItem.product" class="w-100" [locationId]="locationId"
+                        (valid)="validateProduct($event, productComboItem.product)">
+                      </app-combo-details>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-info  d-block w-100 text-white"
+                        style="color: #ffffff !important;" (click)="modal.close('Save click')">Add</button>
+
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-12 px-0 d-flex justify-content-center pb-2 text-sm-left text-center">
+
+            <div class="stepper-container">
+              <button class="minus" type="button" (click)="removeClicked(productComboItem)"
+                [disabled]="productComboItem.selected_quantity === 0">-</button>
+              <div class="stepper-text">{{ productComboItem.selected_quantity }}</div>
+              <button class="plus" type="button" (click)="addClicked(productComboItem)"
+                [disabled]="productComboItem.quantity === productComboItem.selected_quantity">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/.productocomboitems-->
+    </div>
+  </div>
+</div>

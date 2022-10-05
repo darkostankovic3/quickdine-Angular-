@@ -1,0 +1,18 @@
+<div class="brand-wrapper">
+  <div class="lacations-top">
+    <app-top-bar-action></app-top-bar-action>
+  </div>
+  
+  <div class="container-fluid col-xl-8 col-lg-8 home-root">
+    <div class="welcome-text-container pb-3" >
+      <p class="text-container">
+        <span class="welcome-text">Select The Location</span></p>
+    </div>
+
+    <button type="button" class="btn menu-type-card-root" *ngFor="let location of locations"
+      (click)="locationClicked(location.id)">
+      <span class="medium menu-type-text">{{ location.display_label }}</span>
+    </button>
+  </div>
+</div>
+<!--/.brand-wrapper-->

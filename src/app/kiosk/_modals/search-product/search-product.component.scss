@@ -1,0 +1,29 @@
+@media screen and (max-width: 576px) {
+  .screen-below-sm {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    h2,
+    i {
+      font-size: 16px !important;
+      margin-bottom: 0px;
+    }
+
+    img {
+      height: auto !important;
+      width: 70px;
+    }
+  }
+  .search-box .input-group input,
+  .search-box .input-group .input-group-append button {
+    font-size: 1rem !important;
+    line-height: 1.1rem !important;
+  }
+  .search-box {
+    padding-bottom: 2px !important;
+  }
+}
+.my-thumbnail {
+  padding: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}

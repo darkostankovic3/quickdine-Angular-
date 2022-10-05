@@ -1,0 +1,57 @@
+<div
+  class="brand-wrapper"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="getProducts(lastBodyParam)"
+>
+  <app-header></app-header>
+  <div class="container-fluid col-xl-9 col-lg-9 review-order-root py-4 mb-5">
+    <div class="scroll">
+      <a
+        class="item-list"
+        *ngFor="
+          let brandMenuItem of menuService.brandMenuItemList;
+          let i = index
+        "
+        (click)="menuClicked(brandMenuItem, i)"
+        [class.active]="selectedIndex == i || brandMenuItem.menu.id == menuId"
+        ><img
+          class="rounded-circle slider-image mr-1"
+          [attr.src]="brandMenuItem.menu.pic"
+          alt=""
+        />
+        <p class="mb-0" style="margin-top: 2px">{{
+          brandMenuItem.menu.display_label
+        }}</p>
+      </a>
+    </div>
+
+    <!-- <p class="text-container semi_bold question-text">Great, which items would you like ?</p> -->
+
+    <button
+      type="button"
+      class="btn menu-type-card-root bg-DDF8F7"
+      *ngFor="let subCategory of subCategories"
+      (click)="subCategoryClicked(subCategory.sub_category)"
+    >
+      <span class="medium menu-type-text">{{ subCategory.sub_category }}</span>
+    </button>
+    <div class="row">
+      <div class="col-lg-3 col-md-4" *ngFor="let menu of menus">
+        <app-product-card
+          [menu]="menu"
+        ></app-product-card>
+      </div>
+    </div>
+    
+  </div>
+
+  <label *ngIf="loading" class="w-100 text-center">
+    <!-- Please wait while we are fetching products -->
+    <div class="spinner-border text-dark" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </label>
+  <app-ordering-footer></app-ordering-footer>
+</div>

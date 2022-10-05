@@ -1,0 +1,14 @@
+<div class="container-fluid" *ngIf="locations">
+  <div class="row">
+    <div class="col-sm-6 col-xs-6 w-mob" *ngFor="let location of locations">
+      <a (click)="locationClicked(location)">
+        <div class="card" [style.background-color]="settingService.getMenuBackgroundColor()">
+          <div class="card-body">
+            <h4 class="card-title font-small-3 text-truncate" [style.color]="settingService.getLabelColor()">
+              {{ location.display_label }}</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

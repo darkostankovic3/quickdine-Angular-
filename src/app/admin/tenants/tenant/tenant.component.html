@@ -1,0 +1,74 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Tenant Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="(tenantId) ? onUpdate() : onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group">
+                  <label>Subdomain</label>
+                  <input type="text" class="form-control" formControlName="hostname" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group" *ngIf="tenantId === null">
+                  <label>User (Owner)</label>
+                  <ng-select [items]="users" bindLabel="name" bindValue="id" formControlName="user_id">
+                  </ng-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Status</label>
+                  <ng-select [items]="status" bindLabel="text" bindValue="id" formControlName="status">
+                  </ng-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Country</label>
+                  <ng-select [items]="countries" bindLabel="country" bindValue="id" formControlName="country_id">
+                  </ng-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Default Language</label>
+                  <ng-select [items]="languages" bindLabel="language" bindValue="symbol"
+                    formControlName="default_language">
+                  </ng-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Languages</label>
+                  <ng-select multiple="true" [items]="languages" bindLabel="language" bindValue="symbol"
+                    formControlName="languages" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                  </ng-select>
+                </div>
+
+              </div>
+              <div class="form-actions right">
+                <button type="submit" class="btn btn-raised btn-primary" [disabled]="loading || form.invalid">
+                  <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

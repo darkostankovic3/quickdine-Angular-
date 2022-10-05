@@ -1,0 +1,20 @@
+<div #wrapper class="wrapper" [dir]="languageService.getDirection()">
+  <div class="min-vh-100" [style.background-color]="settingService.getBodyBackgroundColor()">
+    <div class="position-relative" [style.background-color]="settingService.getLabelBackgroundColor()">
+      <div class="col-12 px-1 d-flex align-items-center justify-content-center">
+        <button class="btn btn-raised btn-warning mb-0 m-1" [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()"
+          [routerLink]="['/order/language']">{{ languageService.getLanguage() }} - <span
+            class="icon-note"></span></button>
+
+        <button class="btn btn-raised btn-warning mb-0 m-1" [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()" [routerLink]="['/order/wizard']">
+          <span [innerHTML]="commonOrderService.orderPreference"></span> - <span class="icon-note"></span>
+        </button>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+
+  </div>
+
+</div>

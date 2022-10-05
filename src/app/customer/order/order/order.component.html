@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 mx-auto col-12 text-center mb-3">
+      <h1 class="mt-0 text-primary">Our Menu</h1>
+      <p class="lead">TEXT GOES HERE</p>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="cartMenus && cartMenus.length > 0">
+    <div class="col-12">
+      <table class="table table-responsive-md text-center">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let menu of cartMenus; let i = index">
+            <td><img class="media-object round-media"
+                [src]="(menu.pic !== null ? menu.pic : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg')"
+                style="height: 75px;" /></td>
+            <td>{{ menu.name }}</td>
+            <td>{{ menu.price }}</td>
+            <td>{{ menu.quantity }}</td>
+            <td>{{ menu.amount }}</td>
+            <td>
+              <a class="danger" data-original-title="" title="" (click)="removeFromCart(i)">
+                <i class="ft-trash font-medium-3"></i>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>Total</b></td>
+            <td><b>123</b></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary btn-raised" type="button" (click)="onSubmit()">Place Order</button>
+    </div>
+  </div>
+
+  <ngb-accordion #acc="ngbAccordion">
+    <ngb-panel *ngFor="let brandMenu of brandMenus; let i = index">
+      <ng-template ngbPanelTitle>
+        <span>{{ brandMenu.name }}</span>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row" *ngFor="let brandMenuItem of brandMenu.brand_menu_items">
+          <div class="col-12">
+            <h3>{{ brandMenuItem.menu.name }}</h3>
+          </div>
+          <div class="card-columns">
+            <div class="card card-body" *ngFor="let menu of brandMenuItem.menu.menus">
+              <img
+                [src]="(menu.pic !== null ? menu.pic : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg')"
+                height="80" width="80" />
+              <span class=" float-right font-weight-bold">{{ menu.price }}</span>
+              <h6 class="text-truncate">{{ menu.name }}</h6>
+              <p class="small">Description goes here</p>
+              <button class="btn btn-primary btn-raised" type="button" (click)="addToCart(menu)">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+  <!-- <div *ngFor="let brandMenu of brandMenus; let i = index">
+
+  </div> -->
+</div>

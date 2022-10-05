@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <div class="card shadow position-relative">
+        <app-spinner *ngIf="pageLoader"></app-spinner>
+        <div class="card-header">
+          <h4 class="card-title">My Account</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-0">
+            <form class="form" [formGroup]="profileForm" (ngSubmit)="onUpdate(profileForm)">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group">
+                  <label>E-mail</label>
+                  <input type="email" class="form-control" formControlName="email" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" id="change_password" type="checkbox" [checked]="changePassword"
+                      formControlName="change_password" (change)="changePassword = !changePassword">
+                    <label class="custom-control-label" for="change_password">Change Password</label>
+                  </div>
+                </div>
+
+                <div *ngIf="changePassword === true">
+                  <div class="form-group">
+                    <label>Old Password</label>
+                    <input type="password" class="form-control" formControlName="old_password" placement="bottom"
+                      ngbTooltip="" triggers="manual" appInvalidTooltip>
+                  </div>
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" class="form-control" formControlName="password" placement="bottom"
+                      ngbTooltip="" triggers="manual" appInvalidTooltip>
+                  </div>
+                  <div class="form-group">
+                    <label>Confirm New
+                      Password</label>
+                    <input type="password" class="form-control" formControlName="password_confirmation"
+                      placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-actions right">
+                <button type="submit" class="btn btn-raised btn-primary"
+                  [disabled]="formSubmitLoader || profileForm.invalid">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

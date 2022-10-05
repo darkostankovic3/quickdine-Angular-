@@ -1,0 +1,111 @@
+<div class="productcard">
+  <div
+    class="card shadow-none overflow-hidden"
+    [style.background-color]="cartService.getBackgroundKiosk(record)"
+    (click)="productClicked()"
+    [class.disable-click]="record.product.is_enable == false"
+  >
+    <div class="position-relative">
+      <img
+        [attr.src]="
+          record.pic
+            ? record.pic
+            : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg'
+        "
+        alt=""
+        class="card-img-top"
+        height="200px"
+        width="100px"
+      />
+      <div class="my-badge" [ngSwitch]="record.type">
+        <span
+          *ngFor="let _type of record.type"
+          class="badge rounded-circle"
+          style="background: #ffffff"
+        >
+          <img
+            *ngIf="_type == 'Hot'"
+            src="./../../../../assets/img/pages/hot-icon.png"
+            width="40px"
+            alt=""
+          />
+          <img
+            *ngIf="_type == 'GlutenFee'"
+            src="./../../../../assets/img/pages/gluten-free.png"
+            width="40px"
+            alt=""
+          />
+          <img
+            *ngIf="_type == 'Vegetarian'"
+            src="./../../../../assets/img/pages/vegan-icon-17.png"
+            width="40px"
+            alt=""
+          />
+          <img
+            *ngIf="_type == 'Vegan'"
+            src="./../../../../assets/img/pages/vegan-icon.png"
+            width="40px"
+            alt=""
+          />
+          <img
+            *ngIf="_type == 'Halal'"
+            src="./../../../../assets/img/pages/halal-icon.png"
+            width="40px"
+            alt=""
+          />
+          <img
+            *ngIf="_type == 'BestSeller'"
+            src="./../../../../assets/img/pages/best-seller.png"
+            width="40px"
+            alt=""
+          />
+        </span>
+      </div>
+      <div class="my-badge" style="left: 0 !important" *ngIf="brandLogo">
+        <img [attr.src]="brandLogo" alt="" height="75px" width="75px" />
+      </div>
+    </div>
+    <div class="card-body px-3">
+      <div class="card-head">
+        <p
+          class="
+            text-bold-bold
+            font-medium-1
+            text-dark text-center
+            big-font-2
+            text-truncate
+            mb-1
+          "
+          *ngIf="showCategory"
+        >
+          {{ record.brand.display_label }}
+        </p>
+        <p
+          class="
+            text-bold-bold
+            font-medium-1
+            text-dark text-center
+            big-font-2
+            ellipse
+          "
+          style="-webkit-box-orient: vertical; -moz-box-orient: vertical"
+        >
+          {{ record.product.display_label }}
+        </p>
+      </div>
+
+      <button
+        class="btn btn-lg btn-block text-bold-500 text-white big-font-2 big-pad"
+        style="background: #d8b366; border-radius: 0.7rem !important"
+      >
+        {{
+          record.product.product_portions[0].price
+            | currency
+              : settingService.getCurrency()
+              : settingService.getCurrencySymbol()
+              : settingService.getNumberOfDecimals()
+        }}
+      </button>
+    </div>
+  </div>
+</div>

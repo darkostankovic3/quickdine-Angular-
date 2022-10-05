@@ -1,0 +1,21 @@
+<app-order-action (back)="backClicked()" [uuid]="uuid" [locationId]="locationId">
+</app-order-action>
+<div class="container-fluid" *ngIf="brandMenu" [style.background-color]="settingService.getBodyBackgroundColor()">
+  <div class="row align-content-stretch flex-wrap">
+    <div class="col-sm-6 col-xs-6 w-mob" *ngFor="let record of brandMenu.brand_menu_items">
+      <a (click)="categoryClicked(record)">
+        <div class="card" [style.background-color]="settingService.getMenuBackgroundColor()">
+          <!-- <div class="price text-right">
+            <span class="bg-warning rounded price-fs px-1">From$14</span>
+          </div> -->
+          <img class="card-img-top img-thumb img-fluid" [src]="(record.menu.pic != null ? record.menu.pic : nullImage)"
+            alt="No Image">
+          <div class="card-body">
+            <h4 class="card-title font-small-3 text-truncate"><span
+                [style.color]="settingService.getLabelColor()">{{ record.menu.display_label }}</span> </h4>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

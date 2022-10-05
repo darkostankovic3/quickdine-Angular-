@@ -1,0 +1,11 @@
+@media screen and(max-width:576px) {
+  .hide-below-sm {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hide-below-md {
+    display: none;
+  }
+}

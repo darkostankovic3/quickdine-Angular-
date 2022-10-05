@@ -1,0 +1,11 @@
+<div class="row border bg-light" (click)="isOpen = !isOpen">
+  <div class="col-md-8 text-left my-auto">
+    {{ record.name }}
+  </div>
+  <div class="col-md-4 text-right my-auto p-1">
+    <button class="btn btn-danger btn-fab my-auto" type="button" (click)="$event.stopPropagation();delete()"><i
+        class="fa fa-trash"></i></button>
+  </div>
+</div>
+
+<app-add-on-type *ngIf="isOpen" [record]="record" [addOn]="addOn"></app-add-on-type>

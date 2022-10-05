@@ -1,0 +1,22 @@
+<fileDroppa [url]="url" [autoUpload]="true" [beforeRequest]="beforeRequest" [beforeFileUpload]="beforeFileUpload"
+  (fileUploaded)="fileUploaded($event)" (filesUpdated)="filesUpdated($event)" [showFilesList]="false"
+  class="xt-file-upload" [dropZoneTemplate]="getTemplate()">
+  <div class="xt-upload-photo" *ngIf="hideImages === false">
+    <div class="photo-establis-container" *ngFor="let attachment of attachments">
+      <div class="display-inline-block mr-2">
+        <div class="xt-establis-photo">
+          <img [src]="attachment.thumbnail">
+        </div>
+      </div>
+      <div class="display-inline-block">
+        <div class="xt-upload-img-link" [innerHTML]="attachment.name">
+        </div>
+        <div class="xt-uploade-complete">
+          Upload complete
+        </div>
+        <i class="fa fa-times xt-upload-close" aria-hidden="true" (click)="fileRemoved(attachment)"></i>
+      </div>
+    </div>
+  </div>
+
+</fileDroppa>

@@ -1,0 +1,37 @@
+<section style="background: #e6831e;" class="min-vh-100">
+  <div class="container-fluid">
+    <div class="pt-5 mx-auto text-center">
+      <div class="front-data position-relative">
+        <img src="../../../assets/img/kiosk-1.png" alt="" class="w-25 img-fluid">
+        <div class="content screen-below-md screen-below-sm">
+          <h2 class="text-uppercase text-bold-600 font-large-2 big-font "
+            style="color: #e6831e;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">Thank <br>You
+          </h2>
+        </div>
+      </div>
+      <div class="data-text py-5 mb-5">
+        <h2 class="text-bold-600 font-large-2 text-white big-font">{{'Payment'}}</h2>
+        <h2 class="text-bold-600 font-medium-5 text-white big-font-3">
+          {{'Pay At The Kiosk Via EDC Debit BCA Or Print Receipts To Be paid To The Cashier' | translate}}</h2>
+      </div>
+      <div class="data-action pb-5 w-100 mx-auto">
+        <div class="row justify-content-center">
+          <div class="col-sm-12 col-md-6 col-lg-4 d-flex flex-column">
+            <button type="button" *ngIf="settingService.getShowDebitPaymentButton() === 'Show'"
+              class="btn btn-lg bg-white text-uppercase btn-block big-font-2"
+              style="color: #e6831e;">{{'Pay By Debit' | translate}}</button>
+
+            <button type="button" (click)="placeOrder()" class="btn btn-lg bg-white text-uppercase btn-block big-font-2"
+              style="color: #e6831e;">{{'Pay At The Cashier' | translate}}</button>
+
+          </div>
+
+
+        </div>
+
+        <br>
+
+      </div>
+    </div>
+  </div>
+</section>

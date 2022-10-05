@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-10">
+    <form [formGroup]="primengTableService.form">
+      <div class="row">
+        <div class="col-9">
+          <div class="form-group border-bottom">
+            <input type="text" class="form-control no-border" placeholder="{{ 'Search' | translate }}"
+              formControlName="search" (input)="table.reset()" />
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group border-bottom" *ngIf="brands">
+            <ng-select placeholder="{{ 'Select Brand' | translate }}" [items]="brands" bindValue="id"
+              bindLabel="display_label" formControlName="brand_id" (change)="table.reset()"></ng-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-2 text-center">
+    <button class="btn btn-primary btn-sm btn-raised" routerLink="add">
+      {{ "Add New Tag" | translate }}
+    </button>
+  </div>
+</div>
+<p-table #myTable class="p-table" [columns]="primengTableService._allColumns" [value]="primengTableService.records"
+  [lazy]="true" (onLazyLoad)="primengTableService.datatable($event)" [paginator]="true"
+  [rows]="primengTableService.rows" [totalRecords]="primengTableService.totalRecords"
+  [loading]="primengTableService.loading" [resizableColumns]="true">
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col *ngFor="let col of columns" [style.width]="col.width ? col.width + 'px' : '500px'"
+        [class.prime-ng-table-no-display]="!col.selected || !col.display" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [pSortableColumn]="col.sortable === true ? col.field : null"
+        [class.prime-ng-table-no-display]="!col.selected || !col.display" pResizableColumn pReorderableColumn>
+        {{ col.header | translate }}
+
+        <p-sortIcon *ngIf="col.sortable === true" [field]="col.field" ariaLabel="Activate to sort"
+          ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+        </p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns" [class.prime-ng-table-no-display]="!col.selected || !col.display"
+        [ngSwitch]="col.field">
+        <span *ngSwitchCase="'brand'">
+          <span *ngIf="rowData.brand_id">{{ rowData.brand.display_label }}</span>
+        </span>
+
+        <span *ngSwitchCase="'action'">
+          <a class="primary" routerLink="{{ 'edit/' + rowData.id }}"><i class="ft-edit font-medium-2 mr-1"
+              ngbTooltip="Edit" container="body"></i></a>
+          <a class="red" (click)="delete(rowData)"><i class="ft-trash font-medium-2" ngbTooltip="Delete"
+              container="body"></i></a>
+        </span>
+
+        <span *ngSwitchDefault>
+          <span> {{ rowData[col.field] }} </span>
+        </span>
+        <span *ngSwitchCase="'name'">
+          <span>{{ rowData.display_label }}</span>
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

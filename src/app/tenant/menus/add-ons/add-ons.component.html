@@ -1,0 +1,9 @@
+<div class="col-md-12 col-lg-12 pl-0 pr-0" *ngIf="addOns" dragula="ADD-ONS" id="ADD-ONS" [(dragulaModel)]="addOns">
+  <div class="container border mt-2 bg-white" *ngFor="let addOn of addOns;" [attr.id]="addOn.id">
+    <div class="">
+      <app-add-on-item [brandMenuId]="brandMenuId" [record]="addOn" (recordDeleted)="deleteAddOn($event)">
+      </app-add-on-item>
+    </div>
+  </div>
+</div>
+<app-add-on [brandMenuId]="brandMenuId" (recordAdded)="addToAddOn($event)"></app-add-on>

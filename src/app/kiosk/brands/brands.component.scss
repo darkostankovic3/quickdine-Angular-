@@ -1,0 +1,133 @@
+.date-wrap {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  flex-direction: column;
+  align-content: flex-end;
+  justify-content: flex-end;
+  padding: 0 0 30px 30px;
+}
+
+.date-wrap p {
+  color: #000000;
+  padding: 0px;
+  display: block;
+  margin: 0px;
+}
+
+.t_brands .position-relative {
+  min-height: 200px;
+}
+.t_brands {
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.t_brands img.card-img-top {
+  position: relative;
+  z-index: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+.date-wrap-transparent {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background: transparent;
+  flex-direction: column;
+  align-content: flex-end;
+  justify-content: flex-end;
+  padding: 0 0 30px 30px;
+}
+
+.my-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.brand-is-active {
+  background: rgba(221, 221, 221, 0.9) !important;
+}
+
+.right-sidebar {
+  height: 85vh;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+@media screen and(max-width:768px) {
+  .show-below-md {
+    display: block;
+  }
+}
+
+@media screen and(min-width:768px) {
+  .hide-above-md {
+    display: none;
+  }
+}
+
+@media screen and(min-width:767px) {
+  .show-above-md {
+    display: block;
+  }
+}
+
+@media screen and(max-width:767px) {
+  .hide-below-md {
+    display: none;
+  }
+  .category-data {
+    position: relative;
+  }
+  .fixed-bar {
+    position: fixed;
+    z-index: 2;
+    background: #ffffff;
+    padding-right: 15px;
+    left: 0;
+    padding-left: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: -2px;
+  }
+  .padding-below-md {
+    padding-top: 135px;
+  }
+}
+.show-below-md .input-group-append button {
+  border-top-right-radius: 0.7rem;
+  border-bottom-right-radius: 0.7rem;
+}
+.show-below-md .search-input {
+  border-top-left-radius: 0.7rem;
+  border-bottom-left-radius: 0.7rem;
+}
+
+@media screen and(max-width:576px) {
+  .category-data {
+    margin-top: 70px !important;
+  }
+  .padding-below-sm {
+    padding-top: 115px;
+  }
+}

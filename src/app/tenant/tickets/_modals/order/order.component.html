@@ -1,0 +1,208 @@
+<div *ngIf="ticket">
+  <div class="modal-header">
+    <div class="col-10">
+      <h4 class="text-bold-600 text-uppercase text-center">
+        <!-- {{ "Total" | translate }}
+        <span>
+          {{
+            ticket.amount
+              | currency
+                : settingService.getCurrency()
+                : settingService.getCurrencySymbol()
+          }}
+        </span> -->
+
+        <span>{{ ticket.order_display_date }}</span>
+      </h4>
+    </div>
+    <div class="col-2 text-right">
+      <a class="ft-x font-large-1" (click)="activeModal.dismiss('Cross click')"></a>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div>
+      <h4 class="modal-title text-bold-700">Ticket - {{ ticket.id }} <span
+          *ngIf="ticket.order_preference != null">{{ ticket.order_preference }}</span></h4>
+
+      <div class="d-flex justify-content-between">
+        <span *ngIf="ticket.location_obj.delivery_partner"><b>
+          </b><span *ngIf="ticket.booking_table_id == null">{{ticket.location_obj.delivery_partner}}</span>
+        </span>
+        <span *ngIf="ticket.booking_table_id" class="mr-3">
+          <b>Table Name: </b>{{ticket.booking_table_name}}
+          <!-- <b>Table:</b>{{ticket.booking_table_id}} -->
+        </span>
+      </div>
+
+      <p *ngIf="ticket.delivery_address"><b>Delivery
+          Address: </b>
+        {{ticket.delivery_address.address_line_1}},{{ticket.delivery_address.address_line_2}},{{ticket.delivery_address.city}},
+        {{ticket.delivery_address.state}},{{ticket.delivery_address.pincode}},
+        {{ticket.delivery_address.country_code}}{{ticket.delivery_address.phone_number}}
+      </p>
+      <p *ngIf="ticket.delivery_status">
+        Delivery Status: <span>{{ticket.delivery_status}}</span>
+      </p>
+      <p *ngIf="ticket.delivery_driver_information">
+        Driver Name: <span>{{ticket.delivery_driver_information['name']}}</span><br>
+        Driver Contact: <span>{{ticket.delivery_driver_information['phone']}}</span><br>
+      </p>
+      <div *ngIf="ticket.user_obj">
+        <h5 class="modal-title text-bold-700">
+          Name : {{ ticket.user_obj.name }}
+        </h5>
+        <h5 class="modal-title text-bold-700">
+          Email : {{ ticket.user_obj.email }}
+        </h5>
+        <h5 class="modal-title text-bold-700">
+          Contact Number : {{ ticket.user_obj.phone_number }}
+        </h5>
+      </div>
+      <hr />
+    </div>
+
+    <div class="row mt-1">
+      <!-- Copy Code From Payment -->
+      <div class="col-12">
+        <div class="px-0" *ngFor="let order of ticket.orders; let i = index">
+          <div class="row justify-content-between">
+            <div class="col-7 pr-1">
+              <h4 class="text-bold-600 mb-0 text-truncate" style="font-size:15px">
+                {{ order.order_obj.product.display_label }} <br />({{
+                  order.order_obj.product.product_portions[0].display_label
+                }}
+                -
+                {{ order.order_obj.product.product_portions[0].price | currency: settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+                Qty {{ order.order_obj.selected_quantity }}
+              </h4>
+            </div>
+
+            <div class="col-5 ">
+              <div class="d-flex">
+                <div class="col text-right">
+                  <h5 class="text-bold-600 font-medium-1 text-capitalize">
+                    {{
+                      order.order_obj.display_price
+                        | currency
+                          : settingService.getCurrency()
+                          : settingService.getCurrencySymbol()
+                          : settingService.getNumberOfDecimals()
+                    }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Display Tags ANd Combos -->
+            <div class="col-12">
+              <div class="ml-2 mb-2">
+                <app-tag-display [tags]="order.order_obj.product.selected_tags"></app-tag-display>
+              </div>
+
+              <div class="ml-2 mb-2">
+                <app-product-combo-display [productCombos]="order.order_obj.product.product_combos">
+                </app-product-combo-display>
+              </div>
+
+              <div class="mb-2" *ngIf="order.order_obj.upsell_items.length > 0">
+                <hr class="my-0" />
+                <div class="pt-3">
+                  <div class="col-12">
+                    <div class="row">
+                      <!-- <div class="col-7 px-0"> -->
+                      <div class="col-12 px-0">
+                        <app-upsell-display [upsells]="order.order_obj.upsell_items"
+                          [quantity]="order.order_obj.selected_quantity"></app-upsell-display>
+                      </div>
+                      <div class="col-5 px-0">
+                        <!-- <div class="d-flex">
+                            <div class="col px-1 text-center">
+                              <h5 class="text-bold-600 font-medium-1 text-capitalize"
+                                [style.color]="settingService.getLabelColor()"
+                                [innerHTML]="menu.total_amount | currency:settingService.getCurrency():settingService.getCurrencySymbol()">
+                              </h5>
+                            </div>
+                            <div class="col-auto pl-1 pr-0 text-right">
+                              <i (click)="cartService.delete(i)" class="fa fa-trash-o font-medium-5"
+                                [style.color]="settingService.getLabelColor()" aria-hidden="true"></i>
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Order remark -->
+          <div *ngIf="order.remarks">
+            <p><span>Remark: </span>{{order.remarks}}</p>
+          </div>
+
+          <div class="col-sm-12 w-mob1">
+            <div class="total">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-6 text-right w-mob1"></div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+
+        <!-- Ticket Remark -->
+        <div *ngIf="ticket.remarks">
+          <p><span>Remark: </span>{{ticket.remarks}}</p>
+        </div>
+
+        <table class="table mt-5">
+          <tbody>
+            <tr>
+              <td>{{ "Sub Total" | translate }}</td>
+              <td class="text-right">
+                {{ ticket.sub_total | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+              </td>
+            </tr>
+            <tr *ngIf="ticket.delivery_charge">
+              <td>{{ "Delivery charges" | translate }}</td>
+              <td class="text-right">
+                {{ ticket.delivery_charge | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+              </td>
+            </tr>
+            <tr *ngIf="ticket.department_charge && ticket.department_charge.amount > 0">
+              <td>{{ ticket.department_charge.caption | translate }}</td>
+              <td class="text-right">
+                {{ ticket.department_charge.amount | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+              </td>
+            </tr>
+            <tr *ngIf="ticket.card_charges">
+              <td>{{ "Card Charge" | translate }}</td>
+              <td class="text-right">
+                {{ ticket.card_charges | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+              </td>
+            </tr>
+            <tr *ngFor="let tax of ticket.taxes">
+              <td>{{ tax.name }}</td>
+              <td class="text-right">
+                {{ tax.tax | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+              </td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th class="text-right">
+                {{
+                  (ticket.amount + ticket.delivery_charge + ticket.department_charge.amount + ticket.card_charges)
+                    | currency
+                      : settingService.getCurrency()
+                      : settingService.getCurrencySymbol()
+                      : settingService.getNumberOfDecimals()
+                }}
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- End Copy Code -->
+    </div>
+  </div>
+</div>

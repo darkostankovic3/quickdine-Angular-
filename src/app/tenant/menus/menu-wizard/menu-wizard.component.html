@@ -1,0 +1,135 @@
+<section id="ngx">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <form class="editForm" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <aw-wizard #wizard navBarLayout="large-empty-symbols">
+            <aw-wizard-step [stepTitle]="'Brand'"
+              [navigationSymbol]="{ symbol: '&#xf007;', fontFamily: 'FontAwesome' }">
+
+              <h4 class="head text-center">Please select brand in order to continue.</h4>
+              <br />
+              <div class='row'>
+                <div class='col-12'>
+                  <div class="row">
+                    <div class="col-12 col-sm-1">
+                      <app-file-upload (click)="$event.stopPropagation()" (filesAdded)="fileAdded($event)"
+                        [hideImages]="true">
+                      </app-file-upload>
+                    </div>
+                    <div class='col-12 col-sm-5'>
+                      <div class="form-group">
+                        <label class="form-control-label" for="firstname">Menu Name</label>
+                        <input class="form-control input-md" formControlName="name" type="text" placement="bottom"
+                          ngbTooltip="" triggers="manual" appInvalidTooltip>
+                      </div>
+                    </div>
+                    <div class='col-12 col-sm-6'>
+                      <div class="form-group">
+                        <label class="form-control-label" for="lastname">Brand</label>
+                        <ng-select [items]="brands" bindLabel="name" bindValue="id" formControlName="brand_id"
+                          (change)="getMenus()">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group text-center">
+                    <button type="button" uiSref="work" class="btn btn-info btn-raised"
+                      [disabled]="form.get('name').invalid || form.get('brand_id').invalid" awNextStep>
+                      Next
+                      <span style="margin-left:10px;">
+                        <i class="ft-chevron-right"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </aw-wizard-step>
+
+            <aw-wizard-step [stepTitle]="'Menu'" [navigationSymbol]="{ symbol: '&#xf0b1;', fontFamily: 'FontAwesome' }">
+              <h4 class="head text-center">What do you do?</h4>
+              <br />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class='col-12'>
+                      <div class="form-group">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                          <div class="ui-g-12">
+                            <p-radioButton name="type" *ngIf="brandMenus && brandMenus.length > 0"
+                              formControlName="type" value="CloneExistingMenu" label="Clone Existing Menu"
+                              inputId="type1" (click)="menuTypeChanged()">
+                            </p-radioButton>
+                          </div>
+                          <div class="ui-g-12">
+                            <p-radioButton name="type" formControlName="type" value="CreateNewMenu"
+                              label="Create a New Menu" inputId="type2" (click)="menuTypeChanged()">
+                            </p-radioButton>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group text-center space-20">
+                    <button uiSref="personal" type="button" class="btn btn-raised btn-secondary mr-1" awPreviousStep
+                      [disabled]="loading">
+                      <span style="margin-right:10px;">
+                        <i class="ft-chevron-left"></i>
+                      </span> Previous</button>
+                    <button uiSref="address" type="button" class="btn btn-raised btn-info"
+                      [disabled]="form.get('name').invalid || form.get('type').invalid || form.get('brand_id').invalid || loading"
+                      awNextStep>
+                      Next
+                      <span style="margin-left:10px;">
+                        <i class="ft-chevron-right"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </aw-wizard-step>
+
+            <aw-wizard-step [stepTitle]="'Final'"
+              [navigationSymbol]="{ symbol: '&#xf0ac;', fontFamily: 'FontAwesome' }">
+              <h4 class="head text-center">Final Step</h4>
+              <br />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class='col-6'>
+                      <div class="form-group">
+                        <ng-select *ngIf="form.value.type === 'CloneExistingMenu'" [items]="brandMenus" bindLabel="name"
+                          bindValue="id" formControlName="brand_menu" placeholder="Please select the menu to clone">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12" *ngIf="form.valid">
+                      Congrats you ready to create {{ form.value.name }} menu. Please click Finish to start. </div>
+                  </div>
+                  <div class="form-group text-center">
+                    <button uiSref="work" type="button" class="btn btn-raised btn-secondary mr-1" awPreviousStep
+                      [disabled]="loading">
+                      <span style="margin-right:10px;">
+                        <i class="ft-chevron-left"></i>
+                      </span> Previous</button>
+                    <button uiSref="result" type="submit" class="btn btn-raised btn-success"
+                      [disabled]="form.invalid || loading">
+                      Finish
+                      <span style="margin-left:10px;">
+                        <i class="ft-chevron-right"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </aw-wizard-step>
+          </aw-wizard>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

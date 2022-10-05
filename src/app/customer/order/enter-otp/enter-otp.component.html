@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="col-sm-10 mx-auto text-center py-5">
+    <div class="total-pay">
+      <div class="col text-center mb-3">
+        <h4 class="font-weight-bold text-uppercase" [style.color]="settingService.getHeaderColor()">
+          {{'enter details' | translate}}</h4>
+      </div>
+      <p class="text-dark">
+        Please enter your phone number so that you can receive the OTP.
+      </p>
+    </div>
+    <form *ngIf="isTableBooked === false" [formGroup]="form" (ngSubmit)="onSubmit(form)">
+      <div class="form-group w-75 mx-auto">
+        <input type="text" class="form-control py-3" formControlName="phone_number"
+          placeholder="{{'Enter your phone number with country code' | translate}}" [readonly]="disabledField">
+      </div>
+      <div class="form-group w-75 mx-auto" *ngIf="form.value.is_sent === true">
+        <input type="text" class="form-control py-3" formControlName="otp"
+          placeholder="{{'Enter your OTP' | translate}}">
+      </div>
+      <div class="col-12 px-3">
+      </div>
+      <div class="col-sm-4 px-3 mx-auto text-center">
+        <!-- <p class="mb-2">Didn't get the code? <span class="text-uppercase text-primary"><a>Resend code</a></span></p> -->
+        <button class="btn btn-block btn-lg px-4 py-1" *ngIf="form.value.is_sent === true" type="submit"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()">{{'Submit' | translate}}</button><br />
+        <button *ngIf="isOtpRequired !== true" class="btn btn-block btn-lg px-4 py-1" type="button"
+          [style.background-color]="settingService.getButtonColor()" [style.color]="settingService.getLabel2Color()"
+          (click)="skip()">{{'Skip' | translate}}</button><br />
+        <button *ngIf="form.value.phone_number !== null && !form.value.is_sent" class="btn btn-block btn-lg px-4 py-1"
+          (click)="generateOtp()" type="button" [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()">{{'Generate OTP' | translate}}</button>
+      </div>
+    </form>
+
+    <form *ngIf="isTableBooked === true" [formGroup]="otpForm" (ngSubmit)="onSubmit(otpForm)">
+
+      <div class="form-group w-75 mx-auto">
+        <input type="text" class="form-control py-3" formControlName="otp"
+          placeholder="{{'Enter your OTP' | translate}}">
+      </div>
+
+      <div class="col-sm-4 px-3 mx-auto text-center">
+        <button class="btn btn-block btn-lg px-4 py-1" type="submit"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()">{{'Submit' | translate}}</button><br />
+      </div>
+    </form>
+  </div>
+</div>

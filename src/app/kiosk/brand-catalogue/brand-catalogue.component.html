@@ -1,0 +1,43 @@
+<section>
+  <div class="container-fluid">
+    <app-header *ngIf="uuid && locationId && brandMenu" [url]="'kiosk/uuid/'+uuid+'/location/'+locationId+'/brands'"
+      [labelName]="brandMenu.brand_name"></app-header>
+    <div class="category-data big-pad-y-1">
+      <div class="row">
+        <div class="col-9">
+          <div class="row" *ngIf="brandMenu && brandMenu.brand_menu_items">
+            <div class="col-4" *ngFor="let brandMenuItem of brandMenu.brand_menu_items"
+              (click)="categoryClicked(brandMenuItem)">
+              <div class="card shadow-none overflow-hidden" style="background: transparent !important;">
+                <div class="position-relative">
+                  <img
+                    [attr.src]="brandMenuItem.menu.pic ? brandMenuItem.menu.pic : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg'"
+                    *ngIf="brandMenuItem.menu.pic !== null" alt="" class="card-img-top" height="200px" width="100px">
+                  <img
+                    [attr.src]="brandMenuItem.menu.pic_from_category ? brandMenuItem.menu.pic_from_category : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg'"
+                    *ngIf="brandMenuItem.menu.pic == null" alt="" class="card-img-top" height="200px" width="100px">
+                  <div class="my-badge">
+                    <span class="badge font-medium-1 text-bold-500 rounded-circle text-white big-font-4"
+                      style="padding: 35% 2%;background: #000;">Badge</span>
+                  </div>
+                </div>
+                <div class="card-body px-1">
+                  <p class="text-bold-500 font-medium-5 text-dark text-center big-font-2">{{ brandMenuItem.menu.name }}
+                  </p>
+                  <button
+                    class="btn btn-lg btn-block text-uppercase text-bold-500 font-medium-5 text-white big-font-2 big-pad"
+                    style="background: #d8b366;border-radius: 0.7rem !important;">Click
+                    ({{ brandMenuItem.menu.menus.length }})</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <app-search-category *ngIf="uuid && locationId" [uuid]="uuid" [locationId]="locationId">
+          </app-search-category>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

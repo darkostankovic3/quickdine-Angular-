@@ -1,0 +1,38 @@
+<section class="bgr-layer min-vh-100 position-relative"
+  [style.background-color]="getWelcomeImage() == null ? settingService.getBackgroundColor(): ''">
+  <img [src]="getWelcomeImage()" alt="" class="img-fluid img-responsive position-absolute back-layer">
+
+  <div class="min-vh-100" [class.overlay]="getWelcomeImage() !== null">
+    <div class="container-fluid">
+      <app-language-bar [uuid]="uuid" [locationId]="locationId"></app-language-bar>
+      <div class="pt-5 mx-auto text-center">
+        <div class="front-data position-relative">
+          <img src="../../../assets/img/kiosk-1.png" alt="" class="w-25 img-fluid">
+          <div class="content screen-below-md screen-below-sm">
+            <h2 class="text-uppercase text-bold-600 font-large-2 big-font"
+              style="color: #e6831e; font-family: sans-serif;">Hello</h2>
+          </div>
+        </div>
+        <div class="data-text py-5 mb-5">
+          <!-- <img [attr.src]="settingService.getLogo()" alt="" class="w-25 img-fluid"> -->
+          <h1 class="text-bold-600 font-large-1 text-white big-font-2" style="font-family: sans-serif;"
+            [innerHTML]="settingService.getCaption()"></h1>
+          <h2 class="text-uppercase text-bold-600 font-large-1 text-white big-font-2" style="font-family: sans-serif;">
+            {{'Self ordering kiosk'|translate}}
+          </h2>
+        </div>
+        <div class="data-action pb-5 mx-auto">
+          <div class="row justify-content-center">
+            <div class="col-sm-6 col-lg-4">
+              <button [routerLink]="['/kiosk/uuid/'+uuid+'/location/'+locationId+'/type']"
+                routerLinkActive="router-link-active" class="btn btn-lg bg-white text-uppercase btn-block big-font-2"
+                style="color: #e6831e; font-family: sans-serif;">{{ 'Start Ordering' | translate }}</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.overlay-->
+</section>

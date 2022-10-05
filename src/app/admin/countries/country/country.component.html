@@ -1,0 +1,42 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+    <div class="loading-icon">
+        <i class="fa fa-spinner spin font-medium-5"></i>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">{{ form.value.country }} Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="px-3">
+                        <form class="form" (ngSubmit)="(countryId) ? onUpdate() : onSubmit()" [formGroup]="form">
+                            <div class="form-body">
+
+                                <div class="form-group">
+                                    <label>Payment Methods</label>
+                                    <ng-select [multiple]="true" [items]="paymentMethods" bindLabel="text" bindValue="id" formControlName="payment_methods">
+                                    </ng-select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Delivery Partners</label>
+                                    <ng-select [multiple]="true" [items]="deliveryPartners" bindLabel="text" bindValue="id" formControlName="delivery_partners">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="submit" class="btn btn-raised btn-primary" [disabled]="loading || form.invalid">
+                  <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                  Submit
+                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

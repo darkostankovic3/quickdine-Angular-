@@ -1,0 +1,10 @@
+<button class="btn bg-color mb-0 m-1" [style.background-color]="settingService.getButtonColor()"
+  [style.color]="settingService.getLabel2Color()"
+  [routerLink]="['/ordering/'+uuid+'/languages']">  {{ languageService.getLanguage() }} - <span
+    class="icon-note"></span></button>
+
+<button class="btn bg-color mb-0 m-1" [style.color]="settingService.getLabel2Color()"
+  [routerLink]="['/ordering/'+uuid+'/wizard']">
+  
+  <span [innerHTML]="commonOrderService.orderPreference"></span> - <span class="icon-note"></span>
+</button>

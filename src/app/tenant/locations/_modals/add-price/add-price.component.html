@@ -1,0 +1,42 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-header border-0 justify-content-center">
+    <h4 class="modal-title font-weight-bold" id="modal-basic-title">{{ 'Enter' | translate }} <span
+        *ngIf="product">{{ product.name }}</span>
+      {{ 'Prices' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngIf="isNew === true">
+      <div class="col-12">
+        <div class="form-group">
+          <div class="form-group">
+            <label>{{ 'Select Product' | translate }}</label>
+            <ng-select bindLabel="name" bindValue="id" formControlName="product_id" [items]="products"
+              placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip (change)="productSelected()">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" formArrayName="portions">
+      <div class="col-12" *ngFor="let portion of form.get('portions')['controls']; let _i = index" [formGroupName]="_i">
+        <div class="col-6 pl-0">
+          <div class="form-group">
+            <label>{{ portion.value.name }}</label>
+            <input type="text" class="form-control" formControlName="price" placement="bottom" ngbTooltip=""
+              triggers="manual" appInvalidTooltip>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-raised btn-primary" [disabled]="loading || form.invalid">
+      <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+      {{ 'Submit' | translate }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,238 @@
+<section
+  class="orderyour-food min-vh-100 position-relative"
+  [style.background-color]="
+    getSecondImage() == null ? settingService.getBackgroundColor() : ''
+  "
+>
+  <img
+    [src]="getSecondImage()"
+    alt=""
+    class="img-fluid img-responsive position-absolute back-layer most-back"
+  />
+  <div class="" [class.overlay]="getSecondImage() !== null">
+    <div class="container-fluid">
+      <app-language-bar
+        [uuid]="uuid"
+        [locationId]="locationId"
+      ></app-language-bar>
+      <div class="pt-3 mx-auto">
+        <div class="row screen-below-md">
+          <div class="col-6 col-sm-8">
+            <h2
+              class="text-uppercase text-bold-600 font-large-1 text-light big-font-2"
+            >
+              {{ "Welcome To Kiosk" | translate }}
+              {{ settingService.getCaption() }}
+            </h2>
+            <h2
+              class="text-uppercase text-bold-600 font-large-1 text-light big-font-2"
+            >
+              {{ settingService.getSecondCaption() }}
+            </h2>
+
+            <!-- <h2 class="text-uppercase text-bold-700 font-large-2 text-white big-font">
+            {{'Order Your Food Here!'|translate}}</h2> -->
+          </div>
+          <div
+            class="col-6 col-sm-4 d-flex justify-content-end screen-below-sm logo"
+          >
+            <div class="" *ngIf="settingService.getLogo">
+              <div class="text-center">
+                <img
+                  src="{{ settingService.getLogo() }}"
+                  alt=""
+                  style="height: 70px"
+                  class="my-thumbnail"
+                />
+              </div>
+            </div>
+            <div class="" *ngIf="settingService.getLogo2">
+              <div class="text-center">
+                <img
+                  src="{{ settingService.getLogo2() }}"
+                  alt=""
+                  style="height: 70px"
+                  class="my-thumbnail"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+        <div class="col-12">
+          <div class="card" style="background :#000; border-radius: 1.5rem !important;">
+            <div class="card-body text-center">
+              <div class="action-text py-5 big-pad-top">
+                <h2 class="font-large-3 text-bold-700 text-uppercase text-white big-font">hot promo</h2>
+              </div>
+              <div class="action-button pb-3 big-pad-y-1">
+                <button
+                  class="btn btn-lg boredr border-white text-white text-uppercase text-bold-600 border-2 font-medium-5 big-font-2 big-pad"
+                  style="border-radius: 0.7rem !important;">Mulai Memesan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+        <div class="data-card py-5 big-pad-y-1">
+          <div class="row">
+            <div class="col-12 screen-below-md">
+              <h2
+                class="text-uppercase text-center text-bold-700 font-large-2 text-light big-font"
+              >
+                {{ "Order Your Food Here!" | translate }}
+              </h2>
+            </div>
+          </div>
+          <div class="row screen-below-sm">
+            <div class="col-md-12">
+              <div class="card" style="border-radius: 1.5rem !important">
+                <div
+                  class="card-inner"
+                  (click)="goToBestSellerProducts('HotPromotion')"
+                >
+                  <div
+                    class="card-body text-center position-relative p-0 card_b"
+                  >
+                    <img
+                      [src]="getHotPromoBackground()"
+                      alt=""
+                      class="img-fluid img-responsive position-absolute back-layer"
+                    />
+                    <!-- <img src="assest/img/gallery/food-bgr1.jpg" alt=""> -->
+                    <div class="black_overlay p-3">
+                      <div class="action-text py-5 big-pad-top card-cont">
+                        <h2
+                          class="font-large-2 text-bold-700 text-uppercase text-white big-font"
+                        >
+                          {{ "Hot Promo" | translate }}
+                        </h2>
+                      </div>
+                      <div class="action-button pb-3 big-pad-y-1 card-cont">
+                        <button
+                          class="btn btn-lg boredr border-white text-white text-uppercase text-bold-600 border-2 font-medium-5 big-font-2 big-pad"
+                          style="border-radius: 0.7rem !important"
+                          type="button"
+                        >
+                          {{ "Start Ordering" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/.card-inner-->
+              </div>
+              <!--/.card-->
+            </div>
+            <!--/.cols-->
+          </div>
+          <!--/.rows-->
+          <div class="row screen-below-sm">
+            <div class="col-md-6 d-flex justify-content-stretch">
+              <div class="card w-100" style="border-radius: 1.5rem !important">
+                <div class="card-inner" (click)="goToBrands()">
+                  <div class="card-body text-center position-relative h-100">
+                    <img
+                      [src]="getListTenantBackground()"
+                      alt=""
+                      class="img-fluid img-responsive position-absolute back-layer"
+                    />
+                    <div class="action-text py-5 big-pad-top card-cont">
+                      <h2
+                        class="font-large-2 text-bold-700 text-uppercase text-white big-font"
+                      >
+                        {{ "List Tenant" | translate }}
+                      </h2>
+                    </div>
+                    <div class="action-button pb-3 big-pad-y-1 card-cont">
+                      <button
+                        class="btn btn-lg boredr border-white text-white text-uppercase text-bold-600 border-2 font-medium-5 big-font-2 big-pad"
+                        style="border-radius: 0.7rem !important"
+                        (click)="goToBrands()"
+                        type="button"
+                      >
+                        {{ "Start Ordering" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.cols-->
+            <div class="col-md-6 d-flex justify-content-stretch">
+              <div class="card w-100" style="border-radius: 1.5rem !important">
+                <div class="card-inner" (click)="goToProducts()">
+                  <div class="card-body text-center position-relative h-100">
+                    <img
+                      [src]="getFindFoodBackground()"
+                      alt=""
+                      class="img-fluid img-responsive position-absolute back-layer"
+                    />
+                    <div class="action-text py-5 big-pad-top card-cont">
+                      <h2
+                        class="font-large-2 text-bold-700 text-uppercase text-white big-font"
+                      >
+                        {{ "Find Food" | translate }}
+                      </h2>
+                    </div>
+                    <div class="action-button pb-3 big-pad-y-1 card-cont">
+                      <button
+                        class="btn btn-lg boredr border-white text-white text-uppercase text-bold-600 border-2 font-medium-5 big-font-2 big-pad"
+                        style="border-radius: 0.7rem !important"
+                        (click)="goToProducts()"
+                        type="button"
+                      >
+                        {{ "Start Looking" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.cols-->
+          </div>
+          <!--/.row-->
+
+          <div class="row screen-below-sm">
+            <div class="col-md-12">
+              <div class="card" style="border-radius: 1.5rem !important">
+                <div
+                  class="card-inner"
+                  (click)="goToBestSellerProducts('BestSeller')"
+                >
+                  <div class="card-body text-center position-relative">
+                    <img
+                      [src]="getHotSellerBackground()"
+                      alt=""
+                      class="img-fluid img-responsive position-absolute back-layer"
+                    />
+                    <div class="action-text py-5 big-pad-top card-cont">
+                      <h2
+                        class="font-large-2 text-bold-700 text-uppercase text-white big-font"
+                      >
+                        {{ "Best Seller" | translate }}
+                      </h2>
+                    </div>
+                    <div class="action-button pb-3 big-pad-y-1 card-cont">
+                      <button
+                        class="btn btn-lg boredr border-white text-white text-uppercase text-bold-600 border-2 font-medium-5 big-font-2 big-pad"
+                        style="border-radius: 0.7rem !important"
+                        type="button"
+                        (click)="goToBestSellerProducts('BestSeller')"
+                      >
+                        {{ "Start Ordering" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.cols-->
+          </div>
+          <!--/.rows-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.over-->
+</section>

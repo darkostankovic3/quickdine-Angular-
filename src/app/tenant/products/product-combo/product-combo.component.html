@@ -1,0 +1,304 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">{{ "Product Combo Details" | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="recordId ? onUpdate() : onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ "Name" | translate }}</label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip />
+                </div>
+
+                <div class="form-group">
+                  <label>{{ "Category" | translate }}</label>
+                  <ng-select [items]="categories" bindValue="id" bindLabel="display_label"
+                    formControlName="category_id">
+                  </ng-select>
+                </div>
+
+                <div class="form-group">
+                  <label>{{ "Brand" | translate }}</label>
+                  <ng-select [items]="brands" bindValue="id" bindLabel="display_label" formControlName="brand_id"
+                    (change)="getProducts()" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                  </ng-select>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForPortion()">
+                  {{ "Add Portion" | translate }}
+                </button>
+                <div formArrayName="portions">
+                  <div class="row align-items-center" *ngFor="
+                      let record of form.get('portions')['controls'];
+                      let i = index
+                    " [formGroupName]="i">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>{{ "Name" | translate }}</label>
+                        <input type="text" placeholder="Enter Name" class="form-control" formControlName="name"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>{{ "Price" | translate }}</label>
+                        <input type="text" placeholder="Enter Price" class="form-control" formControlName="price"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>{{ "Tag" | translate }}</label>
+                        <input type="text" placeholder="Enter Tag" class="form-control" formControlName="tag"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deletePortion(i)">
+                        <i class="ft-trash-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForUpsell()">
+                  {{ "Add Up Sell" | translate }}
+                </button>
+                <div formArrayName="product_up_sells">
+                  <div class="row align-items-center" *ngFor="
+                      let record of form.get('product_up_sells')['controls'];
+                      let i = index
+                    " [formGroupName]="i">
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label>{{ "Product" | translate }}</label>
+                        <ng-select [items]="products" bindValue="id" bindLabel="display_label"
+                          formControlName="product_up_sell_id">
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label>{{ "Price" | translate }}</label>
+                        <input type="text" placeholder="Enter Price" class="form-control" formControlName="price"
+                          placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deleteUpSell(i)">
+                        <i class="ft-trash-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForCombo()">
+                  {{ "Add Combo Group" | translate }}
+                </button>
+
+                <div formArrayName="combos">
+                  <ngb-tabset>
+
+                    <ngb-tab *ngFor="let combo of form.get('combos')['controls']; let i = index" [formGroupName]="i">
+                      <ng-template ngbTabTitle><span
+                          *ngIf="combo.value.combo_name !== null">{{ combo.value.combo_name }}</span>
+                        <span *ngIf="combo.value.combo_name === null">Combo Group</span></ng-template>
+                      <ng-template ngbTabContent>
+                        <div class="row align-items-center">
+                          <div class="col-4">
+                            <div class="form-group">
+                              <label>{{ "Combo Name" | translate }}</label>
+                              <input type="text" class="form-control" formControlName="combo_name" placement="bottom"
+                                placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                            </div>
+                          </div>
+
+                          <div class="col-3">
+                            <div class="form-group">
+                              <label>{{ "Minimum" | translate }}</label>
+                              <input type="text" class="form-control" formControlName="minimum" placement="bottom"
+                                placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                            </div>
+                          </div>
+
+                          <div class="col-3">
+                            <div class="form-group">
+                              <label>{{ "Maximum" | translate }}</label>
+                              <input type="text" class="form-control" formControlName="maximum" placement="bottom"
+                                placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                            </div>
+                          </div>
+
+                          <div class="col-2">
+                            <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deleteCombo(i)">
+                              <i class="ft-trash-2"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div formArrayName="combo_items">
+                          <div class="row align-items-center"
+                            *ngFor="let record of combo.get('combo_items')['controls'];let _i = index"
+                            [formGroupName]="_i">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>{{ "Product" | translate }}</label>
+                                <ng-select [items]="products" bindValue="id" bindLabel="display_label"
+                                  formControlName="product_id" placement="bottom" ngbTooltip="" triggers="manual"
+                                  appInvalidTooltip>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>{{ "Price" | translate }}</label>
+                                <input type="text" placeholder="Enter Price" class="form-control"
+                                  formControlName="price" placement="bottom" ngbTooltip="" triggers="manual"
+                                  appInvalidTooltip />
+                              </div>
+                            </div>
+                            <div class="col-sm-1">
+                              <div class="form-group">
+                                <label>{{ "Count" | translate }}</label>
+                                <input type="text" placeholder="" class="form-control" formControlName="quantity"
+                                  placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group pt-3">
+                                <p-checkbox formControlName="auto_select" label="Auto Select" binary="true">
+                                </p-checkbox>
+                              </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <button class="btn btn-danger btn-raised mb-0" type="button"
+                                (click)="deleteComboItem(combo, _i)">
+                                <i class="ft-trash-2"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForComboItem(combo)">
+                          {{ "Add Combo Item" | translate }}
+                        </button>
+                      </ng-template>
+                    </ngb-tab>
+                  </ngb-tabset>
+                </div>
+
+
+
+                <!-- <div formArrayName="combos">
+                  <div class="border-bottom mt-2" *ngFor="let combo of form.get('combos')['controls']; let i = index"
+                    [formGroupName]="i">
+                    <div class="row align-items-center">
+                      <div class="col-4">
+                        <div class="form-group">
+                          <label>{{ "Combo Name" | translate }}</label>
+                          <input type="text" class="form-control" formControlName="combo_name" placement="bottom"
+                            placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                        </div>
+                      </div>
+
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label>{{ "Minimum" | translate }}</label>
+                          <input type="text" class="form-control" formControlName="minimum" placement="bottom"
+                            placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                        </div>
+                      </div>
+
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label>{{ "Maximum" | translate }}</label>
+                          <input type="text" class="form-control" formControlName="maximum" placement="bottom"
+                            placeholder="" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                        </div>
+                      </div>
+
+                      <div class="col-2">
+                        <button class="btn btn-danger btn-raised mb-0" type="button" (click)="deleteCombo(i)">
+                          <i class="ft-trash-2"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div formArrayName="combo_items">
+                      <div class="row align-items-center"
+                        *ngFor="let record of combo.get('combo_items')['controls'];let _i = index" [formGroupName]="_i">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <label>{{ "Product" | translate }}</label>
+                            <ng-select [items]="products" bindValue="id" bindLabel="name" formControlName="product_id"
+                              placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>{{ "Price" | translate }}</label>
+                            <input type="text" placeholder="Enter Price" class="form-control" formControlName="price"
+                              placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                          </div>
+                        </div>
+                        <div class="col-sm-1">
+                          <div class="form-group">
+                            <label>{{ "Count" | translate }}</label>
+                            <input type="text" placeholder="" class="form-control" formControlName="quantity"
+                              placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip />
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-group pt-3">
+                            <p-checkbox formControlName="auto_select" label="Auto Select" binary="true"></p-checkbox>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <button class="btn btn-danger btn-raised mb-0" type="button"
+                            (click)="deleteComboItem(combo, _i)">
+                            <i class="ft-trash-2"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-raised" (click)="addArrayForComboItem(combo)">
+                      {{ "Add Combo Item" | translate }}
+                    </button>
+                  </div>
+                </div> -->
+
+
+              </div>
+              <div class="form-actions right">
+                <button type="button" class="btn btn-raised btn-danger" routerLink="/tenant/products">
+                  <i class="ft-x"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary ml-2" [disabled]="loading || form.invalid">
+                  <i [class]="
+                      loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'
+                    "></i>
+                  {{ "Submit" | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

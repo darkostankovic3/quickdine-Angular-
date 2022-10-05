@@ -1,0 +1,35 @@
+<div class="card shadow-none" style="background: transparent !important;">
+  <app-cart-button [uuid]="uuid" [locationId]="locationId"></app-cart-button>
+  <p class="text-bold-500 font-medium-5 big-font-2" style="color: #d8b366;">
+    {{'Come On, Look For Food Or Tenant Menu Here'|translate}}</p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group big-pad-y-1">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+        </div>
+        <input type="text" formControlName="search"
+          class="form-control border-0 bg-secondary  big-font-2 text-bold-500 font-medium-5 text-white "
+          placeholder="Search..." aria-label="" aria-describedby="basic-addon1"
+          style="border-radius: 0.7rem !important;border-bottom-right-radius: 0.7rem !important;">
+        <button type="submit"
+          class="mt-2 btn btn-lg btn-block text-uppercase text-bold-500 font-medium-5 text-white big-font-2 big-pad"
+          style="background: #d8b366;border-radius: 0.7rem !important;">Search</button>
+      </div>
+    </div>
+  </form>
+  <div class="catg-filter mb-5 big-pad-y-1">
+    <h3 class="font-large-1 text-bold-600 text-dark big-font-2">Filter</h3>
+    <ul class="list-style">
+      <li class="font-medium-3 text-bold-500 big-font-3 big-pad-y-2" (click)="categoryClicked(null)">
+        <a [class.is-active]="menuService.categorySelected === null" class="text-dark xt-category">All Products</a>
+      </li>
+    </ul>
+    <ul class="list-style">
+      <li *ngFor="let category of menuService.categories" class="font-medium-3 text-bold-500 big-font-3 big-pad-y-2"
+        (click)="categoryClicked(category.id)">
+        <a [class.is-active]="menuService.categorySelected == category.id"
+          class="text-dark xt-category">{{category.display_label}}</a>
+      </li>
+    </ul>
+  </div>
+</div>

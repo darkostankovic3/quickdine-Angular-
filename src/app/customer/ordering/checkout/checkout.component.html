@@ -1,0 +1,300 @@
+<div class="brand-wrapper">
+  <app-header></app-header>
+  <div class="container-fluid col-xl-8 col-lg-8 review-order-root padding-on-sm py-3">
+    <div class="row">
+      <div class="col-sm-9">
+        <p class="font-weight-normal header-text py-3">
+          Review and modify your order here.
+        </p>
+      </div>
+      <div class="col-sm-3 my-auto">
+        <button (click)="addMore()" type="button" class="btn btn-info d-block text-center py-2 w-100"
+          style="color: #ffffff !important;">
+          Add More
+        </button>
+      </div>
+    </div>
+
+
+
+    <div *ngFor="let menu of cartService.cartMenus; let i = index">
+      <div class="menu-item-card-root">
+        <img [attr.src]="menu.pic" class="img-responsive item-image" alt="" />
+        <div class="item-content-container">
+          <div class="row">
+            <div class="col-sm-9">
+              <span class="medium font-weight-bold item-name">{{
+                menu.product.display_label
+                }}</span><br />
+              <span class="medium item-name">({{ menu.product.product_portions[0].display_label }} -
+                {{
+                menu.product.product_portions[0].price
+                | currency
+                : settingService.getCurrency()
+                : settingService.getCurrencySymbol()
+                : settingService.getNumberOfDecimals()
+                }})</span>
+            </div>
+            <div class="col-sm-3">
+              <div class="stepper-container float-sm-up" [hidden]="menu.can_delete === false">
+                <a class="minus" (click)="cartService.menuQuantityDecreased(menu)">
+                  -
+                </a>
+                <div class="stepper-text d-block" [innerHTML]="menu.selected_quantity"></div>
+                <a class="plus" (click)="cartService.menuQuantityIncreased(menu)">
+                  +
+                </a>
+
+                <div class="col-auto px-2 text-center d-block">
+                  <i (click)="cartService.delete(i)" class="fa fa-trash-o font-medium-5"
+                    [style.color]="settingService.getLabelColor()" aria-hidden="true"></i>
+                </div>
+              </div>
+              <br />
+
+            </div>
+            <div class="col-12">
+              <span class="float-right mr-1 medium font-weight-bold item-name">{{
+                menu.display_price
+                | currency
+                : settingService.getCurrency()
+                : settingService.getCurrencySymbol()
+                : settingService.getNumberOfDecimals()
+                }}</span>
+            </div>
+          </div>
+
+          <div class="ml-1">
+            <app-ordering-combo-display [productCombos]="menu.product.product_combos"></app-ordering-combo-display>
+          </div>
+
+          <div class="ml-1">
+            <app-ordering-tag-display [tags]="menu.product.selected_tags">
+            </app-ordering-tag-display>
+          </div>
+          <small *ngIf="menu.remarks" class="text-muted">Remark:{{menu.remarks}}</small>
+        </div>
+
+      </div>
+
+      <div class="menu-item-card-root" *ngFor="let upsell of menu.upsell_items">
+        <!-- <img [attr.src]="menu.pic" class="img-responsive item-image"> -->
+
+        <div class="item-content-container">
+          <div class="item-name-container">
+            <span class="medium font-weight-bold item-name">{{
+              upsell.display_label
+              }}</span><br />
+            <span class="medium font-weight-bold item-name">({{
+              upsell.price_with_details.price
+              | currency
+              : settingService.getCurrency()
+              : settingService.getCurrencySymbol()
+              : settingService.getNumberOfDecimals()
+              }}) Qty {{ menu.selected_quantity }}</span>
+
+            <span class="float-right mr-1 medium font-weight-bold item-name">{{
+              upsell.display_price
+              | currency
+              : settingService.getCurrency()
+              : settingService.getCurrencySymbol()
+              : settingService.getNumberOfDecimals()
+              }}</span>
+          </div>
+
+          <div class="ml-1">
+            <app-ordering-combo-display [productCombos]="upsell.product_combos"></app-ordering-combo-display>
+          </div>
+
+          <div class="ml-1">
+            <app-ordering-tag-display [tags]="upsell.selected_tags">
+            </app-ordering-tag-display>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!--/.menu-item-card-root-->
+
+    <!-- Remark -->
+    <div class="card p-2" *ngIf="settingService.getTicketRemark() =='Show'">
+      <textarea type="text" class="form-control" placeholder="Any Remark?" [(ngModel)]="cartService.remarks"></textarea>
+    </div>
+
+    <!-- Address start -->
+    <app-user-addresses
+      *ngIf="settingService.getLoginScreenPlacement() != 'Guest Checkout' && cartService.tableId == null && cartService.isDelivery == true">
+    </app-user-addresses>
+
+    <!-- Address End -->
+
+
+    <div class="monitory-card-details border p-3 bg-light">
+      <div class="row">
+        <!-- <div class="col-md-6">
+          <div class="form-group mb-0">
+            <input type="text" class="form-control coupon-code">
+          </div>
+        </div> -->
+        <!--/.cols-->
+        <!-- <div class="col-md-6">
+          <div class="form-group mb-0">
+            <button class="btn btn-outline-info align-center w-100 "> Apply </button>
+          </div>
+        </div> -->
+        <!--/.cols-->
+        <div class="col-md-12">
+          <div class="total d-flex py-2">
+            <span>{{ "Sub Total" | translate }}</span>
+            <span [innerHTML]="
+                cartService.getSubtotal()
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+
+        <!-- Delivery charges -->
+        <div class="col-md-12" *ngIf="cartService.deliveryCharge">
+          <div class="total d-flex border-top py-2" *ngIf="cartService.deliveryCharge >0">
+            <span>Delivery charges</span>
+            <span [innerHTML]="
+            cartService.deliveryCharge
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+
+        <!-- Department charges -->
+        <div class="col-md-12" *ngIf="cartService.departmentObj">
+          <div class="total d-flex border-top py-2" *ngIf="cartService.departmentCharge > 0">
+            <span>{{cartService.departmentObj.caption}} <br><span *ngIf="cartService.departmentTaxes">
+                <p *ngFor="let tax of cartService.departmentTaxes " style="font-size: 11px;
+                margin-bottom: 0px;
+                line-height: 14px;">{{tax.name}}({{tax.tax_percent}}%)</p>
+              </span> </span>
+            <span [innerHTML]="
+            cartService.departmentCharge
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngFor="let tax of cartService.taxes">
+          <div class="total d-flex border-top py-2">
+            <span>{{ tax.name }}</span>
+            <span [innerHTML]="
+                tax.tax
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+
+        <!-- Department charges -->
+        <div class="col-md-12" *ngIf="selectedType">
+          <div class="total d-flex border-top py-2" *ngIf="cardCharges > 0">
+            <span>Card Charges</span>
+            <span [innerHTML]="
+            cardCharges
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+
+
+
+        <!--/.cols-->
+        <div class="col-md-12">
+          <div class="total d-flex border-top py-2">
+            <span class="font-weight-bold">{{ "Total" | translate }}</span>
+            <span class="font-weight-bold" [innerHTML]="
+                (cartService.getTotal() + cartService.deliveryCharge + cartService.departmentCharge +this.cardCharges)
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              "></span>
+          </div>
+        </div>
+        <!--/.cols-->
+        <div class="col-md-12">
+          <div class="total d-flex border-top py-2">
+            <span>Please select card payment</span>
+          </div>
+        </div>
+        <!--/.cols-->
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <p-selectButton class="xt-payment" styleClass="payment-select" [options]="types"
+                [(ngModel)]="selectedType" (click)="getCardCharges()">
+              </p-selectButton>
+            </div>
+          </div>
+        </div>
+        <!--/.cols-->
+      </div>
+      <!--/.row-->
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="terms">
+          <p class="text-center my-3 py-3">
+            <small>
+              By proceeding you agree with
+              <a href="" class="text-info"> Terms of Use </a> and
+              <a href="" class="text-info"> Privacy Policy </a></small>
+          </p>
+        </div>
+        <!--/.terms-->
+      </div>
+
+      <div class="col-md-12">
+        <div class="row">
+          <!-- Cancel button -->
+          <div class="col-md-6">
+            <button (click)="cancelClicked()" type="button" class="btn btn-info d-block text-center py-2 w-100 mb-1"
+              style="color: #ffffff !important;" [disabled]="loading">
+              Clear
+            </button>
+          </div>
+
+          <!-- Checkout button -->
+          <div class="col-md-6" *ngIf="selectedType !== null">
+            <button (click)="placeOrder()" type="button" class="btn btn-info d-block text-center py-2 w-100"
+              style="color: #ffffff !important;" [disabled]="loading || !proceedNext()">
+              Continue Checkout
+            </button>
+          </div>
+
+          <div class="col-md-6" *ngIf="selectedType == null">
+            <button (click)="placeOrder()" type="button" class="btn btn-info d-block text-center py-2 w-100"
+            *ngIf="settingService.getPayAtCounter() != 'Hide'"
+              style="color: #ffffff !important;" [disabled]="loading || !proceedNext()">
+              Pay at counter
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/.rows-->
+    <!--/.container-fluid-->
+  </div>
+</div>

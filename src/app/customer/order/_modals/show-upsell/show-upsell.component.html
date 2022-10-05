@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h4 class="modal-title font-weight-bold" [style.color]="settingService.getHeaderColor()">Upselling Items (PLEASE SHARE
+    LABEL FOR THIS)</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-sm-12 my-0 pb-5 pt-2 px-0">
+    <div class="row"
+      *ngIf="menu && menu.product && menu.product.product_up_sells && menu.product.product_up_sells.length > 0">
+      <div class="col-md-3 col-sm-6 col-xs-6 w-mob mb-3" *ngFor="let upsell of menu.product.product_up_sells">
+        <a (click)="javascript;;">
+          <div class="card shadow overflow-hidden" [style.background-color]="settingService.getMenuBackgroundColor()">
+            <div class="card-body p-2">
+              <div class="px-0 row justify-content-between align-items-center">
+                <div class="col-12 p-1 pr-0 m-center">
+                  <h5 class="card-title font-small-3 text-truncate text-center"
+                    [style.color]="settingService.getLabelColor()">
+                    {{ upsell.product_up_sell_product.display_label }}</h5>
+                </div>
+                <div class="col-12 p-1 m-center">
+                  <h5 class="card-title font-small-3  m-center text-center"
+                    [style.color]="settingService.getLabelColor()">
+                    {{ upsell.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+                  </h5>
+                </div>
+              </div>
+              <div class="btn-group btn-group-sm w-100 text-center mx-auto px-1" role="group" aria-label="...">
+                <button type="button" class="btn" [style.color]="settingService.getAddButtonColor()"
+                  (click)="upsellProductSelected(upsell)">
+                  <i [@buttonTextStateTrigger]="buttonTextState"
+                    (@buttonTextStateTrigger.done)="buttonTextTransitioned($event)"
+                    class="fa fa-plus fa 2x font-weight-light font-medium-3" aria-hidden="true">{{ buttonText }}</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="actions">
+    <button type="button" (click)="cancelPressed()" class="btn btn-lg px-5"
+      [style.background-color]="settingService.getButtonColor()"
+      [style.color]="settingService.getLabel2Color()">Cancel</button>
+  </div>
+</div>

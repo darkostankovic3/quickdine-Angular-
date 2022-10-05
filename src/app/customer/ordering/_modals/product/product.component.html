@@ -1,0 +1,132 @@
+<ng-template #content let-modal>
+  <div class="modal-header text-center d-flex justify-content-center align-item-center">
+    <h5 class="modal-title font-weight-bold">Upsell</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times; </span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="col-sm-12 my-0  px-0">
+      <div class="row justify-content-center"
+        *ngIf="menu && menu.product && menu.product.product_up_sells && menu.product.product_up_sells.length > 0">
+        <div class="col-md-12">
+          <div class="row" *ngFor="let upsell of menu.product.product_up_sells">
+            <div class="col-md-12 col-sm-12 col-xs-12 w-mob mb-0 ">
+              <a (click)="javascript;">
+                <div class="card shadow p-3 overflow-hidden">
+                  <div class="card-body px-2 custom-card">
+                    <div class="px-0 row justify-content-between align-items-center">
+                      <div class="col-12 p-1 pr-0 m-center">
+                        <p class=" card-title  mb-0 font-weight-bold  text-truncate text-left text-dark">
+                          {{ upsell.product_up_sell_product.display_label }}</p>
+                      </div>
+                      <div class="col-6 p-1 m-center">
+                        <p class="mb-0 card-title m-center text-left item-price">
+                          {{ upsell.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+                        </p>
+                      </div>
+                      <div class="col-6  text-right d-flex justify-content-end">
+                        <button type="button" class="add-button"
+                          (click)="upsellProductSelected(upsell);modal.dismiss('Cross click')">
+                          <span class="add-button-text">Select</span>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info  d-block w-100 text-white" style="color: #ffffff !important;"
+      (click)="modal.dismiss('Cross click');cancelUpsell();">Cancel</button>
+
+  </div>
+</ng-template>
+
+<div *ngIf="menu" class="modal-header text-center d-flex flex-column justify-content-center align-item-center">
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <img [attr.src]="menu.pic" alt="" class="img-responsive mx-auto">
+
+</div>
+<div *ngIf="menu" class="modal-body">
+  <p class="font-weight-bold py-1">{{ menu.product.display_label }}</p>
+  <div class="tags d-flex flex-row justify-content-between align-items-center"
+    *ngFor="let portion of menu.product.product_portions">
+    <p-radioButton [style.color]="settingService.getLabelColor()" class="xt-radio text-capitalize" name="portions"
+      [value]="portion"
+      label="{{ portion.display_label }} - {{ portion.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}"
+      [(ngModel)]="selectedPortion" inputId="{{ portion.id }}">
+    </p-radioButton>
+  </div>
+  <div class="row">
+    <div class="col-sm-5 pt-3 text-left d-flex justify-content-start">
+      <app-tag [menu]="menu" [locationId]="locationId" (validate)="validateProductTag($event, menu.product)"
+        (tagsAdded)="tagsAdded($event)"></app-tag>
+    </div>
+    <div class="col-sm-7 text-right d-flex justify-content-end">
+      <div class="stepper-container py-4">
+        <a class="minus" [class.isDisabled]="menu.selected_quantity === 1" (click)="decreaseQuantity()">-</a>
+        <div class="stepper-text d-block">{{ menu.selected_quantity }}</div>
+        <a class="plus" (click)="increaseQuantity()">+</a>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <p class="font-weight-normal py-1"></p> -->
+
+  <p *ngIf="menu.product.display_description" class="py-2 text-dark font-weight-bold">
+    {{ menu.product.display_description }}</p>
+
+  <div *ngIf="menu && menu.product.is_combo === true">
+    <app-combo-details [product]="menu.product" [locationId]="locationId" (valid)="comboValid($event)">
+    </app-combo-details>
+  </div>
+
+  <div class="col-12">
+    <div class="row" *ngIf="selectedMenu && selectedMenu.upsell_items">
+      <div class="col-12 mt-2" *ngFor="let upsellProduct of selectedMenu.upsell_items">
+        <div class="row middle-drop">
+          <div class="col-sm-12 mb-2 text-sm-left text-center">
+            <p class="prodhead text-dark font-weight-bold mb-0 bgr-info p-2 rounded">{{ upsellProduct.display_label }} |
+              {{ upsellProduct.price_with_details.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+            </p>
+          </div>
+          <div class="col-sm-12 text-center">
+            <app-tag [product]="upsellProduct" [locationId]="locationId"
+              (validate)="validateProductTag($event, upsellProduct)"
+              (tagsAdded)="tagsAddedForUpsell($event, upsellProduct)">
+            </app-tag>
+          </div>
+        </div>
+        <div class="row mt-3" *ngIf="upsellProduct.is_combo === true">
+          <app-combo-details [product]="upsellProduct" [locationId]="locationId" class="w-100">
+          </app-combo-details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remark -->
+  <textarea *ngIf="settingService.getItemRemark() =='Show' && menu" type="text" class="form-control"
+    placeholder="Add Remark" [(ngModel)]="menu.remarks"></textarea>
+
+</div>
+<!-- Modal footer -->
+<div *ngIf="menu" class="modal-footer">
+  <button type="button" class="btn btn-info  d-block w-100 text-white" style="color: #ffffff !important;"
+    (click)="addOrder()" [disabled]="!validate()">Add to
+    Order</button>
+
+</div>

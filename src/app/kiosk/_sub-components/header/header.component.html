@@ -1,0 +1,29 @@
+<div class="navigation">
+  <div class="top-navigate">
+
+
+    <app-language-bar [uuid]="uuid" [locationId]="locationId"></app-language-bar>
+    <div class="row align-items-center bg-dark px-2 py-3 big-pad-y-2 screen-below-sm">
+      <div class="col-6 col-sm-8">
+        <div class="d-flex align-items-center ">
+          <a class="text-white" (click)="backClicked()"><i class="ft-arrow-left font-large-3 big-font"></i></a>
+          <h2 class=" ml-2 font-large-2 text-bold-700 text-white text-truncate big-font" [innerHTML]="labelName"></h2>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 d-flex justify-content-end">
+        <div class="text-center" *ngIf="settingService.getLogo() !== null">
+          <img [src]="settingService.getLogo()" class="my-thumbnail" alt="" style="height: 70px;">
+        </div>
+        <!--/.cols-->
+        <div class="text-center" *ngIf="settingService.getLogo2() !== null">
+          <img [src]="settingService.getLogo2()" class="my-thumbnail" alt="" style="height: 70px;">
+        </div>
+        <!--/.cols-->
+      </div>
+
+    </div>
+    <!--/.row-->
+  </div>
+  <!--/.top-navigate-->
+</div>
+<!--/.navigation-->

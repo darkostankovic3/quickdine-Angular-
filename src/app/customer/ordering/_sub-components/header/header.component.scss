@@ -1,0 +1,29 @@
+.position-relative {
+    position: relative !important;   
+    width: 25px;
+    height: 25px;
+    padding-right: 50px;
+    color: #555555;   
+   
+    padding-top: 5px;
+    background-image: url("assets/img/bag.svg");
+    background-repeat: no-repeat;
+}
+.checkout .badge {
+    position: absolute;
+    top: -5px;
+    right: 1px;
+    left: -14px;
+    bottom: 0px;
+    width: 26px;
+    height: 26px;
+    padding: 0px;
+    line-height: 26px;
+    font-size: 12px;
+    border-radius: 25px !important;
+    background-color: transparent !important;
+    color: #404040;
+    margin: 15px auto 0;
+
+   
+}

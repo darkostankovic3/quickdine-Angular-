@@ -1,0 +1,186 @@
+<ng-template #content let-modal>
+    <div class="vh-100">
+        <div class="modal-header d-block p-0 bg-dark text-white rounded-0 ">
+            <div class="row align-items-center bg-dark px-4 py-3 big-pad-y-2 screen-below-sm">
+                <div class="col-10">
+                    <div class="d-flex align-items-center">
+                        <a routerLink="#" routerLinkActive="router-link-active" class="text-white back-arrow"><i
+                                class="ft-arrow-left font-large-3 big-font"></i></a>
+                        <h4 class="modal-title text-left font-weight-bold w-100 py-3 text-capitale
+         ml-2 font-large-1" id="modal-basic-title">
+                            Upselling Items(PLEASE SHARE LABEL FOR THIS)</h4>
+                    </div>
+                </div>
+                <div class="col-2 text-center">
+                    <button type="button" class="close text-white font-large-2" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')" style="font-size: 36px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="col-sm-12 my-0 pb-5 pt-5 px-0">
+                <div class="row justify-content-center"
+                    *ngIf="product && product.product && product.product.product_up_sells && product.product.product_up_sells.length > 0">
+                    <div class="col-md-3 col-sm-6 col-xs-6 w-mob mb-3"
+                        *ngFor="let upsell of product.product.product_up_sells">
+                        <a (click)="javascript;;">
+                            <div class="card shadow overflow-hidden">
+                                <div class="card-body px-2 py-4 custom-card">
+                                    <div class="px-0 row justify-content-between align-items-center">
+                                        <div class="col-12 p-1 pr-0 m-center">
+                                            <h5 class="card-title text-truncate text-center">
+                                                {{ upsell.product_up_sell_product.display_label }}</h5>
+                                        </div>
+                                        <div class="col-12 p-1 m-center">
+                                            <h5 class="card-title m-center text-center item-price">
+                                                {{ upsell.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group btn-group-sm w-100 text-center mx-auto px-1" role="group"
+                                        aria-label="...">
+                                        <button type="button" class="btn"
+                                            (click)="upsellProductSelected(upsell);modal.dismiss('Cross click')">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer text-center d-block">
+            <div class="actions">
+                <button type="button" (click)="cancelUpsell(); modal.dismiss()"
+                    class="text-white xt-kiosk-btn btn btn-lg px-5">Cancel</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<section *ngIf="product">
+    <div class="container-fluid">
+        <app-header [url]="'kiosk/uuid/'+uuid+'/location/'+locationId+'/brands'" [labelName]="parentName"></app-header>
+        <div class="product-details py-4 w-75 mx-auto big-pad-y">
+            <div class="row screen-below-md screen-below-sm">
+                <div class="col-12">
+                    <div class="row mb-4">
+                        <div class="col-6"><img
+                                [attr.src]="product.pic ? product.pic : 'https://www.homebars.com.au/wp-content/uploads/2018/11/noimage.jpg'"
+                                alt="" class="w-100 img-fluid big-height"></div>
+                        <div class="col-6">
+                            <h2 class="grey font-medium-5 text-bold-600 big-font-2" *ngIf="brandMenu">
+                                {{ brandMenu.display_label }}
+                            </h2>
+                            <h2 class="font-large-1 text-dark text-bold-700 big-font two-line-truncate"
+                                style="-webkit-box-orient: vertical;">
+                                {{ product.product.display_label }}</h2>
+                            <p class="pt-3 grey font-weight-bolder big-font-3"
+                                *ngIf="product.product.display_description !== null">
+                                {{ product.product.display_description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12 text-center">
+                    <p class="pt-3 grey font-medium-3 text-bold-600 big-font-3"
+                        *ngIf="product.product.display_description !== null">
+                        {{ product.product.display_description }}</p>
+                </div> -->
+
+                <div class="col-12">
+                    <div class="d-flex py-1" *ngFor="let portion of portions">
+                        <div class="col-12 px-1 xt-kiosk-font-radio">
+                            <p-radioButton class="xt-radio text-capitalize regular" name="portions" [value]="portion"
+                                label="{{ portion.display_label }} - {{ portion.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}"
+                                [(ngModel)]="selectedPortion" inputId="{{ portion.id }}">
+                            </p-radioButton>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12" *ngIf="product && product.product.is_combo === true">
+                    <app-combo-details [product]="product.product" [locationId]="locationId"
+                        (valid)="comboValid($event)">
+                    </app-combo-details>
+                </div>
+
+                <div class="col-12">
+                    <div class="row" *ngIf="selectedMenu && selectedMenu.upsell_items">
+                        <div class="col-12 mt-2" *ngFor="let upsellProduct of selectedMenu.upsell_items">
+                            <div class="row middle-drop">
+                                <div class="col-sm-12 mb-2 text-sm-left text-center">
+                                    <h4 class="text-bold-700 text-center d-block w-100 font-large-1">
+                                        {{ upsellProduct.display_label }} |
+                                        {{ upsellProduct.price_with_details.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+                                    </h4>
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <app-tag [product]="upsellProduct" [locationId]="locationId"
+                                        (validate)="validateProductTag($event, upsellProduct)"
+                                        (tagsAdded)="tagsAddedForUpsell($event, upsellProduct)">
+                                    </app-tag>
+                                </div>
+                            </div>
+                            <div class="row mt-3" *ngIf="upsellProduct.is_combo === true">
+                                <app-combo-details [product]="upsellProduct" [locationId]="locationId" class="w-100">
+                                </app-combo-details>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="product-actions big-pad-bottom">
+            <div class="row pb-5 align-items-center">
+                <div class="col-12 col-sm-6 mb-1 text-center">
+                    <div class="mx-auto">
+                        <div class="row justify-content-center">
+                            <div class="col-6 col-sm-8 col-md-6 col-lg-4">
+                                <div class="btn-group rounded-pill bg-secondary" role="group" aria-label="First group">
+                                    <button [disabled]="product.selected_quantity === 1" (click)="decreaseQuantity()"
+                                        type="button"
+                                        class="btn text-white mb-0 px-0 text-bold-600 big-font font-medium-5"><i
+                                            class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                                    <input type="text" [disabled]="true"
+                                        class="form-control text-center bg-secondary big-font border-0 px-0 w-50 text-white text-bold-600 font-medium-5"
+                                        [(ngModel)]="product.selected_quantity">
+                                    <button (click)="increaseQuantity()" type="button"
+                                        class="btn text-white mb-0 px-0 text-bold-600 big-font font-medium-5"><i
+                                            class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6  text-center">
+                    <!-- <button type="button"
+            class="btn btn-secondary btn-lg rounded-pill text-uppercase text-bold-600 font-medium-5 mb-0 big-font big-pad"
+            style="padding-bottom: 13px;padding-top: 13px;"><i class="ft-edit"></i>
+            Catatan</button> -->
+
+                    <app-tag *ngIf="product" [menu]="product" [locationId]="locationId"
+                        (validate)="validateProductTag($event, product.product)" (tagsAdded)="tagsAdded($event)">
+                    </app-tag>
+
+                </div>
+            </div>
+            <div class="button  mx-auto">
+                <div class="row justify-content-center">
+                    <div class="col-sm-8 col-md-6 col-lg-3">
+                        <button type="button" (click)="addOrder()" [disabled]="!validate()"
+                            class="btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad"
+                            style="background: #d8b366;border-radius: 0.7rem !important;">Order</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

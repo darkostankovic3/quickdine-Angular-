@@ -1,0 +1,52 @@
+<div class="modal-header border-0 justify-content-center">
+  <h4 class="modal-title font-weight-bold" id="modal-basic-title">Enter Product Prices</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="_form">
+  <form [formGroup]="form">
+    <!-- <div class="row">
+      <div class="col-12">
+        <ng-select placeholder="Select products to enter prices." [multiple]="true" [items]="products" bindLabel="name"
+          bindValue="id"></ng-select>
+      </div>
+    </div> -->
+    <div class="row mb-2" formArrayName="brand_locations">
+      <div class="col-12" [formGroupName]="_index">
+        <div formArrayName="products" class="col-12">
+          <div class="col-12 mb-2 mt-2"
+            *ngFor="let product of this.form.get('brand_locations')['controls'][this._index]['controls']['products']['controls']; let _i = index"
+            [formGroupName]="_i">
+            <div class="row">
+              <div class="col-12 text-capitalize pl-0 text-center d-inline-flex" style="font-weight: 500;">
+                <p-checkbox placement="right" ngbTooltip="Check to select product" formControlName="is_active"
+                  binary="true"></p-checkbox>
+                <h4 class="pl-2 font-weight-bold">{{ product.value.name }}</h4>
+              </div>
+              <div class="col-12 text-center"
+                *ngIf="product.value.portions.length === 0 && product.value.is_active === true">
+                No portions there yet.
+              </div>
+            </div>
+            <div class="row" *ngIf="product.value.is_active === true" formArrayName="portions">
+              <div class="col-sm-4 pl-0" *ngFor="let portion of product.get('portions')['controls']; let __i = index"
+                [formGroupName]="__i">
+                <div class="col pl-0">
+                  <div class="form-group">
+                    <label>{{ portion.value.name }}</label>
+                    <input type="text" class="form-control" formControlName="price" placement="bottom" ngbTooltip=""
+                      triggers="manual" appInvalidTooltip>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+</div>

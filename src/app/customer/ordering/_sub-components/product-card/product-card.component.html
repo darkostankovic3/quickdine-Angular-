@@ -1,0 +1,36 @@
+<div class="card" (click)="productClicked()" [class.disable-click]="menu.product.is_enable == false">
+  <img class="card-img-top product-item-image" [attr.src]="menu.pic" [attr.alt]="menu.product.display_label">
+  <div class="card-body">
+    <h5 class="card-title product-item-title">{{ menu.product.display_label }}</h5>
+    <p class="card-text">Delicous beef weel cooked with spicy chilii</p>
+    <div class="pull-left" *ngIf="menu.type !== null">
+      <span *ngFor="let _type of menu.type" class="badge rounded-circle" style="background: #ffffff;">
+
+
+        <img *ngIf="_type == 'Hot'" src="../../../../../assets/img/pages/hot-icon.png" width="40px" alt="">
+        <img *ngIf="_type == 'GlutenFee'" src="../../../../../assets/img/pages/gluten-free.png" width="40px" alt="">
+        <img *ngIf="_type == 'Vegetarian'" src="../../../../../assets/img/pages/vegan-icon-17.png" width="40px"
+          alt="">
+        <img *ngIf="_type == 'Vegan'" src="../../../../../assets/img/pages/vegan-icon.png" width="40px" alt="">
+        <img *ngIf="_type == 'Halal'" src="../../../../../assets/img/pages/halal-icon.png" width="40px" alt="">
+        <img *ngIf="_type == 'BestSeller'" src="../../../../../assets/img/pages/best-seller.png" width="40px" alt="">
+      </span>
+      <!-- <span class="regular item-allergen">{{menu.product.display_description}}</span> -->
+    </div>
+    <h5>
+      <span
+        class="medium item-cost">{{  menu.product.product_portions[0].price_with_details.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}</span>
+    </h5>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <app-product></app-product>
+</ng-template>
+
+<ng-template #error let-modal>
+  <app-error></app-error>
+</ng-template>
+
+
+

@@ -1,0 +1,47 @@
+<app-order-action (back)="backClicked()" [uuid]="uuid" [locationId]="locationId"></app-order-action>
+<div class="container-fluid" *ngIf="brandMenu && menus"
+  [style.background-color]="settingService.getBodyBackgroundColor()">
+  <div class="col-sm-12 my-0 pb-5 pt-2 px-0">
+    <div class="row">
+      <div class="col-sm-6 col-xs-6 w-mob mb-3" *ngFor="let record of menus">
+        <a (click)="(javascript)">
+          <div class="card shadow overflow-hidden" (click)="addToCart(record)"
+            [style.background-color]="cartService.getBackground(record)">
+            <div class="price text-right">
+              <span class="rounded price-fs px-1" *ngIf="record.type !== null"
+                [style.background-color]="settingService.getHeaderColor()"
+                [style.color]="settingService.getLabel2Color()">{{ record.type }}</span>
+              <span class="px-1" *ngIf="record.type === null"></span>
+            </div>
+            <img class="card-img-top img-thumb img-fluid" [src]="(record.pic != null ? record.pic : nullImage)" />
+            <div class="card-body p-2">
+              <div class="px-0 row justify-content-between align-items-center" [style.background-color]="
+                  settingService.getLabelBackgroundColor()
+                ">
+                <div class="col-sm-7 p-1 pr-0">
+                  <h5 class="card-title font-small-3 text-truncate" [style.color]="settingService.getLabel2Color()">
+                    {{ record.product.display_label }}
+                  </h5>
+                </div>
+                <div class="col-sm-5 p-1">
+                  <h5 class="card-title font-small-3 text-right" *ngIf="record.product.product_portions.length === 1"
+                    [style.color]="settingService.getLabel2Color()">
+                    {{ record.product.product_portions[0].price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}
+                  </h5>
+                </div>
+              </div>
+
+              <!-- <div *ngIf="record && record.product.product_portions && record.product.product_portions[0]"
+                class="btn-group btn-group-sm w-100 text-center mx-auto px-1" role="group" aria-label="...">
+                <app-animate-button style="width: 100%" [record]="record" (addClicked)="addToCart($event)">
+                </app-animate-button>
+              </div> -->
+
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <app-order-footer> </app-order-footer>
+</div>

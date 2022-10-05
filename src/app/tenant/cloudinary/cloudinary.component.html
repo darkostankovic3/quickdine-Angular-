@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">{{ 'Cloudinary Settings' | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <p-checkbox formControlName="use_cloudinary_keys" binary="true"
+                    label="{{ 'Use Your Own Cloudinary keys' | translate }}">
+                  </p-checkbox>
+                </div>
+
+                <div formArrayName="keys" *ngIf="form.value.use_cloudinary_keys === true">
+                  <div class="form-group" *ngFor="let record of form.get('keys')['controls']; let i = index"
+                    [formGroupName]="i">
+                    <label>{{ record.value.key }}<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="value" placement="bottom" ngbTooltip=""
+                      triggers="manual" appInvalidTooltip>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="form-actions right">
+                <button type="submit" class="btn btn-raised btn-primary" [disabled]="loading || form.invalid">
+                  <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                  {{ 'Submit' | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

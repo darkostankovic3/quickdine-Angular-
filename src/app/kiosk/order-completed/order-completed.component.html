@@ -1,0 +1,61 @@
+<section style="background: #e6831e" class="min-vh-100">
+  <div class="container-fluid">
+    <div class="pt-5 mx-auto text-center">
+      <!-- <img class="img-fluid" width="400" height="400" *ngIf="qrCode" src="data:image/png;base64,{{ qrCode }}"> -->
+      <div class="front-data position-relative">
+        <img
+          src="../../../assets/img/kiosk-1.png"
+          alt=""
+          class="w-25 img-fluid"
+        />
+        <div class="content screen-below-md screen-below-sm">
+          <h2
+            class="text-uppercase text-bold-600 font-large-2 big-font"
+            style="color: #e6831e"
+          >
+            Thank <br />
+            You
+          </h2>
+        </div>
+      </div>
+      <div class="data-text py-5 screen-below-sm">
+        <h2 class="text-bold-600 font-large-2 text-white big-font">
+          {{ "Order Completed" | translate }}
+        </h2>
+        <h3 class="text-bold-600 text-white">
+          {{
+            "Please take the receipt and make payment at Cashier." | translate
+          }}
+        </h3>
+        <h3 class="text-bold-600 text-white">Thank you</h3>
+        <img
+          class="img-fluid qr-image screen-below-sm"
+          *ngIf="qrCode"
+          src="data:image/png;base64,{{ qrCode }}"
+        />
+        <h3 class="text-bold-600 text-white font-large-2 order-number">
+          Order Number: <span>{{ ticketId }}</span>
+        </h3>
+        <div class="pb-5 mx-auto mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <button
+                type="button"
+                class="btn btn-lg bg-white text-uppercase btn-block"
+                style="color: #e6831e"
+                (click)="newOrder()"
+              >
+                {{ "New Order" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="data-action pb-5 w-25 mx-auto">
+      <button type="button" class="btn btn-lg bg-white text-uppercase btn-block big-font-2" style="color: #e6831e;"
+        [routerLink]="['/kiosk/uuid/'+uuid+'/location/'+locationId+'/languages']"
+        routerLinkActive="router-link-active">{{'Order Again' | translate}}</button>
+    </div> -->
+  </div>
+</section>

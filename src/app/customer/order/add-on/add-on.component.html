@@ -1,0 +1,28 @@
+<div class="row" *ngIf="addOnTypes">
+  <div class="col-sm-12 col-12 w-mob" *ngFor="let record of addOnTypes">
+    <a (click)="javascript;;">
+      <!-- <div class="card shadow"> -->
+      <div class="row justify-content-between align-items-center px-1 d-flex">
+        <div class="col-sm-9 w-70-mob" [style.color]="settingService.getLabelColor()">
+          <h5 class="text-capitalize text-bold-400" style="font-size: 17px !important;">
+            {{ record.name }} -
+            <span class=""
+              [innerHTML]="record.price_details.price_with_tax | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+          </h5>
+        </div>
+        <div class="col-sm-3 pl-0 w-30-mob">
+          <div class="btn-group btn-group-sm text-center mx-auto" role="group" aria-label="...">
+            <button type="button" class="btn text-icon" (click)="removeClicked(record)"><i
+                class="fa fa-minus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+                aria-hidden="true"></i></button>
+            <input type="text" class="form-control text-center p-0 input-group-sm border-0"
+              [attr.placeholder]="record.quantity" aria-label="" aria-describedby="btnGroupAddon">
+            <button type="button" class="btn text-icon" (click)="addClicked(record)"><i
+                class="fa fa-plus font-weight-light" [style.color]="settingService.getAddButtonColor()"
+                aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

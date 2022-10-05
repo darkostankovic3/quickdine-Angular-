@@ -1,0 +1,90 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">{{ 'Tax Details' | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="(recordId) ? onUpdate() : onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label>{{ 'Name' | translate }}<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" formControlName="name" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group">
+                  <label>{{ 'Tax' | translate }}</label>
+                  <input type="text" class="form-control" formControlName="tax_percent" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip>
+                </div>
+
+                <div class="form-group">
+                  <label>{{ 'Description' | translate }}</label>
+                  <textarea class="form-control" formControlName="description" placement="bottom" ngbTooltip=""
+                    triggers="manual" appInvalidTooltip rows="5"></textarea>
+                </div>
+
+                <!-- Tag Maps -->
+                <button type="button" class="btn btn-raised btn-primary" (click)="addArrayForTaxMap()">
+                  {{ 'Tax Map' | translate }}
+                </button>
+
+                <div formArrayName="tax_maps">
+                  <div *ngFor="let records of form.get('tax_maps')['controls']; let i = index" [formGroupName]="i">
+
+                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label>{{'Select Category'}}</label>
+                          <ng-select placeholder="All categories" [items]="categories" bindValue="id"
+                            bindLabel="display_label" formControlName="category_id" (change)="getProducts(records, i)">
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label>{{'Select Product'}}</label>
+                          <ng-select placeholder="All products" [items]="taxMaps[i].products" bindValue="id"
+                            bindLabel="display_label" formControlName="product_id">
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <button class="btn btn-danger btn-raised mb-n5" type="button" (click)="deleteTaxMap(i)">
+                          <i class="ft-trash-2"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Tag Maps End -->
+
+              </div>
+              <div class="form-actions right">
+                <button type="button" class="btn btn-raised btn-danger" routerLink="/tenant/taxes">
+                  <i class="ft-x"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary ml-2"
+                  [disabled]="loading || form.invalid || form.value.tax_maps.length === 0">
+                  <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                  {{ 'Submit' | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

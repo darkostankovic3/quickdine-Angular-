@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-md-8">
+        <div class="rounded card text-center border mt-5">
+          <div class="card-body text-center">
+            <h3 class="d-block font-weight-bold text-dark mt-3 mb-4">
+              Please select below:
+            </h3>
+            <p-selectButton [formControl]="form.get('order_preference')" [options]="types"
+              [(ngModel)]="commonOrderService.orderPreference"></p-selectButton> <br>
+            <button class="btn btn-raised btn-warning mb-0 m-1 mt-4 mb-2" type="submit">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.row-->
+  </div>
+  <!--container-->
+</form>

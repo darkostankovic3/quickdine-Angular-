@@ -1,0 +1,40 @@
+<form [formGroup]="form">
+  <div class="container-fluid px-0">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-4">
+          <div>
+            <label class="text-bold-400 text-uppercase font-medium-2 text-dark"><i class="fa fa-calendar"
+                aria-hidden="true"></i>{{ 'Date' | translate }}</label>
+            <app-date-range-picker (dateSelected)="form.patchValue({date_range: $event});onSubmit()">
+            </app-date-range-picker>
+            <!-- <app-date-range-picker (dateSelected)="form.patchValue({date_range: $event});onSubmit()">
+            </app-date-range-picker> -->
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="text-bold-400 text-uppercase font-medium-2 text-dark"><i class="fa fa-tags"
+                aria-hidden="true"></i> {{ 'Brands' | translate }}</label>
+            <ng-select [multiple]="true" placeholder="{{ 'Select a brand' | translate }}" [items]="brands"
+              bindLabel="display_label" bindValue="id" formControlName="brand" (change)="brandSelected()">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="text-bold-400 text-uppercase font-medium-2 text-dark"><i class="fa fa-map-marker"
+                aria-hidden="true"></i> {{ 'Locations' | translate }}</label>
+            <ng-select [multiple]="true" placeholder="{{ 'Select a location' | translate }}" [items]="locations"
+              bindLabel="display_label" bindValue="id" formControlName="location" (change)="onSubmit()"></ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="row my-3" *ngIf="stats">
+        <div class="col-12">
+          <app-stats [stats]="stats"></app-stats>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

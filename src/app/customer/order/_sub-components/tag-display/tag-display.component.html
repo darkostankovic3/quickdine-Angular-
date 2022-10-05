@@ -1,0 +1,26 @@
+<div class="col-12" *ngFor="let tag of tags">
+  <div class="row justify-content-between">
+    <div class="col-12 w-mob1 pl-0 text-capitalize text-truncate" [style.color]="settingService.getLabelColor()">
+      <div class="row">
+        <div class="col-12">
+          <p class="text-bold-500 mb-0 text-truncate">{{ tag.display_label }}</p>
+        </div>
+      </div>
+      <div class="row" *ngFor="let tagItem of tag.tag_items">
+        <div class="col-12  ml-2" *ngIf="tagItem.is_selected === true">
+          <div class="row">
+            <div class="col-12"> {{ tagItem.name }}<span style="font-weight: 500;">
+                ({{ tagItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+                - Qty {{ tagItem.selected_quantity }}</span>
+            </div>
+            <div></div>
+            <!--<div class="col-4">
+               Price:
+              {{ tagItem.price_with_details.price_with_tax | currency:settingService.getCurrency():settingService.getCurrencySymbol() }} 
+            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

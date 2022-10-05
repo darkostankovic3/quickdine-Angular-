@@ -1,0 +1,10 @@
+<footer class="fixed-bottom px-3 py-2" [style.background-color]="settingService.getBackgroundColor()">
+  <div class="row align-items-center justify-content-between">
+    <div class="col-12">
+      <h3 class="mb-0" [style.color]="settingService.getFooterColor()">{{ 'Total' | translate }}: <span
+          [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+      </h3>
+    </div>
+
+  </div>
+</footer>

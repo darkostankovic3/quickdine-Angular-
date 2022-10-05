@@ -1,0 +1,91 @@
+<ng-template #content let-modal>
+  <div class="modal-header d-block p-0 bg-dark text-white rounded-0">
+    <div class="row align-items-center bg-dark px-4 py-2 big-pad-y-2 screen-below-sm">
+      <div class="col-10">
+        <div class="d-flex align-items-center">
+          <a routerLink="#" routerLinkActive="router-link-active" class="text-white"><i
+              class="ft-arrow-left font-large-3 big-font"></i></a>
+          <h4 class="modal-title text-left font-weight-bold w-100 py-3 text-capitale
+         ml-2" id="modal-basic-title" style="font-size: 40px;">
+            Select Tags</h4>
+        </div>
+      </div>
+      <div class="col-2 text-center">
+        <button type="button" class="close text-white font-large-2" aria-label="Close"
+          (click)="modal.dismiss('Cross click')" style="font-size: 36px;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body pt-0">
+    <div class="">
+      <div class="row bg-light big-pad-y px-2 screen-below-sm" *ngFor="let tag of tags">
+        <div class="col-12 py-2 mb-2 text-center">
+          <h4 class="font-weight-bold text-capitalize mb-4 text-uppercase" style="font-size: 26px;">
+            Product: <span *ngIf="product">{{ product.display_label }}</span> | Tag: {{ tag.display_label }} <span
+              style="font-size: 18px;" *ngIf="tag.min_select && tag.min_select > 0">- <span
+                [class.red]="tag.validate === false">Mandatory:
+                {{ tag.min_select  }} </span>
+            </span>
+            <span style="font-size: 18px;" *ngIf="tag.max_select && tag.max_select > 0">-
+              Maximum: {{ tag.max_select }}</span>
+          </h4>
+        </div>
+        <div class="col-12 " *ngFor="let tagItem of tag.tag_items">
+          <div class="row mb-2 justify-content-between align-items-center px-1 d-flex">
+            <div class="col-sm-6 w-70-mob px-0">
+              <h5 class="text-capitalize text-bold-500 mr-1 mb-0 text-truncate" style="font-size: 26px;">
+                <p-checkbox *ngIf="tagItem.selected_quantity > 0" [(ngModel)]="tagItem.is_selected" binary="true"
+                  (onChange)="validateData()"></p-checkbox>
+
+                {{ tagItem.name }} <span style="font-size: 13px;" *ngIf="tagItem.quantity > 0"
+                  style="font-size:18px;">(Max:
+                  {{ tagItem.quantity }})</span>
+              </h5>
+
+              <h5 class="ml-3 text-bold-400" style="font-size: 16px;" *ngIf="tagItem.price && tagItem.price > 0">
+                {{ tagItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()  }}
+              </h5>
+            </div>
+            <div class="col-sm-4 px-0 w-30-mob">
+
+              <div class="w-100 mx-auto">
+                <div class="btn-group btn-lg rounded-pill bg-secondary" role="group" aria-label="First group">
+                  <button (click)="removeClicked(tagItem)" [disabled]="tagItem.selected_quantity === 0" type="button"
+                    class="btn text-white mb-0 px-0 text-bold-600 big-font font-medium-5"><i class="fa fa-minus-circle"
+                      aria-hidden="true"></i></button>
+                  <input _ngcontent-wqa-c1=""
+                    class="form-control text-center bg-secondary big-font border-0 px-0 w-50 text-white text-bold-600 font-medium-5 ng-untouched ng-pristine"
+                    [(ngModel)]="tagItem.selected_quantity" type="text" ng-reflect-is-disabled="true"
+                    ng-reflect-model="1" disabled="">
+                  <button (click)="addClicked(tagItem)"
+                    [disabled]="tagItem.quantity !== 0 && tagItem.selected_quantity === tagItem.quantity" type="button"
+                    class="btn text-white mb-0 px-0 text-bold-600 big-font font-medium-5"><i class="fa fa-plus-circle"
+                      aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer text-center d-block">
+    <div class="button w-25 mx-auto">
+      <button type="button" (click)="modal.close('Save click')"
+        class="xt-kiosk-btn btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad screen-below-sm">Apply</button>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="tags && tags.length > 0" [class.w-100]="isComboTag">
+
+  <button type="button" (click)="openModel()" [class.xt-kiosk-btn-not-valid]="!valid" [class.btn-secondary]="valid"
+    class="btn btn-secondary btn-lg rounded-pill text-uppercase text-bold-600 font-medium-5 mb-0 big-font big-pad screen-below-sm"
+    style="padding-bottom: 13px;padding-top: 13px;"><i class="ft-edit"></i>
+    {{ 'Note' | translate }}</button>
+
+  <!-- <button type="button" (click)="openModel()" [class.xt-kiosk-btn-not-valid]="!valid" [class.xt-kiosk-btn]="valid"
+    class="btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad">Tags</button> -->
+</div>

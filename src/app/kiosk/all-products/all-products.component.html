@@ -1,0 +1,129 @@
+<section
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="getProducts(lastBodyParam)"
+>
+  <div class="container-fluid">
+    <app-header
+      *ngIf="brandMenuId === null"
+      [url]="'kiosk/uuid/' + uuid + '/location/' + locationId + '/type'"
+      [labelName]="label"
+    >
+    </app-header>
+
+    <app-header
+      *ngIf="brandMenuId !== null"
+      [url]="'kiosk/uuid/' + uuid + '/location/' + locationId + '/brands'"
+      [labelName]="label"
+    >
+    </app-header>
+
+    <div class="category-data big-pad-y-1">
+      <!-- Only visible for screen below 768 -->
+      <div class="show-below-md hide-above-md fixed-bar w-100">
+        <div class="row">
+          <div class="col-7 col-sm-8 d-flex flex-column justify-content-end">
+            <form [formGroup]="form" (ngSubmit)="search()">
+              <div class="form-group input-group has-search">
+                <span
+                  class="fa fa-search form-control-feedback font-medium-5 mt-1"
+                ></span>
+                <input
+                  type="text"
+                  formControlName="search"
+                  class="form-control border-0 bg-secondary big-font-2 text-bold-500 font-medium-5 text-white search-input"
+                  placeholder="Search..."
+                  aria-label=""
+                  aria-describedby="basic-addon1"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-secondary" type="submit">Go</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-5 col-sm-4">
+            <app-cart-button
+              [uuid]="uuid"
+              [locationId]="locationId"
+            ></app-cart-button>
+          </div>
+          <div class="col-12">
+            <ng-select
+              class="show-below-md"
+              [items]="menuService.categories"
+              bindLabel="display_label"
+              bindValue="id"
+              (change)="categoryClicked($event)"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <!--End - Only visible for screen below 768 -->
+      <div class="row padding-below-sm padding-below-md">
+        <div class="col-md-9">
+          <div
+            class="row"
+            *ngIf="loading == false && menus && menus.length == 0"
+          >
+            <div class="pt-3 col-12 text-center no-product">
+              <img
+                class="img-fluid"
+                src="../../../assets/img/EmptyCart.png"
+              />
+              <br />
+              <p
+                class="text-bold-bold font-medium-3 text-dark text-center big-font-3"
+              >
+                No product available.
+              </p>
+            </div>
+          </div>
+          <div class="row" *ngIf="menus">
+            <div class="col-md-4 col-sm-6" *ngFor="let record of menus">
+              <app-product-card
+                *ngIf="
+                  brandMenuId === null && record.brand_menu_items.length > 0
+                "
+                [record]="record"
+                [brandLogo]="record.brand_menu_items[0].brand_menu.logo_pic"
+                [locationId]="locationId"
+                [uuid]="uuid"
+              >
+              </app-product-card>
+
+              <app-product-card
+                *ngIf="brandMenuId !== null"
+                [record]="record"
+                [locationId]="locationId"
+                [uuid]="uuid"
+                [showCategory]="false"
+              ></app-product-card>
+            </div>
+
+            <label *ngIf="loading" class="w-100 text-center my-5">
+              <!-- Please wait while we are fetching products -->
+              <!-- <img src="../assets/img/loading-product.gif" alt=""> -->
+              <div class="spinner-border text-dark" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="col-md-3 show-above-md hide-below-md">
+          <div class="position-fixed overflow-scroll right-sidebar">
+            <app-search-category
+              [brandMenuId]="brandMenuId"
+              *ngIf="uuid && locationId"
+              [uuid]="uuid"
+              [locationId]="locationId"
+              (searchProducts)="searchProducts($event)"
+            ></app-search-category>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

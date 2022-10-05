@@ -1,0 +1,34 @@
+<section class="bg-primary position-relative">
+  <img [attr.src]="settingService.getSecondImage()" alt=""
+    class="img-fluid img-responsive position-absolute back-layer">
+  <div class="overlay min-vh-100">
+    <div class="container-fluid">
+
+      <div class="row justify-content-center pt-5">
+        <div class="d-flex col-md-2 col-sm-12 justify-content-center my-3">
+          <div class="w-100">
+            <img [attr.src]="settingService.getLogo()" class="w-100 img-fluid">
+            <h2 class="text-uppercase text-bold-500 font-large-1 text-white mt-2 text-center">
+              Ordering
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="d-flex col-md-3 col-sm-12 justify-content-center">
+          <p class="text-white text-center" [innerHTML]="settingService.getTermAndConditions()"></p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="d-flex col-md-2  col-sm-12 justify-content-center mt-2">
+          <div class="w-100">
+            <button type="button" class="btn btn-raised btn-info text-uppercase btn-block " style="color: #ffffff;"
+              (click)="startOrdering()">Start Ordering</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,68 @@
+<ng-template #content let-modal>
+  <div class="modal-header text-center d-flex justify-content-center align-item-center">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times; </span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row" *ngFor="let tag of tags">
+      <div class="col-12 py-2 mb-2 text-center">
+        <h5 class="font-weight-bold text-capitalize mb-0 text-uppercase text-left">
+          <span *ngIf="product">{{ product.display_label }}</span> | Tag: {{ tag.display_label }} <span
+            *ngIf="tag.min_select && tag.min_select > 0">- <span [class.red]="tag.validate === false">Mandatory:
+              {{ tag.min_select  }} </span>
+          </span>
+          <span *ngIf="tag.max_select && tag.max_select > 0">-
+            Maximum: {{ tag.max_select }}</span>
+        </h5>
+      </div>
+      <div class="col-12" *ngFor="let tagItem of tag.tag_items">
+        <div class="row mb-2 justify-content-between align-items-center px-1 d-flex">
+          <div class="col-sm-8 py-2 ">
+            <h5 class="text-capitalize text-bold-500  mb-0 text-truncate" style="font-size:13px;">
+              <p-checkbox *ngIf="tagItem.selected_quantity > 0" [(ngModel)]="tagItem.is_selected" binary="true"
+                (onChange)="validateData()"></p-checkbox>
+              <span>{{ tagItem.name }} </span><br>
+              <span class="ml-3" style="font-size: 12px;" *ngIf="tagItem.quantity > 0" style="font-size:13px;">(Max:
+                {{ tagItem.quantity }})</span>
+            </h5>
+
+            <h5 class="d-block py-2 mb-0 ml-3 text-bold-400" style="font-size: 12px;"
+              *ngIf="tagItem.price && tagItem.price > 0">
+              {{ tagItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()  }}
+            </h5>
+          </div>
+          <div class="col-sm-4 py-1">
+            <div class="stepper-container" style="width: 80px;">
+              <button class="minus" type="button" [disabled]="tagItem.selected_quantity === 0"
+                (click)="removeClicked(tagItem)">-</button>
+              <div class="stepper-text">{{ tagItem.selected_quantity }}</div>
+              <button class="plus" type="button" (click)="addClicked(tagItem)"
+                [disabled]="tagItem.quantity !== 0 && tagItem.selected_quantity === tagItem.quantity">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info  d-block w-100 text-white" style="color: #ffffff !important;"
+      (click)="modal.close('Save click')">Add Tags</button>
+
+  </div>
+</ng-template>
+
+<div *ngIf="tags && tags.length > 0" [class.w-100]="isComboTag">
+  <div class="d-flex justify-content-center align-items-center pt-0 pb-3">
+    <button type="button" class="add-button" (click)="openModel()" [class.xt-kiosk-btn-not-valid]="!valid">
+      <span class="add-button-icon">+</span>
+      <span class="add-button-text">{{ 'Tags' | translate }}</span>
+    </button>
+  </div>
+
+
+  <!-- <button type="button" (click)="openModel()" [class.xt-kiosk-btn-not-valid]="!valid" [class.xt-kiosk-btn]="valid"
+    class="btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad">Tags</button> -->
+</div>

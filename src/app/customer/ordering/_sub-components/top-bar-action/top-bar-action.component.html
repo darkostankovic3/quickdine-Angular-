@@ -1,0 +1,21 @@
+<div class="w-100 d-flex justify-content-center  align-items-center">
+  <button class="btn bg-color mb-0 m-1" style="color: #fff;" [routerLink]="['/ordering/'+uuid+'/languages']"><i
+      class="fa fa-globe hide-xs-up"></i><span class="hide-xs"> {{ languageService.getLanguage() }} - </span> <span
+      class="icon-note hide-xs"></span></button>
+
+  <!-- <button class="btn bg-color mb-0 m-1 btn-raised" [routerLink]="['/ordering/'+uuid+'/wizard']" style="color: #fff;">
+    <span [innerHTML]="commonOrderService.orderPreference"></span> - <span class="icon-note hide-xs"></span>
+  </button> -->
+
+  <button
+    *ngIf="locationId && departmentService.departments && departmentService.departments.length > 1 && cartService.tableId == null "
+    class="btn bg-color mb-0 m-1 btn-raised" id="department_button"
+    [routerLink]="['/ordering/'+uuid+'/locations/'+locationId+'/department/list']" style="color: #fff;">
+    <span *ngIf="!cartService.departmentName">Select Dept.</span><span *ngIf="cartService.departmentName"
+      [innerHTML]="cartService.departmentName"></span> - <span class="icon-note hide-xs"></span>
+  </button>
+
+  <button *ngIf="cartIcon" class="btn bg-color mb-0 m-1" style="color: #fff;" (click)="backClicked()"> <span class="hide-xs-up"><i
+        class="fa fa-arrow-left"></i> </span><span class="hide-xs"> Back</span> </button>
+
+</div>

@@ -1,0 +1,229 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+    <div class="loading-icon">
+        <i class="fa fa-spinner spin font-medium-5"></i>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-10">
+            <div class="card px-2 position-relative">
+                <app-spinner *ngIf="pageLoader"></app-spinner>
+                <div class="card-header">
+                    <h4 class="card-title">{{ 'Location Details' | translate }}</h4>
+                </div>
+                <div class="card-body">
+
+                    <div class="">
+                        <form class="form" (ngSubmit)="(recordId) ? onUpdate() : onSubmit()" [formGroup]="form">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label>{{ 'Name' | translate }}<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" formControlName="name" placement="bottom"
+                                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'Description' | translate }}</label>
+                                    <textarea class="form-control" formControlName="description" placement="bottom"
+                                        ngbTooltip="" triggers="manual" appInvalidTooltip rows="5"></textarea>
+                                </div>
+                                <!-- <div class="form-group">
+                  <label>{{ 'Image' | translate }}</label>
+                  <app-file-upload (click)="$event.stopPropagation()" (filesAdded)="fileAdded($event)"
+                    [hideImages]="true" [thumbnail]="location.pic">
+                  </app-file-upload>
+                  <div class="ml-1 mt-2" *ngIf="location && location.pic != null">
+                    <button type="button" class="btn btn-sm btn-raised btn-danger"
+                      (click)="deleteLocationPic()">Delete</button>
+                  </div>
+                </div> -->
+                                <div formArrayName="brand_locations">
+                                    <div class="row mb-2"
+                                        *ngFor="let record of this.form.get('brand_locations')['controls']; let i = index"
+                                        [formGroupName]="i">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="form-group">
+                                                        <ng-select placeholder="Select Brand" [items]="brands"
+                                                            bindValue="id" bindLabel="display_label"
+                                                            formControlName="brand_id" (change)="brandSelect(i)">
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <div class="form-group" placeholder="Select Menu"
+                                                        *ngIf="form.value.brand_locations[i].brand_id !== null">
+                                                        <ng-select
+                                                            [items]="getBrandMenus(form.value.brand_locations[i].brand_id)"
+                                                            bindValue="id" bindLabel="display_label"
+                                                            formControlName="brand_menu_id">
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1 w-mob" *ngIf="recordId">
+                                                    <button class="btn btn-raised btn-success" type="button"
+                                                        (click)="openBrandItems(form.value.brand_locations[i].id)"><i
+                                                            class="ft-edit"></i></button>
+                                                </div>
+                                                <div class="col-sm-1 w-mob">
+                                                    <button class="btn btn-raised btn-danger" type="button"
+                                                        (click)="deleteBrand(i)"><i class="ft-trash-2"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div formArrayName="products" class="col-12">
+                      <div class="col-12 mb-2 mt-2"
+                        *ngFor="let product of record.get('products')['controls']; let _i = index" [formGroupName]="_i">
+                        <div class="row row">
+                          <div class="col-12 text-capitalize pl-0 text-center" style="font-weight: 500;">
+                            {{ product.value.name }}
+                          </div>
+                          <div class="col-12 text-center" *ngIf="product.value.portions.length === 0">
+                            No portions there yet.
+                          </div>
+                        </div>
+                        <div class="row" formArrayName="portions">
+                          <div class="col-sm-4 pl-0"
+                            *ngFor="let portion of product.get('portions')['controls']; let __i = index"
+                            [formGroupName]="__i">
+                            <div class="col pl-0">
+                              <div class="form-group">
+                                <label>{{ portion.value.name }}</label>
+                                <input type="text" class="form-control" formControlName="price" placement="bottom"
+                                  ngbTooltip="" triggers="manual" appInvalidTooltip>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div> -->
+
+                                    </div>
+                                    <button class="btn btn-primary btn-raised" type="button"
+                                        (click)="addBrandLocation()">{{ 'Add
+                                        Brand' | translate }}</button>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'Tax Type' | translate }}<span class="text-danger">*</span></label>
+                                    <ng-select [items]="taxTypes" formControlName="tax_type">
+                                    </ng-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'Select Tax' | translate }}<span class="text-danger">*</span></label>
+                                    <ng-select [multiple]="true" [items]="taxes" bindValue="id"
+                                        bindLabel="display_label" formControlName="taxes" placement="bottom"
+                                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                                    </ng-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'Departments' | translate }}</label>
+                                    <ng-select [multiple]="true" [items]="departmentList" bindValue="id"
+                                        bindLabel="name" formControlName="departments" placement="bottom" ngbTooltip=""
+                                        triggers="manual" appInvalidTooltip>
+                                    </ng-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ 'Payment Method' | translate }}</label>
+                                    <ng-select [multiple]="true" [items]="paymentMethods" bindValue="payment_method"
+                                        bindLabel="payment_method" formControlName="payment_methods" placement="bottom"
+                                        ngbTooltip="" triggers="manual" appInvalidTooltip>
+                                    </ng-select>
+                                </div>
+                                <div class="form-group">
+                                    <p-checkbox formControlName="is_otp_required" binary="true"
+                                        label="{{ 'OTP Mandatory?' | translate }}">
+                                    </p-checkbox>
+                                </div>
+
+                                <div class="form-group" *ngIf="form.value.is_otp_required === true">
+                                    <p-checkbox formControlName="is_twilio_required" binary="true"
+                                        label="{{ 'Use Twilio for OTP?' | translate }}">
+                                    </p-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <p-checkbox formControlName="is_customer_required" binary="true"
+                                    label="{{ 'Is Customer Required?' | translate }}">
+                                </p-checkbox>
+                            </div>
+
+                            <div class="form-group">
+                                <p-checkbox formControlName="is_active" binary="true"
+                                    label="{{ 'Is Active?' | translate }}">
+                                </p-checkbox>
+                            </div>
+
+                            <div class="form-group">
+                                <p-checkbox formControlName="is_delivery" binary="true"
+                                    label="{{ 'Is Delivery?' | translate }}">
+                                </p-checkbox>
+                            </div>
+
+                            <div class="form-group" *ngIf="form.value.is_delivery === true">
+                                <ng-select [items]="deliveryPartners" bindValue="name" bindLabel="name"
+                                    formControlName="delivery_partner" placement="bottom" ngbTooltip=""
+                                    triggers="manual" appInvalidTooltip>
+                                </ng-select>
+                            </div>
+
+                            <div formArrayName="location_delivery_prices">
+                                <div class="row mb-2"
+                                    *ngFor="let record of this.form.get('location_delivery_prices')['controls']; let i = index"
+                                    [formGroupName]="i">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="minimum_amount" placeholder="Minimum Amount">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="maximum_amount" placeholder="Maximum Amount">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="delivery_price" placeholder="Delivery price">
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-1 w-mob">
+                                                <button class="btn btn-raised btn-danger" type="button"
+                                                    (click)="deleteDeliveryPrice(i)"><i class="ft-trash-2"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-raised" type="button" (click)="addDeliveryPrice()">{{ 'Add
+                                    Delivery Price' | translate }}</button>
+                            </div>
+
+
+                            <div class="form-actions right">
+                                <button type="button" class="btn btn-raised btn-danger" routerLink="/tenant/locations">
+                                    <i class="ft-x"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-raised btn-primary ml-2"
+                                    [disabled]="loading || form.invalid">
+                                    <i [class]="loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'"></i>
+                                    {{ 'Submit' | translate }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

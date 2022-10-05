@@ -1,0 +1,136 @@
+<div class="container-fluid">
+  <app-header [cartIcon]="false"></app-header>
+  <div class="col-sm-10 mx-auto text-center py-5">
+    <div class="total-pay">
+      <div class="col text-center mb-3">
+        <h4
+          class="font-weight-bold text-uppercase text-info"
+          [style.color]="settingService.getHeaderColor()"
+        >
+          {{ "enter details" | translate }}
+        </h4>
+      </div>
+      <p class="text-dark" *ngIf="isTwilioEnabled">
+        Please enter your mobile number to receive the OTP. For Example (+65
+        97771786)
+      </p>
+      <p class="text-dark" *ngIf="form.value.is_sent === true">
+        Please enter OTP
+      </p>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+      <div
+        class="form-group w-75 mx-auto"
+        *ngIf="
+          (isTwilioEnabled || isOtpRequired == false) && isTableBooked == false
+        "
+      >
+        <div class="row">
+          <div class="col-sm-4">
+            <ng-select
+              [items]="countryList"
+              bindLabel="calling_code"
+              bindValue="calling_code"
+              formControlName="country_code"
+              placement="bottom"
+              ngbTooltip=""
+              triggers="manual"
+              appInvalidTooltip
+              class="side-scroll otp-county-code"
+              [(ngModel)]="seletedCode"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.country }} (+{{ item.calling_code }})
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.country }} (+{{ item.calling_code }})
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phone_number"
+              placeholder="{{
+                'Enter your phone number with country code' | translate
+              }}"
+              [readonly]="disabledField"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-group w-75 mx-auto"
+        *ngIf="form.value.is_sent === true && isTableBooked == false"
+      >
+        <input
+          type="text"
+          class="form-control py-3"
+          formControlName="otp"
+          placeholder="{{ 'Enter your OTP' | translate }}"
+        />
+      </div>
+      <div class="col-12 px-3"></div>
+      <div class="col-sm-4 px-3 mx-auto text-center">
+        <!-- <p class="mb-2">Didn't get the code? <span class="text-uppercase text-primary"><a>Resend code</a></span></p> -->
+        <button
+          class="btn btn-block btn-lg px-4 py-1 bg-info"
+          *ngIf="form.value.is_sent === true && isTableBooked == false"
+          type="submit"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()"
+        >
+          {{ "Submit" | translate }}</button
+        ><br />
+        <button
+          *ngIf="isOtpRequired !== true && isTableBooked == false"
+          class="btn btn-block btn-lg px-4 py-1 bg-info"
+          type="button"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()"
+          (click)="skip()"
+        >
+          {{ "Skip" | translate }}</button
+        ><br />
+        <button
+          *ngIf="form.value.phone_number !== null && !form.value.is_sent"
+          class="btn btn-block btn-lg px-4 py-1 bg-info"
+          (click)="generateOtp()"
+          type="button"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()"
+        >
+          {{ "Generate OTP" | translate }}
+        </button>
+      </div>
+    </form>
+
+    <form
+      *ngIf="isTableBooked === true"
+      [formGroup]="otpForm"
+      (ngSubmit)="onSubmit(otpForm)"
+    >
+      <div class="form-group w-75 mx-auto">
+        <input
+          type="text"
+          class="form-control py-3"
+          formControlName="otp"
+          placeholder="{{ 'Enter your OTP' | translate }}"
+        />
+      </div>
+
+      <div class="col-sm-4 px-3 mx-auto text-center">
+        <button
+          class="btn btn-block btn-lg px-4 py-1 bg-info"
+          type="submit"
+          [style.background-color]="settingService.getButtonColor()"
+          [style.color]="settingService.getLabel2Color()"
+        >
+          {{ "Submit" | translate }}</button
+        ><br />
+      </div>
+    </form>
+  </div>
+</div>

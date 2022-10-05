@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <div class="card position-relative">
+        <div class="card-header">
+          <h4 class="card-title">{{ "Brand Menu Details" | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="recordId ? onUpdate() : onSubmit()" [formGroup]="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label class="form-control-label" for="firstname">Menu Name</label>
+                  <input class="form-control input-md" formControlName="name" type="text" placement="bottom"
+                    ngbTooltip="" triggers="manual" appInvalidTooltip />
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label" for="lastname">Brand</label>
+                  <ng-select [items]="brands" bindLabel="name" bindValue="id" formControlName="brand_id"
+                    (change)="getMenus()">
+                  </ng-select>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="form-control-label" for="lastname">Image</label>
+                    <app-file-upload (click)="$event.stopPropagation()" (filesAdded)="fileAdded($event)"
+                      [hideImages]="true" [thumbnail]="brandMenu ? brandMenu.pic : null">
+                    </app-file-upload>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="form-control-label" for="lastname">Logo</label>
+                    <app-file-upload (click)="$event.stopPropagation()" (filesAdded)="logoFilesAdded($event)"
+                      [hideImages]="true" [thumbnail]="brandMenu ? brandMenu.logo_pic : null">
+                    </app-file-upload>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions right">
+                <button type="button" class="btn btn-raised btn-danger" routerLink="/tenant/menu">
+                  <i class="ft-x"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary ml-2" [disabled]="loading || form.invalid">
+                  <i [class]="
+                      loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'
+                    "></i>
+                  {{ "Submit" | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

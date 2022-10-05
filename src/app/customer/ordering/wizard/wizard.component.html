@@ -1,0 +1,25 @@
+<div class="brand-wrapper">
+  <app-header></app-header>
+  <div class="container-fluid col-xl-8 col-lg-8 review-order-root py-3">
+   
+    <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="menu-item-card-root flex-column  border mt-3 pb-3 px-3">
+        <h3 class="d-block  text-info mt-1 mb-2 header-text">
+          Choose the Type of Service.</h3>
+          <div class="w-100 d-flex justify-content-between mb-3 ">
+            <div class="left">
+              <p-selectButton [options]="types" [formControl]="form.get('order_preference')"
+                [(ngModel)]="commonOrderService.orderPreference"></p-selectButton>
+            </div>
+            <div class="rgt">
+              <button class="add-button  px-3 py-2 text-white" type="submit"
+                [disabled]="form.invalid" style="width: auto; height: auto;">Apply</button>
+            </div>
+          </div>
+        
+      </div>
+      <!--/.menu-item-card-root-->
+    </form>
+  </div>
+</div>
+<!--/.brand-wrapper-->

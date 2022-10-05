@@ -1,0 +1,10 @@
+<div #wrapper class="wrapper" [dir]="languageService.getDirection()">
+  <div>
+    <div class="position-relative" [style.background-color]="settingService.getLabelBackgroundColor()">
+      <div class="col-12 px-1 d-flex align-items-center justify-content-center">
+
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

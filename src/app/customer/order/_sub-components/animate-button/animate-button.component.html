@@ -1,0 +1,5 @@
+<button type="button" class="btn" [style.color]="settingService.getAddButtonColor()" (click)="onAddToCart()">
+
+  <i [@buttonTextStateTrigger]="buttonTextState" (@buttonTextStateTrigger.done)="buttonTextTransitioned($event)"
+    class="fa fa-plus fa 2x font-weight-light font-medium-3" aria-hidden="true">{{ buttonText }}</i>
+</button>

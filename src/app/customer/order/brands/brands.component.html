@@ -1,0 +1,16 @@
+<app-order-action [uuid]="uuid" [showBack]="false" [locationId]="locationId"></app-order-action>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-xs-6 w-mob" *ngFor="let brandMenu of brandMenus">
+      <a (click)="brandClicked(brandMenu)">
+        <div class="card" [style.background-color]="settingService.getMenuBackgroundColor()">
+          <img class="card-img-top img-fluid img-thumb" [src]="brandMenu.pic" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-small-3 text-truncate" [style.color]="settingService.getLabelColor()">
+              {{ brandMenu.display_label }}</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

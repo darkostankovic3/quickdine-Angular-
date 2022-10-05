@@ -1,0 +1,10 @@
+<div class="shopping-cart screen-below-md screen-below-sm">
+  <button (click)="goToCart()" type="button"
+    class="w-100 btn btn-lg btn-secondary text-white font-medium-3 text-bold-500 big-pad big-font-2"><i
+      class="ft-shopping-cart mr-1"></i> <span class="hide-below-sm">{{ 'Basket' | translate }}</span><br
+      class="hide-below-sm">
+    <span> (<span [innerHTML]="cartService.cartMenus.length"></span> {{'Product' | translate }})</span><br>
+    <span
+      [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+    </span></button>
+</div>

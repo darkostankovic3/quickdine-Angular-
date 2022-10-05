@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col-md-12 p-0 pr-1">
+        <app-menu *ngIf="products !== null" [products]="products" [brandMenuId]="brandMenuId" #appMenu
+            (menuLoaded)="menuLoaded($event)"></app-menu>
+        <h4 class="text-center" *ngIf="loading">Please wait while we are loading menus.</h4>
+    </div>
+    <!-- <div class="col-md-4 p-0 pl-1">
+        <app-add-ons [brandMenuId]="brandMenuId" (addOnDeleted)="addOnDeleted($event)"></app-add-ons>
+    </div> -->
+</div>

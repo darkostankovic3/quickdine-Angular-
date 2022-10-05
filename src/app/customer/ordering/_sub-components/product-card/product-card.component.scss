@@ -1,0 +1,21 @@
+.item-image {
+    max-width:150px;
+}
+
+.badge img {
+    width: 20px;
+}
+
+@media (max-width:480px) {
+  
+    .item-image {
+        max-width:100px;
+    }
+    .padding-left-on-sm{
+        padding-left: 0.75rem !important;
+    }
+}
+.disable-click{
+    pointer-events: none;
+    background-color: #eee;
+}

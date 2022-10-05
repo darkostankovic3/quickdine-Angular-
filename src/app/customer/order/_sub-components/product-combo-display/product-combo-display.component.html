@@ -1,0 +1,40 @@
+<div class="col-12" *ngFor="let productCombo of productCombos">
+  <div class="row justify-content-between">
+    <div class="col-12 w-mob1 pl-0 text-capitalize text-truncate" [style.color]="settingService.getLabelColor()">
+      <div class="row">
+        <div class="col-12"><span style="font-weight: 500;">{{ productCombo.combo_name }}</span></div>
+      </div>
+      <div class="row" *ngFor="let productComboItem of productCombo.product_combo_items">
+        <div class="col-12 ml-2" *ngIf="productComboItem.auto_select === true">
+          <div class="row">
+            <div class="col-12">{{ productComboItem.product.name }}
+              <span
+                style="font-weight: 500;">({{ productComboItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+                - Qty {{ productComboItem.selected_quantity }}</span>
+            </div>
+            <div> </div>
+            <!--<div class="col-4">
+               Price:
+              {{ productComboItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol() }} 
+            </div>-->
+          </div>
+        </div>
+
+        <div class="col-12 ml-2" *ngIf="productComboItem.auto_select === true">
+          <div class="ml-2 mb-1">
+            <app-tag-display [tags]="productComboItem.product.selected_tags">
+            </app-tag-display>
+          </div>
+        </div>
+
+        <div class="col-12 ml-2"
+          *ngIf="productComboItem.auto_select === true && productComboItem.product.is_combo === true">
+          <div class="ml-3 mb-1">
+            <app-product-combo-display [productCombos]="productComboItem.product.product_combos">
+            </app-product-combo-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

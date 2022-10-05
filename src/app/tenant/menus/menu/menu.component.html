@@ -1,0 +1,16 @@
+<div *ngIf="menus" class="col-md-12 col-lg-12 pl-0 pr-0" dragula="MENUS" id="MAIN-MENU" [(dragulaModel)]="menus">
+  <div class="container border mt-2 main-menu-type" *ngFor="let menu of menus; let i = index">
+    <div class="">
+      <div>
+        <app-category-item [products]="_products" [brandMenuId]="brandMenuId" [menu]="menu"
+          (recordDeleted)="deleteMenu($event)" (recordAdded)="addToSubmenu($event, menu)">
+        </app-category-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-category [products]="products" [brandMenuId]="brandMenuId" *ngIf="addCategoryClicked"
+  (recordAdded)="addToMenu($event)"></app-category>
+<button *ngIf="!addCategoryClicked" type="button" class="btn btn-primary btn-fab mt-1"
+  (click)="addCategoryClicked = !addCategoryClicked">{{ 'Add Category' | translate }}</button>

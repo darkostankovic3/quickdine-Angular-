@@ -1,0 +1,156 @@
+<div class="text-center">
+  <div class="header py-2 mb-2">
+    <img height="80" src="{{ settingService.getLogo() }}" alt="Logo" />
+  </div>
+
+  <h4><b>Thank You!</b></h4>
+  <h4><b>We are preparing your order</b></h4>
+  <h5 *ngIf="settingService.getCustomMessage()">
+    <b>{{ settingService.getCustomMessage() }}</b>
+  </h5>
+
+  <div class="row m-0 justify-content-center">
+    <div class="col-6 col-sm-4 col-md-3">
+      <button type="button" class="btn btn-secondary btn-block">
+        Ticket No. {{ ticketId }}
+      </button>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3">
+      <button type="button" class="btn btn-secondary btn-block">
+        Total:
+        {{
+          ticket.display_total_amount
+            | currency
+              : settingService.getCurrency()
+              : settingService.getCurrencySymbol()
+              : settingService.getNumberOfDecimals()
+        }}
+      </button>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="ticket">
+    <div class="col-6 mt-3 mx-auto">
+      <div class="px-0" *ngFor="let order of ticket.orders; let i = index">
+        <div class="row justify-content-between">
+          <div class="col-7 pr-1 text-left">
+            <h4
+              class="text-bold-600 mb-0 text-truncate"
+              style="font-size: 15px"
+            >
+              {{ order.order_obj.product.display_label }} <br />({{
+                order.order_obj.product.product_portions[0].display_label
+              }}
+              -
+              {{
+                order.order_obj.product.product_portions[0].price
+                  | currency
+                    : settingService.getCurrency()
+                    : settingService.getCurrencySymbol()
+                    : settingService.getNumberOfDecimals()
+              }}) Qty {{ order.order_obj.selected_quantity }}
+            </h4>
+          </div>
+
+          <div class="col-5">
+            <div class="d-flex">
+              <div class="col text-right">
+                <h5 class="text-bold-600 font-medium-1 text-capitalize">
+                  {{
+                    order.order_obj.display_price
+                      | currency
+                        : settingService.getCurrency()
+                        : settingService.getCurrencySymbol()
+                        : settingService.getNumberOfDecimals()
+                  }}
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Tags ANd Combos -->
+          <div class="col-12">
+            <div class="ml-2 mb-2 text-left">
+              <app-tag-display
+                [tags]="order.order_obj.product.selected_tags"
+              ></app-tag-display>
+            </div>
+
+            <div class="ml-2 mb-2">
+              <app-product-combo-display
+                [productCombos]="order.order_obj.product.product_combos"
+              >
+              </app-product-combo-display>
+            </div>
+
+            <div class="mb-2" *ngIf="order.order_obj.upsell_items.length > 0">
+              <hr class="my-0" />
+              <div class="pt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <!-- <div class="col-7 px-0"> -->
+                    <div class="col-12 px-0">
+                      <app-upsell-display
+                        [upsells]="order.order_obj.upsell_items"
+                        [quantity]="order.order_obj.selected_quantity"
+                      ></app-upsell-display>
+                    </div>
+                    <div class="col-5 px-0">
+                      <!-- <div class="d-flex">
+                                  <div class="col px-1 text-center">
+                                    <h5 class="text-bold-600 font-medium-1 text-capitalize"
+                                      [style.color]="settingService.getLabelColor()"
+                                      [innerHTML]="menu.total_amount | currency:settingService.getCurrency():settingService.getCurrencySymbol()">
+                                    </h5>
+                                  </div>
+                                  <div class="col-auto pl-1 pr-0 text-right">
+                                    <i (click)="cartService.delete(i)" class="fa fa-trash-o font-medium-5"
+                                      [style.color]="settingService.getLabelColor()" aria-hidden="true"></i>
+                                  </div>
+                                </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Order remark -->
+        <div *ngIf="order.remarks">
+          <p><span>Remark: </span>{{ order.remarks }}</p>
+        </div>
+
+        <div class="col-sm-12 w-mob1">
+          <div class="total">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-6 text-right w-mob1"></div>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-img-top py-3">
+    <img
+      class="img-fluid"
+      width="300"
+      height="300"
+      *ngIf="qrCode"
+      src="data:image/png;base64,{{ qrCode }}"
+    />
+  </div>
+
+  <div class="footer text-center py-3">
+    <p>Finished your meal?</p>
+    <p
+      *ngIf="
+        (ticket && ticket.payment_method == 'Cash') ||
+        ticket.payment_method == null
+      "
+    >
+      Please Procced to the cashier to pay.
+    </p>
+  </div>
+</div>

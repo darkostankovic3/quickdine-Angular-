@@ -1,0 +1,29 @@
+.menu-item-card-root .stepper-container {
+  width: 130px;
+}
+
+body .ui-buttonset.ui-button {
+  width: 33.33% !important;
+}
+
+.item-image {
+  max-width: 150px;
+}
+
+@media (max-width: 480px) {
+  .item-image {
+    max-width: 100px;
+  }
+}
+
+@media (min-width: 576px) {
+  .float-sm-up {
+    float: right;
+  }
+}
+
+.payment-selected {
+}
+p-selectbutton.xt-payment .ui-selectbutton .ui-button.ui-state-active {
+  background-color: red;
+}

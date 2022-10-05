@@ -1,0 +1,150 @@
+<div class="brand-wrapper">
+  <app-header></app-header>
+
+  <div class=" container-fluid col-xl-8 col-lg-8 review-order-root py-3 padding-on-sm">
+    <!--header-text-->
+    <div class="row">
+      <div class="col-md-8">
+
+        <!--/.billing-address-->
+        <div class="header-text-container">
+          <p class="font-weight-normal header-text py-3 mb-0"> Payment Method</p>
+        </div>
+
+        <div class="details-card p-3 billing-address p-3 billing-address">
+          <p class=" border-bottom w-100 text-left pb-2 text-info pt-2">Credit Cards</p>
+          <div>
+            <img src="../../../../assets/img/visa.svg" alt="" style="height: 25px;">
+            <img src="../../../../assets/img/mastercard.svg" alt="" style="height: 25px;">
+            <img src="../../../../assets/img/JCB.svg" alt="" style="height: 25px;">
+          </div>
+          <form action="" class="w-100" [formGroup]="form">
+            <div class="form-group">
+              <label for="">{{ 'Cardholder Name' | translate }}</label>
+              <input type="text" class="form-control mb-2" formControlName="name" placement="bottom" ngbTooltip=""
+                triggers="manual" appInvalidTooltip>
+            </div>
+
+
+            <div class="form-group">
+              <label for="">{{ 'Card Number' | translate }}</label>
+              <div class="input-group">
+                <input maxlength="20" type="text" class="form-control mb-2" mask="0000-0000-0000-0000"
+                  formControlName="number" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                <div class="input-group-append card-icon">
+                  <span class="input-group-text">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="">{{ 'Expiry Date' | translate }}</label>
+                <!-- <ng-select [items]="months" class="expiry-month" formControlName="expiration_month" placement="bottom"
+                  ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </ng-select> -->
+                <input type="text" class="form-control mb-2" placeholder="MM" formControlName="expiration_month"
+                  placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+              </div>
+              <div class="col-md-4">
+                <label for="">&nbsp; </label>
+                <!-- <ng-select [items]="years" class="expiry-year" formControlName="expiration_year" placement="bottom"
+                  ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </ng-select> -->
+                <input type="text" class="form-control mb-2" placeholder="YYYY" formControlName="expiration_year"
+                  placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+              </div>
+              <div class="col-md-4">
+                <label for="">{{ 'CVV' | translate }} </label>
+                <div class="d-flex justify-content-around">
+                  <input type="text" class="form-control mb-2" formControlName="security_code" placement="bottom"
+                    ngbTooltip="" triggers="manual" appInvalidTooltip>
+                </div>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="text-right bg-info btn text-white mt-2 py-2 px-2" [disabled]="loading || form.invalid"
+                  (click)="onSubmit()" [innerHTML]="(loading === true ? 'Processing.' : 'Make Payment')"></button>
+              </div>
+            </div>
+            <!--/.row-->
+          </form>
+        </div>
+        <!--/.billing-address-->
+
+      </div>
+      <!--/.cols-->
+      <div class="col-md-4">
+        <div class="header-text-container">
+          <p class="font-weight-normal header-text py-3 mb-0"> Price Details</p>
+        </div>
+        <div class="details-card p-3 billing-address p-3 billing-address">
+          <p class="mb-1 font-weight-bold border-bottom pb-2 w-100 text-dark">Price Details</p>
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <tr>
+                <td>{{ 'Sub Total' | translate }} <span>( {{ cartService.cartMenus.length }} items )</span></td>
+                <td class="text-right"
+                  [innerHTML]="cartService.getSubtotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()">
+                </td>
+              </tr>
+              <tr *ngFor="let tax of cartService.taxes">
+                <td>{{ tax.name }}</td>
+                <td class="text-right"><span
+                    [innerHTML]="tax.tax | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+                </td>
+              </tr>
+              <tr *ngIf="cartService.deliveryCharge">
+                <td>Delivery charges</td>
+                <td class="text-right"><span
+                    [innerHTML]="cartService.deliveryCharge | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+                </td>
+              </tr>
+              <tr *ngIf="cartService.departmentObj">
+                <td>{{cartService.departmentObj.caption}}</td>
+                <td class="text-right"><span
+                    [innerHTML]="cartService.departmentCharge | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+                </td>
+              </tr>
+              <tr *ngIf="cartService.cardCharges">
+                <td>Card Charges</td>
+                <td class="text-right"><span
+                    [innerHTML]="cartService.cardCharges | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+                </td>
+              </tr>
+
+              <tr class="border-top">
+                <td><b>{{ 'Total' | translate }}</b></td>
+                <td class="text-right"><b
+                    [innerHTML]="(cartService.getTotal() + cartService.deliveryCharge + cartService.departmentCharge + cartService.cardCharges) | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></b>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!--/.details-card-->
+
+        <!-- <div class="details-card p-3">
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s,
+          </p>
+        </div> -->
+
+      </div>
+      <!--/.cols-->
+    </div>
+    <!--/.row-->
+
+
+
+
+  </div>
+  <!--/.container-fluid-->
+
+
+</div>
+<!--/.brand-wrapper-->

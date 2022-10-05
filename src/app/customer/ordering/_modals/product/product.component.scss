@@ -1,0 +1,10 @@
+.modal-header img { max-width:215px;} 
+.tags .ui-radiobutton-label { font-size: 13px !important;}
+.tags .ui-radiobutton-box.ui-state-active{
+    background-color: #1ca10e !important;
+}
+.cardhead { background: #009da0; color: #ffffff;}
+.isDisabled{
+    pointer-events: none;
+    cursor: not-allowed;
+}

@@ -1,0 +1,4 @@
+<button *ngIf="product && showTag(product)" (click)="openTagModal(product.selected_tags)"
+  class="btn btn-secondary btn-xs rounded-pill text-uppercase  mb-0 big-font big-pad"
+  style="padding-bottom: 8px;padding-top: 8px;" type="button"><i class="ft-edit"></i>
+  {{ 'Note' | translate }}</button>

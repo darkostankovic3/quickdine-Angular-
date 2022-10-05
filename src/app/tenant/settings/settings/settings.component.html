@@ -1,0 +1,574 @@
+<div class="page-loading loader-wrapper bg-white" *ngIf="pageLoader === true">
+  <div class="loading-icon">
+    <i class="fa fa-spinner spin font-medium-5"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-12">
+      <div class="card setting position-relative">
+        <app-spinner *ngIf="pageLoader"></app-spinner>
+        <div class="card-header">
+          <h4 class="card-title">{{ "Settings" | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+              <div class="form-body" formArrayName="settings">
+                <div class="row">
+                  <div
+                    class="col-md-6"
+                    *ngFor="
+                      let record of form.get('settings')['controls'];
+                      let i = index
+                    "
+                    [formGroupName]="i"
+                  >
+                    <div class="form-group">
+                      <label
+                        >{{ record.value.type | translate
+                        }}<span
+                          *ngIf="
+                            record.value.type !== 'Header' &&
+                            record.value.type !== 'Footer' &&
+                            record.value.type !== 'Second Caption' &&
+                            record.value.type !== 'Terms And Conditions' &&
+                            record.value.type !== 'Queue Language' &&
+                            record.value.type !== 'Custom Message'
+                          "
+                          >*</span
+                        ></label
+                      >
+                      <span *ngIf="record.value.type == 'Ticket Reject Time'"
+                        ><i> ( seconds )</i></span
+                      >
+                      <span *ngIf="record.value.type == 'Close Time'"
+                        ><i> ( seconds )</i></span
+                      >
+                      <div [ngSwitch]="record.value.type">
+                        <input
+                          *ngSwitchCase="'Input'"
+                          type="text"
+                          class="form-control"
+                          formControlName="name"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <input
+                          *ngSwitchCase="'Caption'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <input
+                          *ngSwitchCase="'Second Caption'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <input
+                          *ngSwitchCase="'Ticket Reject Time'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <input
+                          *ngSwitchCase="'Close Time'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <ng-select
+                          *ngSwitchCase="'Date Format'"
+                          [items]="dateFormats"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Datetime Format'"
+                          [items]="dateTimeFormats"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Show Debit Payment Button'"
+                          [items]="showButton"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Pay At Counter'"
+                          [items]="showButton"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Show Item Remarks'"
+                          [items]="showButton"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Show Ticket Remarks'"
+                          [items]="showButton"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Login Screen Placement'"
+                          [items]="loginScreen"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Ask Login For Table'"
+                          [items]="askLoginForTable"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Number Of Decimals'"
+                          [items]="numberOfDecimals"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <ng-select
+                          *ngSwitchCase="'Automatically Accept Cash Order'"
+                          [items]="acceptOrder"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <div class="form-group" *ngSwitchCase="'Header'">
+                          <textarea
+                            class="form-control rounded-0 big-font-3"
+                            name=""
+                            id=""
+                            rows="3"
+                            formControlName="setting"
+                          ></textarea>
+                        </div>
+
+                        <div class="form-group" *ngSwitchCase="'Footer'">
+                          <textarea
+                            class="form-control rounded-0 big-font-3"
+                            name=""
+                            id=""
+                            rows="3"
+                            formControlName="setting"
+                          ></textarea>
+                        </div>
+
+                        <div
+                          class="form-group"
+                          *ngSwitchCase="'Terms And Conditions'"
+                        >
+                          <textarea
+                            class="form-control rounded-0 big-font-3"
+                            name=""
+                            id=""
+                            rows="3"
+                            formControlName="setting"
+                          ></textarea>
+                        </div>
+
+                        <div
+                          class="form-group"
+                          *ngSwitchCase="'Custom Message'"
+                        >
+                          <textarea
+                            class="form-control rounded-0 big-font-3"
+                            name=""
+                            id=""
+                            rows="3"
+                            formControlName="setting"
+                          ></textarea>
+                        </div>
+
+                        <input
+                          *ngSwitchCase="'Number Of Records'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <div class="form-group" *ngSwitchDefault>
+                          <input
+                            type="color"
+                            class="form-control"
+                            formControlName="setting"
+                            placement="bottom"
+                            ngbTooltip=""
+                            triggers="manual"
+                            appInvalidTooltip
+                          />
+                        </div>
+
+                        <ng-select
+                          *ngSwitchCase="'Queue Language'"
+                          [items]="languages"
+                          bindLabel="language"
+                          bindValue="symbol"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        >
+                        </ng-select>
+
+                        <input
+                          *ngSwitchCase="'Keep Number Of Tenants'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <input
+                          *ngSwitchCase="'Refresh Time Of Queue Page'"
+                          type="text"
+                          class="form-control"
+                          formControlName="setting"
+                          placement="bottom"
+                          ngbTooltip=""
+                          triggers="manual"
+                          appInvalidTooltip
+                        />
+
+                        <!-- <div *ngSwitchCase="'Background Color'">
+                        <input type="text" placeholder="Enter Name" class="form-control" formControlName="name"
+                            placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                      </div>
+                      <div *ngSwitchCase="'Header Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Label Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Label2 Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Button Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Footer Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Link Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Add Button Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Body Background Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Label Background Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div>
+                      <div *ngSwitchCase="'Menu Background Color'">
+                        <p-colorPicker formControlName="setting"> </p-colorPicker>
+                      </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <!--/.cols-->
+                </div>
+                <!--/.row-->
+
+                <div class="row">
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Logo" | translate }} 1</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 1)"
+                        [thumbnail]="logo_1"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="logo_1">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(1)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    <!--/.form-group-->
+                  </div>
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Logo" | translate }} 2</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 2)"
+                        [thumbnail]="logo_2"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="logo_2">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(2)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!--/.form-group-->
+
+                  <!-- Hot Promo Background -->
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Hot Promo" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 3)"
+                        [thumbnail]="hot_promo_background"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="hot_promo_background">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(3)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- List Tenant Background -->
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "List Tenant" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 4)"
+                        [thumbnail]="list_tenant_background"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="list_tenant_background">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(4)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Find Food Background -->
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Find Food" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 5)"
+                        [thumbnail]="find_food_background"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="find_food_background">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(5)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Hot Seller Background -->
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Hot Seller" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 6)"
+                        [thumbnail]="hot_seller_background"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="hot_seller_background">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(6)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/.row-->
+                <div class="row">
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Welcome Video" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 7)"
+                        [thumbnail]="welcome_image"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="welcome_image">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(7)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    <!--/.form-group-->
+                  </div>
+
+                  <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                      <label>{{ "Second image" | translate }}</label>
+                      <app-file-upload
+                        (click)="$event.stopPropagation()"
+                        (filesAdded)="uploadLogo($event, 8)"
+                        [thumbnail]="second_image"
+                        [hideImages]="true"
+                        [isLogo]="false"
+                      >
+                      </app-file-upload>
+                      <div class="ml-1 mt-2" *ngIf="second_image">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-raised btn-danger"
+                          (click)="deleteLogo(8)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    <!--/.form-group-->
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions right">
+                <button
+                  type="submit"
+                  class="btn btn-raised btn-primary"
+                  [disabled]="loading || form.invalid"
+                >
+                  <i
+                    [class]="
+                      loading ? 'fa fa-spinner fa-spin' : 'fa fa-check-square-o'
+                    "
+                  ></i>
+                  {{ "Submit" | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

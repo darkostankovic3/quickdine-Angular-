@@ -1,0 +1,17 @@
+<div class="container-fluid">
+  <div class="row text-center justify-content-center py-5">
+    <div class="col-12 py-2">
+      <h5 class="text-bold-600" [style.color]="settingService.getHeaderColor()">Select Your Language</h5>
+    </div>
+    <div class="col-auto">
+      <div class="row pt-3">
+        <div class="col-12" *ngFor="let language of languages">
+          <button class="btn btn-raised btn-lg rounded btn-size"
+            [style.background-color]=" settingService.getButtonColor()" [style.color]="settingService.getLabel2Color()"
+            (click)="selectLanguage(language.symbol)">
+            {{ language.language }}
+          </button></div>
+      </div>
+    </div>
+  </div>
+</div>

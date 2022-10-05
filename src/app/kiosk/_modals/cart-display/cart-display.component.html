@@ -1,0 +1,50 @@
+<div class="modal-header d-block p-0 bg-dark text-white rounded-0">
+    <div class="row align-items-center bg-dark px-4 py-2 big-pad-y-2 screen-below-sm">
+        <div class="col-10">
+            <div class="d-flex align-items-center">
+                <a routerLink="#" routerLinkActive="router-link-active" class="text-white"><i
+                        class="ft-arrow-left font-large-3 big-font"></i></a>
+                <h4 class="modal-title text-left font-weight-bold w-100 py-3 text-capitale
+       ml-2" id="modal-basic-title" style="font-size: 40px;">
+                    Select Tags</h4>
+            </div>
+        </div>
+        <div class="col-2 text-center">
+            <button type="button" class="close text-white font-large-2" aria-label="Close"
+                (click)="modal.dismiss('Cross click')" style="font-size: 36px;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-body py-2">
+    <div class="">
+        <div class="row bg-white big-pad-y px-2" *ngFor="let tag of tags">
+            <div class="col-12 text-center screen-below-sm" *ngFor="let tagItem of tag.tag_items">
+                <div class="row mb-0 justify-content-between align-items-center px-1 d-flex"
+                    *ngIf="tagItem.is_selected === true">
+                    <div class="col-sm-8 w-70-mob px-0">
+                        <h5 class="text-capitalize text-bold-500 mr-1 mb-0 text-truncate" style="font-size: 26px ;">
+                            {{ tagItem.name }}
+                            ({{ tagItem.price | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }})
+                        </h5>
+                    </div>
+                    <div class="col-sm-4 px-0 w-30-mob">
+
+                        <div class="w-100 mx-auto text-left">
+                            <p class="font-weight-bold quantity" style="font-size: 26px;">
+                                {{ tagItem.selected_quantity }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer text-center d-block">
+    <div class="button w-25 mx-auto">
+        <button type="button" (click)="modal.close('Save click')"
+            class="xt-kiosk-btn btn btn-lg btn-block text-uppercase text-bold-600 font-medium-5 text-white big-font-2 big-pad screen-below-sm">Close</button>
+    </div>
+</div>

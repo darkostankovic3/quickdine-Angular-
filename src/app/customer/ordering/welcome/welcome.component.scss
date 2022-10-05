@@ -1,0 +1,11 @@
+.middle{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.overlay { 
+    background: rgba(0,0,0,0.9);
+}
+.back-layer{
+    left: 0px; top: 0px; width: 100%; object-fit: cover; object-position: center; opacity: 0.8; height: 100%;
+  }

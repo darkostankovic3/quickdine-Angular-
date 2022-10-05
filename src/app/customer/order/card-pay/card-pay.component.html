@@ -1,0 +1,80 @@
+<div class="container-fluid">
+  <div class="text-right pt-3">
+    <a (click)="homeClicked()" class="ft-x font-large-1"></a>
+  </div>
+  <div class="card shadow-none m-0 pb-3" style="background-color: transparent;">
+    <div class="card-title mb-0 text-center">
+      <h4 class="text-bold-600" [style.color]="settingService.getHeaderColor()">
+        <span class="text-uppercase">{{'Total Payment' | translate}} </span> <span
+          [innerHTML]="cartService.getTotal() | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals()"></span>
+      </h4>
+    </div>
+    <div class="card-body">
+      <form action="" id="2c2p-payment-form" [formGroup]="form">
+        <div class="form-group">
+          <label class="text-uppercase"
+            [style.color]="settingService.getLabelColor()">{{ 'Cardholder Name' | translate }}</label>
+          <input type="text" class="form-control py-3" placeholder="Name on card" formControlName="name"
+            placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control py-3" hidden formControlName="type" placement="bottom" ngbTooltip=""
+            triggers="manual" appInvalidTooltip>
+        </div>
+        <div class="form-group">
+          <label class="text-uppercase"
+            [style.color]="settingService.getLabelColor()">{{ 'Card Number' | translate }}</label>
+          <div class="position-relative has-icon-right">
+            <input class="form-control py-3" name="cardid" type="text" placeholder="---- ---- ---- ----"
+              formControlName="number" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+            <div class="form-control-position">
+              <i class="ft-credit-card warning"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-8 pl-0">
+              <div class="form-group">
+                <label class="text-uppercase"
+                  [style.color]="settingService.getLabelColor()">{{ 'Expiry Date' | translate }}</label>
+                <div class="row">
+                  <div class="col-6 pr-0">
+                    <ng-select [items]="months" class="expiry-month" formControlName="expiration_month"
+                      placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </ng-select>
+                  </div>
+                  <div class="col-6 pr-0">
+                    <ng-select [items]="years" class="expiry-year" formControlName="expiration_year" placement="bottom"
+                      ngbTooltip="" triggers="manual" appInvalidTooltip>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 pr-0">
+              <div class="form-group">
+                <label class="text-uppercase" [style.color]="settingService.getLabelColor()">{{ 'CVV' | translate }} <i
+                    class="icon-info" style="line-height: 2;"></i></label>
+                <input type="password" class="form-control py-3" data-encrypt="cvv" value="123" placeholder="Code"
+                  formControlName="security_code" placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" [hidden]="this.paymentMethod !== 'Ipay88'">
+          <label class="text-uppercase"
+                 [style.color]="settingService.getLabelColor()">{{ 'Bar Code No (Can generate by Boost App)' | translate }}</label>
+          <input type="text" class="form-control py-3" placeholder="Bar Code No" formControlName="barCodeNo"
+                 placement="bottom" ngbTooltip="" triggers="manual" appInvalidTooltip>
+        </div>
+        <input type="hidden" formControlName="encryptedCardInfo">
+        <div class="text-center">
+          <button type="submit" [disabled]="loading || form.invalid" class="btn btn-lg text-uppercase px-3"
+            [style.background-color]="settingService.getButtonColor()" [style.color]="settingService.getLabel2Color()"
+            (click)="onSubmit()" [innerHTML]="(loading === true ? 'Processing.' : 'Make Payment')"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

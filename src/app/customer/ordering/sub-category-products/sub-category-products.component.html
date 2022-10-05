@@ -1,0 +1,43 @@
+<div
+  class="brand-wrapper"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="getProducts(lastBodyParam)"
+>
+  <app-header></app-header>
+  <div class="container-fluid col-xl-8 col-lg-8 review-order-root py-3 mb-5">
+    <div class="scroll">
+      <a
+        class="item"
+        *ngFor="
+          let brandMenuItem of menuService.brandMenuItemList;
+          let i = index
+        "
+        (click)="menuClicked(brandMenuItem, i)"
+        [class.active]="selectedIndex == i || brandMenuItem.menu.id == menuId"
+        ><img
+          class="rounded-circle slider-image mr-1"
+          [attr.src]="brandMenuItem.menu.pic"
+          alt=""
+        />
+        <p class="mb-0" style="margin-top: 2px">{{
+          brandMenuItem.menu.display_label
+        }}</p>
+      </a>
+    </div>
+
+    <app-product-card
+      *ngFor="let menu of menus"
+      [menu]="menu"
+    ></app-product-card>
+  </div>
+
+  <label *ngIf="loading" class="w-100 text-center">
+    <!-- Please wait while we are fetching products -->
+    <div class="spinner-border text-dark" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </label>
+  <app-ordering-footer></app-ordering-footer>
+</div>

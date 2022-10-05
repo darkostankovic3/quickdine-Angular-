@@ -1,0 +1,44 @@
+<div class="card" placement="top" ngbTooltip="Click to see details.">
+    <div class="card-header">
+        <h6 class="card-title">
+            <span class="float-left mb-1">{{ ticket.id }}</span>
+            <span class="float-right mb-1">{{ ticket.queue_number }}</span><br>
+            <span *ngIf="ticket"
+                class="amount">{{ (ticket.display_total_amount) | currency:settingService.getCurrency():settingService.getCurrencySymbol():settingService.getNumberOfDecimals() }}</span>
+            <span *ngIf="ticket.status === 'Pending'" class="float-right" placement="bottom"
+                ngbTooltip="Hurry! Accept order before this timeout.">{{ timeLeft }}
+                sec.</span></h6>
+
+        <span></span>
+    </div>
+    <div class="card-content">
+        <div class="card-body">
+            <p class="card-text">ORDERS BELOW</p>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let order of ticket.orders">
+                <span class="badge float-right">{{ order.order_obj.selected_quantity }}</span>
+                <span
+                    *ngIf="order.product_obj && order.product_obj.display_label">{{ order.product_obj.display_label }}</span>
+            </li>
+            <li class="list-group-item" *ngFor="let upsellProduct of ticket.upsell_products">
+                <span class="badge float-right">{{ upsellProduct.selected_quantity }}</span>
+                {{ upsellProduct.display_label }}
+            </li>
+        </ul>
+    </div>
+    <div class="card-footer border-top-0 text-center">
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-primary float-left" *ngIf="ticket.status === 'Pending'"
+            (click)="$event.stopPropagation();action.emit('Accept');pauseTimer()">Accept</a>
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-danger float-right" *ngIf="ticket.status === 'Pending'"
+            (click)="$event.stopPropagation();action.emit('Reject')">Reject</a>
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-info float-right" *ngIf="ticket.status == 'Prepared'"
+            (click)="$event.stopPropagation();action.emit('Deliver')">Deliver</a>
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-success float-left px-3" *ngIf="ticket.status == 'Accept'"
+            (click)="$event.stopPropagation();action.emit('Paid')">Paid</a>
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-success float-left px-3" *ngIf="ticket.status == 'Preparing'"
+            (click)="$event.stopPropagation();action.emit('Prepared')">Prepared</a>
+        <a class="btn btn-raised mr-1 shadow-z-2 btn-warning float-left px-3" *ngIf="ticket.status == 'Paid'"
+            (click)="$event.stopPropagation();action.emit('Preparing')">Preparing</a>
+    </div>
+</div>
